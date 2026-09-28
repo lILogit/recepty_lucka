@@ -1,0 +1,732 @@
+<title>Malými lžícemi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;0,800;1,500&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+<style>
+:root{
+  --bg:#F3F6F3; --surface:#FFFFFF; --ink:#1E2B27; --muted:#56675F; --line:#D6E0DA;
+  --accent:#2E6A57; --accent-soft:#E0EDE6;
+  --p1:#DCE8F2; --p1-ink:#2B5C82;
+  --p2:#F6E4CE; --p2-ink:#8F531A;
+  --p3:#DDEBD9; --p3-ink:#3A6832;
+  --no:#A9472F; --no-soft:#F6E4DE; --yes-soft:#E4EFE3;
+  --plate:#FCFCF9; --plate-rim:#DFE4DF; --shadow:rgba(20,40,30,.10);
+  --f-display:"Alegreya", Georgia, "Times New Roman", serif;
+  --f-body:"Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#111816; --surface:#19221F; --ink:#E3ECE7; --muted:#9BAFA6; --line:#2B3833;
+    --accent:#80C8AB; --accent-soft:#1E3029;
+    --p1:#1A2834; --p1-ink:#9CC6EA;
+    --p2:#30251A; --p2-ink:#F0B77A;
+    --p3:#1C2C1C; --p3-ink:#A6D49B;
+    --no:#EE9F8B; --no-soft:#33201B; --yes-soft:#1C2B1F;
+    --plate:#E8ECE8; --plate-rim:#BFC8C2; --shadow:rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111816; --surface:#19221F; --ink:#E3ECE7; --muted:#9BAFA6; --line:#2B3833;
+  --accent:#80C8AB; --accent-soft:#1E3029;
+  --p1:#1A2834; --p1-ink:#9CC6EA;
+  --p2:#30251A; --p2-ink:#F0B77A;
+  --p3:#1C2C1C; --p3-ink:#A6D49B;
+  --no:#EE9F8B; --no-soft:#33201B; --yes-soft:#1C2B1F;
+  --plate:#E8ECE8; --plate-rim:#BFC8C2; --shadow:rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.55;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.12}
+p{margin:0}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+
+/* ---------- Hero ---------- */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding-block:48px 32px}
+.hero h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:800;letter-spacing:-.01em;margin-block:10px 16px}
+.hero h1 em{font-style:italic;font-weight:500;color:var(--accent)}
+.lead{font-size:1.2rem;max-width:34em}
+.hero-art svg{width:100%;height:auto;display:block}
+.facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.95rem}
+.fact b{font-variant-numeric:tabular-nums}
+
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding:10px 16px}
+nav.toc .wrap{display:flex;gap:6px 18px;flex-wrap:wrap;font-size:.98rem}
+nav.toc a{text-decoration:none;color:var(--ink);font-weight:500;padding:4px 0;border-bottom:2px solid transparent}
+nav.toc a:hover{border-color:var(--accent)}
+
+section{padding-block:56px 8px}
+.sec-head{display:grid;gap:8px;margin-bottom:28px;max-width:44em}
+.sec-head h2{font-size:clamp(1.9rem,3.6vw,2.6rem);font-weight:800}
+
+/* ---------- Rules ---------- */
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.rule{background:var(--surface);padding:20px 22px;display:grid;gap:6px;align-content:start}
+.rule h3{font-size:1.2rem;font-weight:700}
+.rule p{font-size:1rem;color:var(--muted)}
+.rule .big{font-family:var(--f-display);font-weight:800;font-size:1.9rem;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
+
+/* ---------- Dumping ---------- */
+.dump{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:18px}
+.dump > div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:10px;align-content:start}
+.dump h3{font-size:1.3rem}
+.dump .when{font-family:var(--f-display);font-size:1.05rem;color:var(--no);font-weight:700}
+.dump ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
+.dump .help{background:var(--accent-soft);border-color:transparent}
+.dump .help .when{color:var(--accent)}
+
+/* ---------- Phases ---------- */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.phase-card{border-radius:14px;padding:22px;display:grid;gap:10px;align-content:start;text-decoration:none;color:var(--ink)}
+.phase-card .num{font-family:var(--f-display);font-size:3rem;font-weight:800;line-height:1}
+.phase-card h3{font-size:1.35rem}
+.phase-card .when{font-weight:700}
+.phase-card p{font-size:1rem}
+.phase-card .go{font-weight:700;font-size:.95rem}
+.ph1{background:var(--p1)} .ph1 .num,.ph1 .when,.ph1 .go{color:var(--p1-ink)}
+.ph2{background:var(--p2)} .ph2 .num,.ph2 .when,.ph2 .go{color:var(--p2-ink)}
+.ph3{background:var(--p3)} .ph3 .num,.ph3 .when,.ph3 .go{color:var(--p3-ink)}
+.note{margin-top:16px;font-size:1rem;color:var(--muted);max-width:48em}
+
+/* ---------- Phase chapter ---------- */
+.chapter{padding-block:64px 8px}
+.chapter-head{border-radius:18px;padding:28px;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.chapter-head h2{font-size:clamp(2rem,4vw,2.8rem);font-weight:800;margin-block:6px 12px}
+.chapter-head .eyebrow{color:inherit}
+.chapter-head ul{margin:12px 0 0;padding-left:1.1em;display:grid;gap:4px;font-size:1rem}
+.c1 .chapter-head{background:var(--p1)} .c1 .chapter-head .eyebrow,.c1 .tag{color:var(--p1-ink)}
+.c2 .chapter-head{background:var(--p2)} .c2 .chapter-head .eyebrow,.c2 .tag{color:var(--p2-ink)}
+.c3 .chapter-head{background:var(--p3)} .c3 .chapter-head .eyebrow,.c3 .tag{color:var(--p3-ink)}
+.day{background:var(--surface);border-radius:12px;padding:14px 16px;overflow-x:auto}
+.day h3{font-family:var(--f-body);font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;color:var(--muted)}
+.day table{border-collapse:collapse;width:100%;font-size:.93rem;line-height:1.35}
+.day td{padding:5px 8px 5px 0;border-top:1px solid var(--line);vertical-align:top}
+.day td:first-child{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--muted);width:4.5em}
+.day tr.drink td:last-child{color:var(--muted);font-style:italic}
+
+/* ---------- Recipes ---------- */
+.recipes{display:grid;gap:22px;margin-top:22px}
+.recipe{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:grid;grid-template-columns:300px 1fr}
+.recipe .art{display:flex;align-items:center;justify-content:center}
+.c1 .art{background:var(--p1)} .c2 .art{background:var(--p2)} .c3 .art{background:var(--p3)}
+.recipe .art svg{width:100%;height:auto;display:block;max-width:360px}
+.recipe .body{padding:22px 26px 24px;display:grid;gap:14px;align-content:start}
+.recipe h3{font-size:1.6rem;font-weight:700}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.92rem;color:var(--muted)}
+.meta .tag{font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.76rem;align-self:center}
+.meta .src{border:1px solid var(--line);border-radius:999px;padding:0 10px;font-size:.82rem}
+.cols{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr);gap:26px}
+.cols h4{font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.ing{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:1rem}
+.ing li{padding-left:14px;position:relative}
+.ing li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.steps{margin:0;padding-left:1.3em;display:grid;gap:6px;font-size:1rem}
+.steps li::marker{font-family:var(--f-display);font-weight:700;color:var(--accent)}
+.group{display:grid;gap:22px}
+.group-title{font-size:1.7rem;font-weight:700;padding-top:22px;display:flex;align-items:baseline;gap:10px}
+.group-title span{font-family:var(--f-body);font-size:1rem;font-weight:500;color:var(--p3-ink)}
+.index{margin-top:22px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 28px}
+.index h4{margin:0 0 6px;font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.index h4 a{color:var(--p3-ink);text-decoration:none}
+.index ul{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:.98rem;line-height:1.35}
+.index li a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.index li a:hover{border-color:var(--accent)}
+.tip{background:var(--accent-soft);border-radius:10px;padding:10px 14px;font-size:.98rem}
+.tip b{color:var(--accent)}
+
+/* ---------- Foods ---------- */
+.foods-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table.foods{border-collapse:collapse;width:100%;min-width:640px;font-size:.98rem;line-height:1.4}
+.foods th,.foods td{padding:12px 16px;text-align:left;vertical-align:top;border-top:1px solid var(--line)}
+.foods thead th{border-top:0;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase}
+.foods thead th.y{color:var(--accent)} .foods thead th.n{color:var(--no)}
+.foods tbody th{font-family:var(--f-display);font-size:1.1rem;width:15%}
+.foods td.y{background:var(--yes-soft);width:45%}
+.foods td.n{background:var(--no-soft)}
+
+footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);display:grid;grid-template-columns:1.2fr 1fr;gap:28px;font-size:.95rem;color:var(--muted)}
+footer h3{font-family:var(--f-body);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-bottom:8px}
+footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
+.warn{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;color:var(--ink)}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;gap:12px;padding-top:32px}
+  .hero-art{max-width:460px}
+  .dump,.phases{grid-template-columns:1fr}
+  .rules{grid-template-columns:1fr 1fr}
+  .chapter-head{grid-template-columns:1fr;padding:22px}
+  .recipe{grid-template-columns:1fr}
+  .index{grid-template-columns:1fr}
+  .recipe .art svg{max-width:420px}
+  footer{grid-template-columns:1fr}
+}
+@media (max-width:620px){
+  body{font-size:17px}
+  .cols{grid-template-columns:1fr;gap:16px}
+  .rules{grid-template-columns:1fr}
+  .recipe .body{padding:18px}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Kuchařka pro pacienty po operaci žaludku</div>
+      <h1>Malými <em>lžícemi</em></h1>
+      <p class="lead">Recepty a jídelníčky pro první měsíce po částečném nebo úplném odstranění žaludku. Jídla jsou lehce stravitelná, nenadýmavá, málo sladká a v každé porci je zdroj bílkovin.</p>
+      <div class="facts">
+        <span class="fact">Jíst <b>5–6×</b> denně</span>
+        <span class="fact">Pít <b>45–60 min</b> před jídlem nebo po něm</span>
+        <span class="fact">Po jídle <b>15–30 min</b> vleže</span>
+      </div>
+    </div>
+    <div class="hero-art" id="hero-art" aria-hidden="true"></div>
+  </header>
+</div>
+
+<nav class="toc" aria-label="Obsah">
+  <div class="wrap">
+    <a href="#zasady">Zásady</a>
+    <a href="#dumping">Dumping</a>
+    <a href="#faze">Tři fáze</a>
+    <a href="#faze-1">Recepty fáze 1</a>
+    <a href="#faze-2">Recepty fáze 2</a>
+    <a href="#faze-3">Recepty fáze 3</a>
+    <a href="#potraviny">Potraviny</a>
+    <a href="#zdroje">Zdroje</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section id="zasady">
+    <div class="sec-head">
+      <div class="eyebrow">Než začnete vařit</div>
+      <h2>Zásady, které platí u každého jídla</h2>
+      <p class="muted">Tenké střevo po operaci přebírá část práce žaludku a nesmí se přetížit. Tato omezení doporučujeme dodržovat zhruba prvních 6 měsíců.</p>
+    </div>
+    <div class="rules">
+      <div class="rule"><span class="big">5–6×</span><h3>Malé porce, často</h3><p>Jezte zhruba každé 2 hodiny, přestávka by neměla být delší než 2–2,5 hodiny. Porci zvětšujte postupně podle toho, co snesete.</p></div>
+      <div class="rule"><span class="big">B</span><h3>Bílkovina v každé porci</h3><p>Maso, ryba, vejce, tvaroh, jogurt, cottage. Pomáhá proteinový prášek: asi 30 g za den rozdělených do čaje, polévek, kaší a jogurtů.</p></div>
+      <div class="rule"><span class="big">45′</span><h3>Pití odděleně od jídla</h3><p>Pijte 45–60 minut před jídlem nebo po něm, ne během jídla. Neslazené a neperlivé nápoje, bez alkoholu.</p></div>
+      <div class="rule"><span class="big">10″</span><h3>Pomalu a v klidu</h3><p>Každé sousto důkladně rozkousejte. Při potížích se zuby maso a zeleninu umelte, nastrouhejte nebo rozmixujte.</p></div>
+      <div class="rule"><span class="big">0</span><h3>Co nejméně cukru</h3><p>Sladkosti a slazené nápoje vyvolávají dumpingový syndrom. Sladkou chuť dodá zralý banán nebo jablko.</p></div>
+      <div class="rule"><span class="big">≈37°</span><h3>Vlažné, ne horké ani studené</h3><p>Jídlo i nápoje podávejte spíš vlažné. Z lednice nechte jogurt nebo kefír chvíli odstát.</p></div>
+      <div class="rule"><span class="big">~</span><h3>Vařit, dusit, péct v alobalu</h3><p>Nesmažte a nefritujte. Maso opečte jen krátce nasucho na nepřilnavé pánvi, podlijte vývarem a duste. Tuk přidejte až do hotového jídla.</p></div>
+      <div class="rule"><span class="big">?</span><h3>Mléko zkoušejte opatrně</h3><p>Po operaci bývá častá nesnášenlivost mléka. Lépe se snášejí kefír, acidofilní mléko, podmáslí nebo výrobky bez laktózy.</p></div>
+      <div class="rule"><span class="big">B12</span><h3>Vitaminy a minerály</h3><p>Hlídejte hlavně vitamin B12, vitamin D, železo a vápník. Doplňky proberte s lékařem.</p></div>
+    </div>
+  </section>
+
+  <section id="dumping">
+    <div class="sec-head">
+      <div class="eyebrow">Když přijdou potíže</div>
+      <h2>Dumpingový syndrom</h2>
+      <p class="muted">Jídlo odchází do tenkého střeva příliš rychle. Objevuje se asi u 40 % pacientů a u většiny během několika týdnů až měsíců zmizí.</p>
+    </div>
+    <div class="dump">
+      <div>
+        <span class="when">Časný: 15–30 minut po jídle</span>
+        <h3>Příznaky</h3>
+        <ul><li>pocit plnosti, křeče v břiše</li><li>nevolnost, někdy zvracení</li><li>slabost, pocení</li><li>sklon k průjmům</li></ul>
+      </div>
+      <div>
+        <span class="when">Pozdní: 1,5–3 hodiny po jídle</span>
+        <h3>Příznaky nízkého cukru</h3>
+        <ul><li>hlad a neklid</li><li>třes, pocení, slabost</li><li>zrychlený nebo zpomalený tep</li><li>nevolnost</li></ul>
+      </div>
+      <div class="help">
+        <span class="when">Co pomáhá</span>
+        <h3>Úprava jídla</h3>
+        <ul><li>jíst často a po malých porcích</li><li>cukr omezit na minimum</li><li>pít 45–60 minut mimo jídlo</li><li>mléko a laktózu zařazovat postupně</li><li>po jídle si na chvíli lehnout</li></ul>
+        <p style="font-size:.95rem">Když potíže neodeznívají, obraťte se na lékaře nebo nutričního terapeuta.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faze">
+    <div class="sec-head">
+      <div class="eyebrow">Jak strava postupuje</div>
+      <h2>Tři fáze po operaci</h2>
+      <p class="muted">Recepty v kuchařce jsou řazené podle fází. V každé kapitole najdete i vzorový den od nutriční terapeutky.</p>
+    </div>
+    <div class="phases">
+      <a class="phase-card ph1" href="#faze-1"><span class="num">1</span><span class="when">Asi od 5. dne</span><h3>Tekutá a hladká strava</h3><p>Hustota jogurtového nápoje: jídlo proteče vidličkou. Krémové polévky, hladké kaše, pyré.</p><span class="go">5 receptů →</span></a>
+      <a class="phase-card ph2" href="#faze-2"><span class="num">2</span><span class="when">Asi od 3. týdne</span><h3>Kaše a pyré</h3><p>Hustota bramborové kaše nebo přesnídávky. Stále mixujeme, přidáváme rybu, maso a tvaroh.</p><span class="go">6 receptů →</span></a>
+      <a class="phase-card ph3" href="#faze-3"><span class="num">3</span><span class="when">Asi od 5. týdne</span><h3>Měkká šetřící strava</h3><p>Postupně pevná jídla. Nové potraviny zkoušíme po jedné a sledujeme, jak je snášíme.</p><span class="go">30 receptů →</span></a>
+    </div>
+    <p class="note">Přechod mezi fázemi je u každého jiný. Řiďte se tím, jak se cítíte, a pokyny svého lékaře.</p>
+  </section>
+
+  <section class="chapter c1" id="faze-1">
+    <div class="chapter-head">
+      <div>
+        <div class="eyebrow">Fáze 1 · asi od 5. dne po operaci</div>
+        <h2>Tekutá a hladká strava</h2>
+        <p>Vše mixujeme dohladka a ředíme netučným vývarem, až jídlo proteče vidličkou.</p>
+        <ul>
+          <li>Za den asi 500 ml tekuté stravy a dalších asi 750 ml tekutin.</li>
+          <li>Jezte a pijte po doušcích každé 3–5 minut.</li>
+          <li>Kaše, polévky a pyré obohacujte proteinovým práškem.</li>
+          <li>Doplňkem může být sipping, například Nutridrink Compact Protein.</li>
+        </ul>
+      </div>
+      <div class="day" data-day="1"></div>
+    </div>
+    <div class="recipes" data-phase="1"></div>
+  </section>
+
+  <section class="chapter c2" id="faze-2">
+    <div class="chapter-head">
+      <div>
+        <div class="eyebrow">Fáze 2 · asi od 3. týdne po operaci</div>
+        <h2>Kaše a pyré</h2>
+        <p>Hustota bramborové kaše nebo přesnídávky. Pokrmy dál mixujeme, důraz je na bílkoviny.</p>
+        <ul>
+          <li>Jezte čajovou lžičkou a po každém soustu počkejte asi 10 vteřin.</li>
+          <li>Když ucítíte tlak nebo plnost, v jídle už nepokračujte.</li>
+          <li>Přílohou jsou obilné kaše, bramborová kaše s dýní, špenátem nebo mrkví a ovocná pyré.</li>
+          <li>Nadále doplňujte proteinový prášek, vitaminy a minerály.</li>
+        </ul>
+      </div>
+      <div class="day" data-day="2"></div>
+    </div>
+    <div class="recipes" data-phase="2"></div>
+  </section>
+
+  <section class="chapter c3" id="faze-3">
+    <div class="chapter-head">
+      <div>
+        <div class="eyebrow">Fáze 3 · asi od 5. týdne po operaci</div>
+        <h2>Měkká šetřící strava</h2>
+        <p>Pozvolna přecházíme na pevnou stravu. Jídlo zůstává nenadýmavé a lehce stravitelné.</p>
+        <ul>
+          <li>Jídelníček rozšiřujte po jedné nové potravině.</li>
+          <li>Pijte víc než 1,5 litru denně, vždy mimo jídlo.</li>
+          <li>Maso bez šlach a blan, zelenina a ovoce bez slupek a zrníček.</li>
+          <li>Tři recepty pocházejí přímo z nemocničního letáku.</li>
+        </ul>
+      </div>
+      <div class="day" data-day="3"></div>
+    </div>
+    <div class="recipes" data-phase="3"></div>
+  </section>
+
+  <section id="potraviny">
+    <div class="sec-head">
+      <div class="eyebrow">Při nákupu</div>
+      <h2>Co je vhodné a co vynechat</h2>
+      <p class="muted">Přehled podle nutriční poradny. Snášenlivost je individuální, proto zkoušejte potraviny postupně.</p>
+    </div>
+    <div class="foods-wrap">
+      <table class="foods">
+        <thead><tr><th scope="col">Skupina</th><th scope="col" class="y">Vhodné</th><th scope="col" class="n">Nevhodné</th></tr></thead>
+        <tbody id="foods"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer id="zdroje">
+    <div>
+      <h3>Zdroje</h3>
+      <ul>
+        <li><i>Po operaci žaludku – léčebná doporučení pro pacienty.</i> ZS Martina Kodadová, SOLF OO JIP Nemocnice Tábor a.s., 28. 2. 2018. Z tohoto letáku pochází sekaný řízek, roštěnky a rýžový nákyp s tvarohem.</li>
+        <li><i>Výživa po operacích žaludku (gastrektomii).</i> Kateřina Záborská, DiS., nutriční terapeutka, Nutriční poradna Jičín, 07/2025. Odtud pochází vzorové dny, tabulka potravin a jídla, podle kterých jsou navrženy ostatní recepty.</li>
+      </ul>
+    </div>
+    <div class="warn">
+      <p><b>Důležité:</b> Kuchařka nenahrazuje doporučení lékaře ani nutričního terapeuta. Recepty označené „navrženo podle doporučení“ vznikly podle obou letáků a je dobré je před použitím ukázat svému nutričnímu terapeutovi. Pokud máte jiné pokyny od svého týmu, řiďte se jimi.</p>
+    </div>
+  </footer>
+</main>
+
+<script>
+/* ================= Illustrations ================= */
+const NS='http://www.w3.org/2000/svg';
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const el=(tag,a)=>{const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);return e};
+const C={rice:'#F8F5EC',riceEdge:'#E0D9C6',potato:'#F3E2A6',pumpkin:'#F0A04B',carrot:'#EE8A3C',green:'#5C9143',dgreen:'#3F6E31',meat:'#9A6443',meatHi:'#B47E57',chicken:'#EFD9B5',fish:'#F4EEE3',salmon:'#F08A5D',egg:'#F4D35E',bread:'#F5E6C4',curd:'#FBF8F0',apricot:'#F4A64A',tomato:'#DE5A45',sauce:'#C9714A',pasta:'#EFD38A'};
+
+function spoon(g,x,y,rot){
+  const s=el('g',{transform:`translate(${x} ${y}) rotate(${rot})`});
+  s.append(el('rect',{x:-3,y:0,width:6,height:74,rx:3,fill:'#AEB7B1'}));
+  s.append(el('ellipse',{cx:0,cy:-10,rx:11,ry:15,fill:'#C3CBC6'}));
+  s.append(el('ellipse',{cx:-2,cy:-12,rx:6,ry:9,fill:'#DCE2DE'}));
+  g.append(s);
+}
+function base(svg,opt){
+  svg.append(el('rect',{x:214,y:26,width:78,height:150,rx:8,fill:'currentColor',opacity:.10}));
+  if(opt.plate!==false){
+    svg.append(el('ellipse',{cx:152,cy:106,rx:86,ry:84,fill:'var(--shadow)'}));
+    svg.append(el('circle',{cx:148,cy:100,r:84,fill:'var(--plate)'}));
+    svg.append(el('circle',{cx:148,cy:100,r:66,fill:'none',stroke:'var(--plate-rim)','stroke-width':2}));
+  }
+  spoon(svg,262,60,8);
+}
+const draw={
+  mash(g,o,r){g.append(el('circle',{cx:o.x,cy:o.y,r:o.r,fill:o.c||C.potato}));
+    for(let i=0;i<3;i++)g.append(el('path',{d:`M${o.x-o.r*.55+i*4} ${o.y-o.r*.1+i*6} q${o.r*.5} ${-o.r*.35} ${o.r*1.05} 0`,stroke:'#fff','stroke-opacity':.45,'stroke-width':3,fill:'none','stroke-linecap':'round'}));
+    if(o.butter)g.append(el('rect',{x:o.x-6,y:o.y-o.r*.35,width:12,height:9,rx:2,fill:'#FBE6A0'}));},
+  rice(g,o,r){g.append(el('circle',{cx:o.x,cy:o.y,r:o.r,fill:C.rice}));
+    for(let i=0;i<46;i++){const a=r()*6.283,d=Math.sqrt(r())*o.r*.92;g.append(el('ellipse',{cx:o.x+Math.cos(a)*d,cy:o.y+Math.sin(a)*d,rx:4,ry:1.7,transform:`rotate(${r()*180} ${o.x+Math.cos(a)*d} ${o.y+Math.sin(a)*d})`,fill:'#fff',stroke:C.riceEdge,'stroke-width':.8}))}},
+  patty(g,o,r){g.append(el('ellipse',{cx:o.x,cy:o.y+3,rx:o.rx+5,ry:o.ry+4,fill:C.sauce,opacity:.55}));g.append(el('ellipse',{cx:o.x,cy:o.y,rx:o.rx,ry:o.ry,fill:C.meat}));g.append(el('ellipse',{cx:o.x-4,cy:o.y-3,rx:o.rx*.55,ry:o.ry*.45,fill:C.meatHi,opacity:.8}));},
+  slab(g,o,r){const t=`rotate(${o.rot||0} ${o.x} ${o.y})`;g.append(el('rect',{x:o.x-o.w/2,y:o.y-o.h/2,width:o.w,height:o.h,rx:o.h*.45,fill:o.c,transform:t}));
+    if(o.lines)for(let i=1;i<=o.lines;i++){const lx=o.x-o.w/2+i*o.w/(o.lines+1);g.append(el('path',{d:`M${lx} ${o.y-o.h/2+5} l${o.h*.25} ${o.h-10}`,stroke:o.lc||'#fff','stroke-opacity':.6,'stroke-width':2.5,'stroke-linecap':'round',fill:'none',transform:t}))}},
+  pasta(g,o,r){for(let i=0;i<22;i++){const a=r()*6.283,d=Math.sqrt(r())*o.r,x=o.x+Math.cos(a)*d,y=o.y+Math.sin(a)*d;g.append(el('path',{d:`M${x} ${y} q5 -7 11 -1`,stroke:C.pasta,'stroke-width':4.5,fill:'none','stroke-linecap':'round',transform:`rotate(${r()*360} ${x} ${y})`}))}},
+  carrots(g,o,r){for(let i=0;i<(o.n||7);i++){const a=r()*6.283,d=Math.sqrt(r())*o.r,x=o.x+Math.cos(a)*d,y=o.y+Math.sin(a)*d;g.append(el('circle',{cx:x,cy:y,r:6,fill:C.carrot}));g.append(el('circle',{cx:x,cy:y,r:3,fill:'#F6AE6B'}))}},
+  greens(g,o,r){for(let i=0;i<16;i++){const a=r()*6.283,d=Math.sqrt(r())*o.r;g.append(el('circle',{cx:o.x+Math.cos(a)*d,cy:o.y+Math.sin(a)*d,r:5+r()*5,fill:r()>.5?C.green:C.dgreen}))}},
+  zucchini(g,o,r){for(let i=0;i<6;i++){const a=r()*6.283,d=Math.sqrt(r())*o.r,x=o.x+Math.cos(a)*d,y=o.y+Math.sin(a)*d;g.append(el('circle',{cx:x,cy:y,r:7,fill:'#E4EBC0',stroke:'#B7C98A','stroke-width':1.5}))}},
+  herbs(g,o,r){for(let i=0;i<(o.n||10);i++){const a=r()*6.283,d=Math.sqrt(r())*o.r;g.append(el('circle',{cx:o.x+Math.cos(a)*d,cy:o.y+Math.sin(a)*d,r:1.8+r()*1.4,fill:C.green}))}},
+  grated(g,o,r){g.append(el('circle',{cx:o.x,cy:o.y,r:o.r,fill:o.bg||'#FBE1C4'}));for(let i=0;i<34;i++){const a=r()*6.283,d=Math.sqrt(r())*o.r*.85,x=o.x+Math.cos(a)*d,y=o.y+Math.sin(a)*d;g.append(el('path',{d:`M${x} ${y} l${7*Math.cos(r()*6.28)} ${7*Math.sin(r()*6.28)}`,stroke:r()>.25?C.carrot:'#F2E3B3','stroke-width':2.4,'stroke-linecap':'round'}))}},
+  scramble(g,o,r){for(let i=0;i<11;i++){const a=r()*6.283,d=Math.sqrt(r())*o.r;g.append(el('ellipse',{cx:o.x+Math.cos(a)*d,cy:o.y+Math.sin(a)*d,rx:9+r()*6,ry:7+r()*4,fill:r()>.3?C.egg:'#F8E59A'}))}},
+  bread(g,o,r){g.append(el('rect',{x:o.x-o.w/2,y:o.y-o.h/2,width:o.w,height:o.h,rx:9,fill:C.bread,transform:`rotate(${o.rot||0} ${o.x} ${o.y})`}));
+    if(o.spread)g.append(el('rect',{x:o.x-o.w/2+6,y:o.y-o.h/2+6,width:o.w-12,height:o.h-12,rx:8,fill:o.spread,transform:`rotate(${o.rot||0} ${o.x} ${o.y})`}));},
+  ham(g,o,r){g.append(el('ellipse',{cx:o.x,cy:o.y,rx:o.rx,ry:o.ry,fill:'#EFA3A0',transform:`rotate(${o.rot||0} ${o.x} ${o.y})`}));g.append(el('ellipse',{cx:o.x,cy:o.y,rx:o.rx-4,ry:o.ry-4,fill:'#F4B8B4',transform:`rotate(${o.rot||0} ${o.x} ${o.y})`}))},
+  tomato(g,o,r){g.append(el('circle',{cx:o.x,cy:o.y,r:o.r,fill:C.tomato}));g.append(el('circle',{cx:o.x,cy:o.y,r:o.r*.72,fill:'#EC7C62'}));g.append(el('circle',{cx:o.x,cy:o.y,r:o.r*.22,fill:'#F7B39E'}))},
+  sauce(g,o,r){g.append(el('ellipse',{cx:o.x,cy:o.y,rx:o.rx,ry:o.ry,fill:o.c,opacity:o.op||1}))},
+  compote(g,o,r){g.append(el('circle',{cx:o.x,cy:o.y,r:o.r,fill:'#fff',stroke:'var(--plate-rim)','stroke-width':2}));g.append(el('circle',{cx:o.x,cy:o.y,r:o.r-5,fill:'#F4E4B2'}));
+    for(let i=0;i<4;i++){const a=i*1.57+.4;g.append(el('path',{d:`M${o.x+Math.cos(a)*4} ${o.y+Math.sin(a)*4} a9 9 0 0 1 ${Math.cos(a+1)*12} ${Math.sin(a+1)*12}`,stroke:'#E9CD7D','stroke-width':5,fill:'none','stroke-linecap':'round'}))}},
+  knedlik(g,o,r){for(let i=0;i<(o.n||3);i++){const x=o.x+i*(o.dx||10),y=o.y+i*(o.dy||14);g.append(el('ellipse',{cx:x,cy:y,rx:18,ry:12,fill:'#F4EEDD',stroke:'#DDD1B4','stroke-width':1.5}));for(let j=0;j<5;j++)g.append(el('circle',{cx:x-10+r()*20,cy:y-5+r()*10,r:1.3,fill:'#D5C6A0'}))}},
+  balls(g,o,r){for(let i=0;i<o.n;i++){const a=i/o.n*6.283+r()*.4,d=i===0?0:o.r*(.55+r()*.35),x=o.x+(i===0?0:Math.cos(a)*d),y=o.y+(i===0?0:Math.sin(a)*d);g.append(el('circle',{cx:x,cy:y,r:o.br,fill:o.c}));g.append(el('circle',{cx:x-o.br*.3,cy:y-o.br*.3,r:o.br*.4,fill:'#fff',opacity:.22}))}},
+  liver(g,o,r){for(let i=0;i<7;i++){const a=r()*6.283,d=Math.sqrt(r())*o.r,x=o.x+Math.cos(a)*d,y=o.y+Math.sin(a)*d;g.append(el('ellipse',{cx:x,cy:y,rx:10+r()*5,ry:7+r()*2,fill:'#6B3A2C',transform:`rotate(${r()*180} ${x} ${y})`}));g.append(el('ellipse',{cx:x-2,cy:y-2,rx:5,ry:3,fill:'#8A5240'}))}},
+  roll(g,o,r){g.append(el('circle',{cx:o.x,cy:o.y,r:o.r,fill:'#C9976D'}));g.append(el('circle',{cx:o.x,cy:o.y,r:o.r*.74,fill:'#E6C6A2'}));g.append(el('path',{d:`M${o.x} ${o.y-o.r*.5} a${o.r*.5} ${o.r*.5} 0 1 1 ${-o.r*.45} ${o.r*.35}`,stroke:'#B9855D','stroke-width':3,fill:'none'}));g.append(el('circle',{cx:o.x,cy:o.y,r:o.r*.34,fill:'#EFA3A0'}));g.append(el('circle',{cx:o.x,cy:o.y,r:o.r*.2,fill:C.egg}))},
+  fish(g,o,r){const t=`rotate(${o.rot||0} ${o.x} ${o.y})`,x=o.x,y=o.y;g.append(el('path',{d:`M${x+26} ${y} L${x+46} ${y-15} L${x+44} ${y+15} Z`,fill:'#C9A48E',transform:t}));g.append(el('path',{d:`M${x-44} ${y} Q${x-10} ${y-24} ${x+30} ${y} Q${x-10} ${y+24} ${x-44} ${y} Z`,fill:'#DCBBA6',transform:t}));g.append(el('path',{d:`M${x-34} ${y+2} Q${x-6} ${y-4} ${x+24} ${y+2}`,stroke:'#E9A08A','stroke-width':4,fill:'none','stroke-linecap':'round',transform:t}));g.append(el('circle',{cx:x-32,cy:y-4,r:2.5,fill:'#5A4A42',transform:t}))},
+  apple(g,o,r){g.append(el('circle',{cx:o.x,cy:o.y,r:o.r,fill:'#E8B55B'}));g.append(el('circle',{cx:o.x,cy:o.y,r:o.r,fill:'none',stroke:'#D58E3D','stroke-width':3}));g.append(el('circle',{cx:o.x+2,cy:o.y-2,r:o.r*.42,fill:C.curd}))},
+  couscous(g,o,r){g.append(el('circle',{cx:o.x,cy:o.y,r:o.r,fill:'#F4E1A5'}));for(let i=0;i<60;i++){const a=r()*6.283,d=Math.sqrt(r())*o.r*.95;g.append(el('circle',{cx:o.x+Math.cos(a)*d,cy:o.y+Math.sin(a)*d,r:1.4,fill:'#E2C26C'}))}},
+  peas(g,o,r){for(let i=0;i<(o.n||6);i++){const a=r()*6.283,d=Math.sqrt(r())*o.r;g.append(el('circle',{cx:o.x+Math.cos(a)*d,cy:o.y+Math.sin(a)*d,r:3.8,fill:'#79B04F'}))}},
+  dice(g,o,r){for(let i=0;i<(o.n||8);i++){const a=r()*6.283,d=Math.sqrt(r())*o.r;g.append(el('rect',{x:o.x+Math.cos(a)*d-4,y:o.y+Math.sin(a)*d-4,width:8,height:8,rx:2,fill:o.c}))}},
+  eggGrated(g,o,r){for(let i=0;i<24;i++){const a=r()*6.283,d=Math.sqrt(r())*o.r;g.append(el('circle',{cx:o.x+Math.cos(a)*d,cy:o.y+Math.sin(a)*d,r:2.2,fill:r()>.4?C.egg:'#fff'}))}},
+};
+function bowl(svg,o,r){
+  svg.append(el('ellipse',{cx:152,cy:106,rx:84,ry:82,fill:'var(--shadow)'}));
+  svg.append(el('circle',{cx:148,cy:100,r:82,fill:'var(--plate)'}));
+  svg.append(el('circle',{cx:148,cy:100,r:64,fill:o.soup}));
+  svg.append(el('circle',{cx:148,cy:100,r:64,fill:'none',stroke:'#000','stroke-opacity':.06,'stroke-width':6}));
+  if(o.swirl){svg.append(el('path',{d:'M126 96 q10 -22 30 -8 q14 12 -4 22 q-16 6 -18 -6',stroke:o.swirl,'stroke-width':5,fill:'none','stroke-linecap':'round',opacity:.85}))}
+  if(o.curd)for(let i=0;i<9;i++){const a=r()*6.283,d=8+r()*30;svg.append(el('circle',{cx:148+Math.cos(a)*d,cy:100+Math.sin(a)*d,r:3+r()*2.5,fill:C.curd}))}
+  if(o.eggwisps)for(let i=0;i<10;i++){const a=r()*6.283,d=r()*44,x=148+Math.cos(a)*d,y=100+Math.sin(a)*d;svg.append(el('path',{d:`M${x} ${y} q6 -6 14 -1 q5 4 10 0`,stroke:'#FBEAA5','stroke-width':3.5,fill:'none','stroke-linecap':'round',transform:`rotate(${r()*360} ${x} ${y})`}))}
+  if(o.grains)for(let i=0;i<26;i++){const a=r()*6.283,d=Math.sqrt(r())*46,x=148+Math.cos(a)*d,y=100+Math.sin(a)*d;svg.append(el('ellipse',{cx:x,cy:y,rx:4,ry:1.8,fill:'#FBF6EA',transform:`rotate(${r()*180} ${x} ${y})`}))}
+  if(o.noodles)for(let i=0;i<14;i++){const a=r()*6.283,d=Math.sqrt(r())*44,x=148+Math.cos(a)*d,y=100+Math.sin(a)*d;svg.append(el('path',{d:`M${x} ${y} q8 -6 16 0`,stroke:'#F8E6AE','stroke-width':3.5,fill:'none','stroke-linecap':'round',transform:`rotate(${r()*360} ${x} ${y})`}))}
+  if(o.balls)draw.balls(svg,{x:148,y:100,r:40,n:6,br:9,c:'#B98A66'},r);
+  if(o.dice)for(let i=0;i<9;i++){const a=r()*6.283,d=r()*48;svg.append(el('rect',{x:148+Math.cos(a)*d-3.5,y:100+Math.sin(a)*d-3.5,width:7,height:7,rx:1.5,fill:o.diceC||(i%3?C.carrot:'#EFE7C8')}))}
+  if(o.herbs)draw.herbs(svg,{x:148,y:100,r:42,n:14},r);
+}
+function glass(svg,o,r){
+  svg.append(el('ellipse',{cx:152,cy:178,rx:40,ry:7,fill:'var(--shadow)'}));
+  svg.append(el('path',{d:'M112 28 L184 28 L176 176 L120 176 Z',fill:'var(--plate)',opacity:.55}));
+  svg.append(el('path',{d:`M${o.jar?112:113.6} ${o.top} L${o.jar?184:182.4} ${o.top} L176 176 L120 176 Z`,fill:o.c}));
+  if(o.layer)svg.append(el('path',{d:`M114.8 ${o.layer} L181.2 ${o.layer} L${181.2-(o.top2||0)} ${o.top} L${114.8} ${o.top} Z`,fill:o.layerC}));
+  svg.append(el('path',{d:'M112 28 L184 28 L176 176 L120 176 Z',fill:'none',stroke:'var(--plate-rim)','stroke-width':3}));
+  if(o.slice){svg.append(el('circle',{cx:176,cy:30,r:15,fill:'#F7EBC0',stroke:'#E8D491','stroke-width':3}))}
+  if(o.fruit)for(let i=0;i<5;i++)svg.append(el('circle',{cx:130+r()*36,cy:o.top+4+r()*6,r:5,fill:o.fruit}));
+  spoon(svg,232,70,14);
+}
+function dish(svg,o,r){
+  svg.append(el('rect',{x:48,y:40,width:210,height:128,rx:22,fill:'var(--shadow)'}));
+  svg.append(el('rect',{x:42,y:34,width:210,height:128,rx:22,fill:'var(--plate)'}));
+  svg.append(el('rect',{x:56,y:48,width:182,height:100,rx:14,fill:o.fill||'#EBC77F'}));
+  for(let i=0;i<26;i++)svg.append(el('ellipse',{cx:64+r()*166,cy:56+r()*84,rx:6+r()*10,ry:4+r()*6,fill:o.spot||'#D39A4F',opacity:.35+r()*.3}));
+  if(o.ham)for(let i=0;i<14;i++)svg.append(el('rect',{x:66+r()*160,y:58+r()*78,width:9,height:9,rx:2,fill:'#EFA3A0'}));
+  if(!o.plain)svg.append(el('rect',{x:120,y:78,width:54,height:40,rx:6,fill:'#F4DEA8'}));
+  spoon(svg,276,70,10);
+}
+function makeArt(a,seed){
+  const svg=el('svg',{viewBox:'0 0 300 200',role:'img'});
+  const r=rng(seed*977+13);
+  if(a.t==='bowl'){svg.append(el('rect',{x:214,y:26,width:78,height:150,rx:8,fill:'currentColor',opacity:.10}));spoon(svg,262,60,8);bowl(svg,a,r)}
+  else if(a.t==='glass'){glass(svg,a,r)}
+  else if(a.t==='dish'){dish(svg,a,r)}
+  else{base(svg,a);for(const it of a.items)draw[it.k](svg,it,r)}
+  return svg;
+}
+
+/* ================= Recipes ================= */
+const R=[
+/* ---------- Fáze 1 ---------- */
+{p:1,name:'Krémová mrkvová polévka s bílkovinou',course:'Polévka',portion:'2 malé porce',time:'30 min',protein:'proteinový prášek',
+ art:{t:'bowl',soup:'#EE9A4A',swirl:'#FBE7C7'},
+ ing:['150 g mrkve','1 menší brambora (asi 60 g)','300 ml netučného zeleninového nebo kuřecího vývaru','1 odměrka proteinového prášku bez příchuti','1 lžička másla','špetka soli'],
+ steps:['Mrkev a bramboru oloupejte, nakrájejte na kostičky a vařte ve vývaru do úplné měkkosti, asi 20 minut.','Rozmixujte dohladka a přeceďte přes sítko.','Nařeďte vývarem tak, aby polévka protekla vidličkou.','Nechte trochu zchladnout a vmíchejte proteinový prášek. Do vroucí polévky ho nedávejte, srazil by se.','Máslo vmíchejte až do hotové polévky.'],
+ tip:'Jezte po doušcích každé 3–5 minut. Polévka má být vlažná, ne horká.'},
+{p:1,name:'Bramborové pyré s dýní',course:'Oběd',portion:'1 porce',time:'25 min',protein:'protein, masový vývar',
+ art:{items:[{k:'mash',x:148,y:100,r:52,c:'#F2C06B',butter:1},{k:'herbs',x:148,y:100,r:30,n:6}]},
+ ing:['150 g brambor','100 g dýně hokkaido','100–150 ml netučného masového nebo zeleninového vývaru','1 odměrka proteinového prášku','1 lžička másla','sůl'],
+ steps:['Brambory a dýni oloupejte, nakrájejte a uvařte doměkka v osolené vodě.','Sceďte a rozmixujte. Teplý vývar přilévejte postupně, dokud pyré nemá hustotu jogurtového nápoje.','Po mírném vychladnutí vmíchejte protein a máslo.'],
+ tip:'Pyré na talíři houstne. Mějte po ruce trochu teplého vývaru na naředění.'},
+{p:1,name:'Jogurtový nápoj s banánem',course:'Svačina',portion:'1 porce',time:'5 min',protein:'řecký jogurt',
+ art:{t:'glass',c:'#F6EFDD',top:48,slice:1},
+ ing:['80 g bílého neslazeného řeckého jogurtu','80 ml bílého jogurtového nápoje nebo kefíru','¼ zralého banánu'],
+ steps:['Všechno rozmixujte dohladka.','Nechte asi 10 minut odstát, aby nápoj nebyl studený z lednice.','Pijte po malých doušcích.'],
+ tip:'Pokud po mléčných výrobcích cítíte plnost nebo máte průjem, zkuste acidofilní mléko nebo výrobky bez laktózy.'},
+{p:1,name:'Hladká ovesná kaše',course:'Snídaně',portion:'1 porce',time:'15 min',protein:'proteinový prášek',
+ art:{t:'bowl',soup:'#EADBB8',swirl:'#F6EDD6',curd:1},
+ ing:['20 g jemných ovesných vloček','200 ml vody, případně mléka bez laktózy, pokud ho snášíte','1 odměrka proteinového prášku','kousek zralého banánu nebo lžička jablečného pyré'],
+ steps:['Vločky vařte za stálého míchání 5–7 minut.','Rozmixujte a přeceďte přes jemné sítko.','Nařeďte do hustoty, která proteče vidličkou.','Po mírném vychladnutí vmíchejte protein a rozmixované ovoce.'],
+ tip:'Kaši neslaďte. Cukr zhoršuje dumpingový syndrom, sladkost dodá zralé ovoce.'},
+{p:1,name:'Jablečné pyré s bílkovinou',course:'Svačina',portion:'1 porce',time:'15 min',protein:'proteinový prášek',
+ art:{t:'glass',c:'#EFD9A2',top:70},
+ ing:['1 zralé sladší jablko','2 lžíce vody','1 odměrka proteinového prášku'],
+ steps:['Jablko oloupejte, vykrojte jádřinec a nakrájejte na kousky.','Duste pod pokličkou ve vodě doměkka, asi 8 minut.','Rozmixujte dohladka a do vlažného pyré vmíchejte protein.'],
+ tip:'Zralá jablka a banány pomáhají předcházet dumpingovému syndromu.'},
+
+/* ---------- Fáze 2 ---------- */
+{p:2,name:'Batátové pyré s dušenou treskou',course:'Oběd',portion:'1 porce',time:'30 min',protein:'treska',
+ art:{items:[{k:'mash',x:120,y:104,r:44,c:'#F1A55A',butter:1},{k:'slab',x:182,y:94,w:62,h:34,c:C.fish,rot:-18,lines:3,lc:'#E4D9C5'},{k:'herbs',x:182,y:92,r:18,n:6}]},
+ ing:['150 g batátů','80 g filé z tresky bez kostí','100 ml zeleninového vývaru','1 lžička másla','sůl','jemně nasekaná zelená petrželka'],
+ steps:['Batáty oloupejte, nakrájejte a uvařte doměkka.','Filé poduste ve vývaru pod pokličkou 8–10 minut. Rybu nesmažte ani neopékejte do kůrky.','Batáty rozmačkejte s trochou vývaru na hladkou kaši.','Rybu rozmělněte vidličkou, zkontrolujte kosti a vmíchejte do pyré nebo ji podávejte vedle. Nakonec přidejte máslo a petrželku.'],
+ tip:'Jezte čajovou lžičkou a po každém soustu počkejte asi 10 vteřin.'},
+{p:2,name:'Dýňová polévka s cottage',course:'Večeře',portion:'2 malé porce',time:'30 min',protein:'cottage sýr',
+ art:{t:'bowl',soup:'#EE9440',curd:1,herbs:1},
+ ing:['200 g dýně hokkaido','1 malá brambora','350 ml zeleninového vývaru','50 g cottage sýru','špetka mletého kmínu','sůl'],
+ steps:['Dýni a bramboru nakrájejte a uvařte ve vývaru s kmínem doměkka.','Přidejte cottage a vše rozmixujte dohladka.','Dosolte a podávejte vlažnou.'],
+ tip:'Cottage dodá polévce bílkoviny a krémovost bez smetany.'},
+{p:2,name:'Tvaroh s meruňkovým pyré',course:'Svačina',portion:'1 porce',time:'10 min',protein:'tvaroh, jogurt',
+ art:{t:'glass',jar:1,c:C.curd,top:100,layer:62,layerC:C.apricot},
+ ing:['100 g měkkého nízkotučného tvarohu','2 lžíce bílého jogurtu','2 zralé meruňky nebo ½ zralé broskve'],
+ steps:['Ovoce oloupejte, odstraňte pecku a rozmixujte na pyré.','Tvaroh vyšlehejte s jogurtem dohladka.','Navrstvěte do skleničky. Neslaďte.'],
+ tip:'Ovoce vybírejte dobře vyzrálé a vždy bez slupky.'},
+{p:2,name:'Kuřecí pěna s mrkvovým pyré',course:'Oběd',portion:'1 porce',time:'35 min',protein:'kuřecí maso',
+ art:{items:[{k:'mash',x:120,y:100,r:42,c:'#F09A4D'},{k:'mash',x:182,y:102,r:36,c:C.chicken},{k:'herbs',x:182,y:100,r:18,n:7}]},
+ ing:['80 g kuřecích prsou','150 g mrkve','1 malá brambora','150 ml kuřecího vývaru','1 lžička másla','sůl, zelená petrželka'],
+ steps:['Kuřecí maso vařte ve vývaru doměkka, asi 20 minut.','Mrkev a bramboru uvařte zvlášť doměkka.','Maso rozmixujte s trochou vývaru na hladkou pěnu.','Zeleninu rozmixujte s máslem na pyré a podávejte vedle masa.'],
+ tip:'Maso musí být bez šlach a blan. Pěna má být hladká, bez kousků.'},
+{p:2,name:'Špenátová kaše s vejcem',course:'Večeře',portion:'1 porce',time:'25 min',protein:'vejce',
+ art:{items:[{k:'mash',x:148,y:100,r:54,c:'#9DBB6A'},{k:'eggGrated',x:148,y:98,r:30}]},
+ ing:['150 g brambor','50 g mraženého protlakového špenátu','1 vejce natvrdo','50 ml mléka bez laktózy nebo vývaru','1 lžička másla','sůl'],
+ steps:['Brambory uvařte a rozmačkejte s teplým mlékem nebo vývarem na hladkou kaši.','Špenát poduste bez tuku a vmíchejte do kaše.','Vejce natvrdo nastrouhejte najemno a vmíchejte nebo nasypte navrch.','Máslo přidejte až na závěr.'],
+ tip:'Vejce patří jen vařená nebo jako součást pokrmu. Smažené vejce a volské oko nejsou vhodné.'},
+{p:2,name:'Krupicová kaše s bílkovinou',course:'Snídaně',portion:'1 porce',time:'10 min',protein:'proteinový prášek',
+ art:{t:'bowl',soup:'#F4ECD6',swirl:'#FBE6A0'},
+ ing:['25 g dětské krupice','200 ml mléka bez laktózy nebo vody','1 odměrka proteinového prášku','1 lžička másla','lžíce nastrouhaného zralého jablka'],
+ steps:['Mléko přiveďte k varu a za stálého míchání vsypte krupici.','Vařte 3–4 minuty, až kaše zhoustne.','Odstavte, nechte trochu zchladnout a vmíchejte protein.','Navrch dejte máslo a jemně nastrouhané jablko.'],
+ tip:'Kaši nesypte cukrem ani kakaem. Když je moc hustá, nařeďte ji trochou teplé vody.'},
+
+/* ---------- Fáze 3 ---------- */
+{p:3,src:1,name:'Sekaný řízek pečený nasucho',course:'Oběd',portion:'3–4 malé řízky',time:'30 min',protein:'maso, vejce',
+ art:{items:[{k:'patty',x:122,y:88,rx:30,ry:20},{k:'mash',x:176,y:118,r:30,butter:1},{k:'compote',x:112,y:136,r:20}]},
+ ing:['250 g mletého masa, napůl libové hovězí a vepřové','1 vejce','½ staršího rohlíku namočeného ve vodě','hladká mouka na obalení','sůl','zelená petrželka'],
+ steps:['K mletému masu přidejte vejce, vymačkaný rohlík, nasekanou petrželku a sůl.','Vše důkladně promíchejte a vytvořte malé řízky.','Řízky obalte v mouce.','Pečte na nepřilnavé pánvi nasucho, bez tuku, z obou stran dopečena.'],
+ tip:'Podle letáku podávejte s vařeným bramborem nebo bramborovou kaší a jablečným kompotem.'},
+{p:3,name:'Dušený karbanátek s bramborovou kaší',course:'Večeře',portion:'2 porce',time:'45 min',protein:'hovězí maso, vejce',
+ art:{items:[{k:'patty',x:120,y:84,rx:22,ry:16},{k:'patty',x:112,y:118,rx:20,ry:15},{k:'mash',x:178,y:96,r:30,butter:1},{k:'grated',x:170,y:144,r:20}]},
+ ing:['200 g mletého libového hovězího masa','1 vejce','1 lžíce strouhanky z bílého pečiva','200 ml vývaru k podlití','sůl, zelená petrželka','300 g brambor, trocha mléka bez laktózy nebo vývaru, lžička másla','Salát: 1 malá mrkev a ½ zralého jablka'],
+ steps:['Maso smíchejte s vejcem, strouhankou, petrželkou a solí a vytvořte malé karbanátky.','Krátce je opečte nasucho na nepřilnavé pánvi, jen aby se zatáhly, bez kůrky.','Podlijte vývarem a duste pod pokličkou asi 20 minut.','Brambory uvařte a rozšlehejte s teplým mlékem nebo vývarem na kaši, máslo přidejte nakonec.','Mrkev a oloupané jablko nastrouhejte najemno, promíchejte a hned podávejte.'],
+ tip:'Mrkvový salát strouhejte opravdu najemno. Hrubé kousky syrové zeleniny se hůř tráví.'},
+{p:3,name:'Kuřecí plátek s těstovinami a mrkví',course:'Oběd',portion:'1 porce',time:'30 min',protein:'kuřecí maso',
+ art:{items:[{k:'slab',x:112,y:96,w:64,h:40,c:'#E9CC9E',rot:-12,lines:2,lc:'#D8B27A'},{k:'pasta',x:178,y:90,r:22},{k:'carrots',x:160,y:142,r:18,n:6}]},
+ ing:['100 g kuřecích prsou','50 g suchých drobných těstovin','1 mrkev','100 ml vývaru','1 lžička másla','sůl'],
+ steps:['Plátek jemně naklepejte a osolte.','Na nepřilnavé pánvi ho krátce opečte nasucho z obou stran.','Podlijte vývarem a duste pod pokličkou doměkka, asi 15 minut.','Mrkev nakrájejte na kolečka a poduste ve vodě doměkka.','Těstoviny uvařte doměkka, ne „na skus“. Máslo dejte až na hotovou zeleninu.'],
+ tip:'Šťávu z dušení použijte jako omáčku. Nezahušťujte ji smaženou jíškou.'},
+{p:3,name:'Losos v alobalu s bramborem a zeleninou',course:'Večeře',portion:'1 porce',time:'30 min',protein:'losos',
+ art:{items:[{k:'slab',x:126,y:90,w:66,h:36,c:C.salmon,rot:-10,lines:4},{k:'herbs',x:126,y:88,r:16,n:6},{k:'mash',x:112,y:138,r:18,c:C.potato},{k:'mash',x:146,y:146,r:15,c:C.potato},{k:'zucchini',x:184,y:118,r:18},{k:'carrots',x:186,y:80,r:14,n:4}]},
+ ing:['100 g filé z lososa bez kůže','2 menší brambory','½ cukety','1 mrkev','čerstvý kopr','1 lžička olivového oleje','sůl'],
+ steps:['Lososa osolte, posypte koprem a zabalte do alobalu.','Pečte v troubě na 180 °C asi 15–18 minut.','Brambory oloupejte a uvařte v osolené vodě.','Cuketu oloupejte, mrkev nakrájejte a obojí poduste v troše vody doměkka.','Olivový olej přidejte až na hotovou zeleninu.'],
+ tip:'V alobalu se nevytvoří kůrka a ryba zůstane šťavnatá. Zkontrolujte, že v ní nejsou kosti.'},
+{p:3,src:1,name:'Hovězí roštěnky s rýží',course:'Oběd',portion:'2 porce',time:'1 h 30 min',protein:'hovězí maso',
+ art:{items:[{k:'sauce',x:124,y:98,rx:44,ry:34,c:C.sauce,op:.85},{k:'slab',x:124,y:96,w:60,h:34,c:C.meat,rot:-8,lines:2,lc:'#B47E57'},{k:'rice',x:180,y:120,r:30}]},
+ ing:['200 g hovězího masa na roštěnky (2 plátky)','½ cibule','1 mrkev, kousek celeru a petržele','1 lžíce hladké mouky','asi 300 ml vývaru z kostí','sůl','lžička oleje do hotové omáčky','rýže jako příloha'],
+ steps:['Maso naklepejte, po okrajích nařízněte, osolte a obalte v mouce.','Opečte nasucho na nepřilnavé pánvi.','Přidejte spařenou nakrájenou cibuli a kořenovou zeleninu.','Podlijte vývarem z kostí a duste doměkka.','Měkké roštěnky vyjměte, základ omáčky rozmixujte, zaprašte zbytkem mouky a důkladně povařte.','Podávejte s rýží.'],
+ tip:'Cibuli nesmažte, jen ji spařte nebo rozvařte ve šťávě. Pokud ji nesnášíte, povařte ji jen ve vývaru a pak vyjměte.'},
+{p:3,src:1,name:'Rýžový nákyp s tvarohem',course:'Sladké jídlo',portion:'4 malé porce',time:'1 h',protein:'tvaroh, vejce',
+ art:{t:'dish'},
+ ing:['100 g kulatozrnné rýže','400 ml mléka bez laktózy','30 g másla a trochu na vymazání','1 lžíce cukru, nebo méně','2 vejce','250 g měkkého tvarohu'],
+ steps:['Rýži uvařte v mléce na hustou kaši a nechte ji prochladnout.','Máslo ušlehejte s cukrem a žloutky.','Vmíchejte tvaroh a spojte s rýžovou kaší.','Z bílků ušlehejte sníh a opatrně ho vmíchejte.','Směs dejte do pekáčku vymazaného máslem a upečte v troubě dozlatova, asi 30–35 minut na 180 °C.'],
+ tip:'Cukru dávejte co nejméně. Nákyp jezte vlažný a po malých porcích, navrch můžete dát kousek zralé loupané broskve.'},
+{p:3,name:'Míchaná vejce na páře se šunkou',course:'Snídaně',portion:'1 porce',time:'10 min',protein:'vejce, šunka',
+ art:{items:[{k:'scramble',x:124,y:92,r:28},{k:'herbs',x:124,y:90,r:22,n:8},{k:'ham',x:184,y:88,rx:22,ry:14,rot:-20},{k:'bread',x:160,y:142,w:52,h:34,rot:-6}]},
+ ing:['2 vejce','1 lžíce mléka nebo vody','30 g kvalitní šunky','pažitka','1 lžička másla','plátek toustového chleba bez kůrky'],
+ steps:['Vejce rozšlehejte s mlékem nebo vodou a špetkou soli.','Misku postavte nad hrnec s vroucí vodou a vejce za stálého míchání nechte pomalu zatuhnout.','Vmíchejte najemno nakrájenou šunku a pažitku.','Máslo přidejte až do hotových vajec. Podávejte s toustem bez kůrky.'],
+ tip:'Na vodní lázni se vejce nepřipálí a zůstanou jemná. Tvrdé kůrky pečiva dráždí, proto je odkrojte.'},
+{p:3,name:'Tvarohová pomazánka s pažitkou',course:'Svačina',portion:'2–3 porce',time:'10 min',protein:'tvaroh',
+ art:{items:[{k:'bread',x:118,y:88,w:66,h:48,rot:-8,spread:'#FBF7EE'},{k:'herbs',x:118,y:88,r:20,n:12},{k:'bread',x:170,y:126,w:60,h:44,rot:10,spread:'#FBF7EE'},{k:'herbs',x:170,y:126,r:18,n:10},{k:'tomato',x:192,y:78,r:15}]},
+ ing:['125 g měkkého tvarohu','1 lžíce bílého jogurtu','1 lžička změklého másla','pažitka nasekaná najemno','sůl','veka nebo toustový chléb, zralé loupané rajče'],
+ steps:['Tvaroh vyšlehejte s jogurtem a máslem dohladka.','Vmíchejte pažitku a osolte.','Mažte na pečivo bez kůrky. Rajče oloupejte, zbavte semínek a nakrájejte na tenké plátky.'],
+ tip:'Pomazánku jezte čerstvou a nejpozději druhý den. Čerstvé tvarohové pokrmy jsou bezpečnější.'},
+{p:3,name:'Vaječná polévka se zeleninou',course:'Polévka',portion:'2 porce',time:'25 min',protein:'vejce, vývar',
+ art:{t:'bowl',soup:'#E8C77A',eggwisps:1,dice:1,herbs:1},
+ ing:['400 ml netučného hovězího vývaru','1 mrkev','kousek petržele a celeru','1 vejce','zelená petrželka','sůl'],
+ steps:['Zeleninu oloupejte a nakrájejte na drobné kostičky.','Vařte ji ve vývaru doměkka, asi 15 minut.','Vejce rozšlehejte a tenkým pramínkem vlijte do vroucí polévky za stálého míchání.','Povařte ještě minutu, dosolte a posypte petrželkou.'],
+ tip:'Polévka má být z netučného vývaru. Tučný vývar může zhoršit průjmy.'},
+
+/* ---------- Fáze 3: další polévky ---------- */
+{p:3,name:'Rajská polévka s rýží',course:'Polévka',portion:'2 porce',time:'35 min',protein:'hovězí vývar, lze přidat protein',
+ art:{t:'bowl',soup:'#D8553F',grains:1,herbs:1},
+ ing:['400 ml netučného hovězího vývaru','2 loupaná rajčata nebo rajčata z konzervy bez slupky','2 lžíce rajčatového protlaku','1 malá mrkev a kousek celeru','1 lžíce hladké mouky','30 g rýže','1 lžička másla','sůl, bazalka nebo petrželka'],
+ steps:['Rýži uvařte zvlášť doměkka.','Zeleninu nakrájejte a vařte ve vývaru s rajčaty 15 minut, potom rozmixujte.','Vmíchejte protlak. Mouku opražte nasucho na pánvi dosvětla, rozmíchejte v troše studené vody a vlijte do polévky.','Povařte 10 minut, přidejte rýži, máslo a bylinky.'],
+ tip:'Když je polévka kyselá, zjemněte ji po odstavení lžící bílého jogurtu. Cukr nepřidávejte.'},
+{p:3,name:'Bramborová polévka s majoránkou',course:'Polévka',portion:'2–3 porce',time:'35 min',protein:'masový vývar',
+ art:{t:'bowl',soup:'#E6D3A0',dice:1,herbs:1},
+ ing:['200 g brambor','1 mrkev, kousek petržele a celeru','500 ml masového nebo zeleninového vývaru','½ lžičky celého kmínu','1 lžička sušené majoránky','1 lžíce hladké mouky','1 lžička másla','sůl, zelená petrželka'],
+ steps:['Kmín povařte 10 minut ve vývaru a vývar přeceďte.','Brambory a zeleninu nakrájejte na drobné kostičky a vařte ve vývaru doměkka, asi 15–20 minut.','Zahustěte nasucho opraženou moukou rozmíchanou ve studené vodě a povařte ještě 10 minut.','Na závěr přidejte majoránku, máslo a petrželku.'],
+ tip:'Polévka je bez hub a bez smetany. Pokud vám kousky dělají potíže, část polévky rozmixujte.'},
+{p:3,name:'Kuřecí vývar s nudlemi a zeleninou',course:'Polévka',portion:'4 porce',time:'1 h 15 min',protein:'kuřecí maso',
+ art:{t:'bowl',soup:'#EFCB6E',noodles:1,dice:1,herbs:1},
+ ing:['150 g kuřecího prsa nebo stehna bez kůže','1 mrkev, 1 petržel, kousek celeru','1 l vody','1 bobkový list','40 g drobných nudlí','sůl, zelená petrželka'],
+ steps:['Maso a oloupanou zeleninu dejte do studené vody a přiveďte k varu. Sbírejte pěnu.','Vařte mírným varem s bobkovým listem 45–60 minut.','Maso vyjměte, odstraňte šlachy a nakrájejte najemno. Zeleninu nakrájejte na kolečka.','Nudle uvařte zvlášť. Maso, zeleninu a nudle vraťte do vývaru, osolte a posypte petrželkou.'],
+ tip:'Z vychladlého vývaru sejměte tuk. Zbylý vývar použijte na podlévání masa nebo ředění kaší.'},
+{p:3,name:'Hovězí vývar s masovými knedlíčky',course:'Polévka',portion:'2 porce',time:'30 min',protein:'krůtí maso, žloutek',
+ art:{t:'bowl',soup:'#E6B55E',balls:1,herbs:1},
+ ing:['500 ml netučného hovězího vývaru','100 g mletého krůtího nebo kuřecího masa','1 žloutek','1 lžíce strouhanky z bílého pečiva','špetka majoránky a trochu citronové kůry','1 malá mrkev','sůl, zelená petrželka'],
+ steps:['Maso smíchejte se žloutkem, strouhankou, majoránkou, kůrou a solí.','Mokrýma rukama tvořte kuličky velké jako lískový oříšek.','Mrkev nakrájejte nadrobno a vařte ve vývaru 10 minut.','Knedlíčky vložte do mírně vroucího vývaru a vařte 8–10 minut, dokud nevyplavou a nejsou propečené. Posypte petrželkou.'],
+ tip:'Knedlíčky dělejte malé, aby se daly dobře rozkousat.'},
+
+/* ---------- Fáze 3: další hlavní jídla ---------- */
+{p:3,name:'Dušená kuřecí játra s rýží',course:'Oběd',portion:'2 porce',time:'30 min',protein:'játra',
+ art:{items:[{k:'sauce',x:120,y:98,rx:42,ry:36,c:'#9A5A3E',op:.8},{k:'liver',x:120,y:98,r:26},{k:'rice',x:182,y:118,r:28},{k:'herbs',x:120,y:96,r:24,n:6}]},
+ ing:['150 g kuřecích jater','150 ml vývaru','1 lžička hladké mouky','špetka majoránky','1 lžička másla','sůl','100 g rýže'],
+ steps:['Játra očistěte od blan a nakrájejte na menší kousky.','Krátce je opečte nasucho na nepřilnavé pánvi, podlijte vývarem a duste pod pokličkou 8–10 minut. Déle je nedušte, ztvrdla by.','Šťávu zahustěte nasucho opraženou moukou rozmíchanou ve vodě a povařte.','Osolte až nakonec, přidejte majoránku a máslo. Podávejte s rýží.'],
+ tip:'Játra zařazujte jen občas. Dodají železo a vitamin B12, kterých po operaci bývá málo.'},
+{p:3,name:'Telecí závitek se špenátem a bramborem',course:'Oběd',portion:'2 porce',time:'1 h',protein:'telecí maso, vejce, šunka',
+ art:{items:[{k:'sauce',x:116,y:92,rx:40,ry:30,c:C.sauce,op:.6},{k:'roll',x:104,y:90,r:20},{k:'roll',x:138,y:98,r:18},{k:'mash',x:176,y:138,r:24,c:'#4F7F3A'},{k:'mash',x:186,y:88,r:20,c:C.potato},{k:'mash',x:140,y:146,r:16,c:C.potato}]},
+ ing:['2 tenké telecí nebo krůtí plátky (asi 150 g)','30 g kvalitní šunky','1 vejce natvrdo','150 ml vývaru','1 lžička hladké mouky','100 g mraženého protlakového špenátu','200 g brambor','1 lžička másla','sůl'],
+ steps:['Plátky naklepejte a osolte. Poklaďte je šunkou a čtvrtkou vejce, stočte a sepněte párátkem.','Opečte nasucho, podlijte vývarem a duste pod pokličkou 30–40 minut doměkka.','Šťávu zahustěte nasucho opraženou moukou a povařte.','Špenát poduste bez tuku a máslo přidejte až nakonec. Brambory uvařte v osolené vodě.'],
+ tip:'Před podáváním vytáhněte párátko a závitek nakrájejte na tenká kolečka.'},
+{p:3,name:'Vepřová pečeně s bramborovým knedlíkem',course:'Oběd',portion:'4 porce',time:'1 h 45 min',protein:'libové vepřové maso',
+ art:{items:[{k:'sauce',x:128,y:96,rx:48,ry:34,c:C.sauce,op:.7},{k:'slab',x:116,y:90,w:62,h:30,c:'#C99A76',rot:-10,lines:2,lc:'#E0BC98'},{k:'slab',x:130,y:112,w:58,h:28,c:'#C99A76',rot:-6,lines:2,lc:'#E0BC98'},{k:'knedlik',x:178,y:76,n:3,dx:6,dy:24}]},
+ ing:['500 g vepřové kýty bez tuku','½ lžičky celého kmínu','200 ml vývaru','1 lžíce hladké mouky','sůl','bramborový knedlík'],
+ steps:['Kmín povařte 10 minut v 200 ml vody a přeceďte.','Maso osolte, vložte do pekáčku a podlijte kmínovým odvarem a vývarem.','Pečte přikryté alobalem nebo poklicí na 170 °C asi 1,5 hodiny. Průběžně podlévejte a neodkrývejte, aby nevznikla kůrka.','Šťávu sceďte, sejměte tuk, zahustěte nasucho opraženou moukou a povařte.','Maso krájejte na tenké plátky napříč vlákny. Knedlík uvařte podle návodu.'],
+ tip:'Knedlík krájejte na tenké plátky a dobře kousejte. Na jednu porci stačí 2–3 plátky.'},
+{p:3,name:'Pečené kuře s rýží a jablečným kompotem',course:'Oběd',portion:'2 porce',time:'1 h 10 min',protein:'kuřecí maso',
+ art:{items:[{k:'slab',x:118,y:88,w:66,h:40,c:'#D9A46A',rot:-14,lines:2,lc:'#E9C08E'},{k:'rice',x:176,y:108,r:30},{k:'compote',x:116,y:140,r:21}]},
+ ing:['2 kuřecí stehna nebo 1 prso, vždy bez kůže (asi 300 g)','150 ml vývaru','1 lžička másla','sůl, sladká paprika podle snášenlivosti','100 g rýže','Kompot: 1 zralé jablko, 100 ml vody'],
+ steps:['Kuře osolte, vložte do pekáčku, podlijte vývarem a přikryjte alobalem.','Pečte na 180 °C: stehna 50–60 minut, prsa asi 30 minut. Neodkrývejte, aby maso nemělo kůrku.','Máslo vmíchejte do šťávy až po upečení. Rýži uvařte.','Na kompot jablko oloupejte, nakrájejte na měsíčky a povařte 5 minut ve vodě bez cukru.'],
+ tip:'Kůži vždy odstraňte, je tučná. Domácí kompot bez cukru je lepší než kupovaný slazený.'},
+{p:3,name:'Dušený králík s mrkví',course:'Oběd',portion:'2–3 porce',time:'1 h 45 min',protein:'králičí maso',
+ art:{items:[{k:'sauce',x:122,y:98,rx:46,ry:36,c:'#E59A55',op:.75},{k:'slab',x:120,y:94,w:58,h:34,c:'#E3C3A2',rot:12,lines:2,lc:'#CFA984'},{k:'carrots',x:118,y:130,r:14,n:4},{k:'mash',x:182,y:106,r:28,c:C.potato,butter:1}]},
+ ing:['2 králičí stehna (asi 400 g)','2 mrkve, 1 petržel, kousek celeru','300 ml vývaru','1 bobkový list','1 lžíce hladké mouky','1 lžička másla','sůl','brambory nebo bramborová kaše'],
+ steps:['Králíka osolte a krátce opečte nasucho.','Přidejte nakrájenou zeleninu a bobkový list, podlijte vývarem a duste pod pokličkou 1–1,5 hodiny doměkka.','Maso vyjměte a obraňte z kostí. Bobkový list vyndejte.','Zeleninu se šťávou rozmixujte na omáčku, podle potřeby ji zahustěte opraženou moukou. Máslo přidejte nakonec.'],
+ tip:'Králičí maso je libové a jemné. Dejte pozor na drobné kůstky.'},
+{p:3,name:'Pstruh v alobalu s bramborovou kaší',course:'Večeře',portion:'1 porce',time:'35 min',protein:'pstruh',
+ art:{items:[{k:'fish',x:132,y:84,rot:-8},{k:'herbs',x:120,y:84,r:14,n:6},{k:'mash',x:160,y:138,r:26,butter:1}]},
+ ing:['1 pstruh (asi 250 g) nebo 120 g pstruhového filé','kopr nebo petrželka','kousek citronové kůry','1 lžička másla','sůl','200 g brambor','trocha mléka bez laktózy nebo vývaru'],
+ steps:['Rybu omyjte a osolte zevnitř i zvenku. Do břicha vložte bylinky a citronovou kůru.','Zabalte do alobalu a pečte na 180 °C 20–25 minut.','Brambory uvařte a rozšlehejte s teplým mlékem nebo vývarem na kaši.','Máslo dejte na rybu až po upečení. Maso pečlivě oddělte od kostí.'],
+ tip:'Pstruh má hodně drobných kostí. Filé je bezpečnější volba.'},
+{p:3,name:'Treska v koprové omáčce s bramborem',course:'Oběd',portion:'1 porce',time:'30 min',protein:'treska, jogurt',
+ art:{items:[{k:'sauce',x:126,y:96,rx:48,ry:38,c:'#F1EAD2'},{k:'slab',x:124,y:94,w:62,h:32,c:C.fish,rot:-10,lines:3,lc:'#E4D9C5'},{k:'herbs',x:126,y:96,r:40,n:22},{k:'mash',x:186,y:118,r:18,c:C.potato},{k:'mash',x:176,y:150,r:15,c:C.potato}]},
+ ing:['120 g filé z tresky','150 ml zeleninového vývaru','1 lžíce hladké mouky','2 lžíce bílého jogurtu nebo méně tučné zakysané smetany','čerstvý kopr','kapka citronové šťávy','sůl','2 brambory'],
+ steps:['Filé poduste ve vývaru pod pokličkou asi 8 minut a vyjměte.','Mouku opražte nasucho, rozmíchejte ve studené vodě, vlijte do vývaru a za míchání povařte 10 minut.','Omáčku odstavte, vmíchejte jogurt a nasekaný kopr a dochuťte solí a kapkou citronu.','Rybu vraťte do omáčky a podávejte s vařeným bramborem.'],
+ tip:'Jogurt dávejte až do odstavené omáčky, jinak se srazí. Omáčku nekyselte octem.'},
+{p:3,name:'Krůtí kuličky v rajské omáčce',course:'Oběd',portion:'2 porce',time:'45 min',protein:'krůtí maso, vejce',
+ art:{items:[{k:'sauce',x:122,y:98,rx:46,ry:38,c:'#D9573F'},{k:'balls',x:122,y:98,r:30,n:6,br:11,c:'#B98A66'},{k:'herbs',x:122,y:96,r:34,n:8},{k:'rice',x:186,y:112,r:26}]},
+ ing:['200 g mletého krůtího masa','1 vejce','1 lžíce strouhanky','sůl, bazalka','Omáčka: 300 ml vývaru, 3 lžíce rajčatového protlaku, 1 mrkev, kousek celeru, 1 lžíce hladké mouky, 1 lžička másla','rýže nebo drobné těstoviny'],
+ steps:['Maso smíchejte s vejcem, strouhankou a solí a vytvořte malé kuličky.','Mrkev a celer vařte ve vývaru 15 minut, rozmixujte a vmíchejte protlak.','Zahustěte nasucho opraženou moukou a povařte 10 minut.','Kuličky vložte do omáčky a vařte 15 minut. Máslo a bazalku přidejte nakonec.'],
+ tip:'Kuličky se jen vaří v omáčce, nesmaží se. Jsou proto lehčí než klasické masové koule.'},
+{p:3,name:'Krůtí ragú s dýní a kuskusem',course:'Večeře',portion:'2 porce',time:'35 min',protein:'krůtí maso',
+ art:{items:[{k:'sauce',x:120,y:98,rx:44,ry:36,c:'#EE9A45'},{k:'dice',x:120,y:98,r:30,n:10,c:'#EBD2B2'},{k:'couscous',x:184,y:112,r:30},{k:'herbs',x:120,y:96,r:26,n:6}]},
+ ing:['150 g krůtích prsou','150 g dýně hokkaido','1 mrkev','150 ml vývaru','špetka majoránky nebo libečku','sůl','60 g kuskusu','1 lžička oleje'],
+ steps:['Maso nakrájejte na malé kostičky a krátce opečte nasucho.','Přidejte oloupanou dýni a mrkev na kostičky, podlijte vývarem a duste pod pokličkou asi 20 minut.','Dýně se rozvaří a omáčku zahustí. Dochuťte solí a bylinkou.','Kuskus zalijte stejným objemem vroucího osoleného vývaru, přikryjte na 5 minut a prokypřete vidličkou. Olej přidejte do hotového ragú.'],
+ tip:'Dýně omáčku zahustí sama, jíšku nepotřebujete.'},
+{p:3,name:'Kuřecí rizoto s mrkví',course:'Večeře',portion:'1–2 porce',time:'35 min',protein:'kuřecí maso, sýr',
+ art:{items:[{k:'rice',x:148,y:100,r:54},{k:'dice',x:148,y:100,r:42,n:12,c:'#EBD2B2'},{k:'carrots',x:148,y:100,r:40,n:6},{k:'peas',x:148,y:100,r:40,n:7},{k:'herbs',x:148,y:100,r:40,n:10}]},
+ ing:['100 g kuřecích prsou','60 g rýže','1 mrkev','1 lžíce mraženého hrášku','250 ml vývaru','20 g strouhaného eidamu do 30 % tuku v sušině','1 lžička másla','sůl, zelená petrželka'],
+ steps:['Maso nakrájejte na kostičky a poduste v troše vývaru 5 minut.','Přidejte propláchnutou rýži a mrkev na kostičky, zalijte zbytkem vývaru a duste pod pokličkou asi 20 minut doměkka.','Posledních 5 minut přidejte hrášek.','Vmíchejte máslo a posypte sýrem a petrželkou.'],
+ tip:'Hrášku dávejte jen trochu. Ve větším množství může nadýmat.'},
+{p:3,name:'Zapečené těstoviny se šunkou',course:'Večeře',portion:'3 porce',time:'40 min',protein:'šunka, vejce, jogurt',
+ art:{t:'dish',fill:'#EFD28A',spot:'#D9A955',ham:1,plain:1},
+ ing:['100 g drobných těstovin','100 g kvalitní šunky','2 vejce','150 g bílého jogurtu','30 g strouhaného eidamu do 30 % tuku v sušině','sůl','máslo na vymazání'],
+ steps:['Těstoviny uvařte doměkka a sceďte.','Šunku nakrájejte najemno.','Vejce rozšlehejte s jogurtem a solí a smíchejte s těstovinami a šunkou.','Směs dejte do vymazané zapékací misky a posypte sýrem.','Zapečte přikryté alobalem na 170 °C 20 minut, pak odkryjte jen na posledních 5 minut.'],
+ tip:'Místo smetany je zde jogurt. Připečené okraje nejezte.'},
+
+/* ---------- Fáze 3: další snídaně a svačiny ---------- */
+{p:3,name:'Banánový koktejl s kefírem',course:'Svačina',portion:'1 porce',time:'5 min',protein:'kefír, proteinový prášek',
+ art:{t:'glass',c:'#F3EBC9',top:44,slice:1},
+ ing:['150 ml kefíru nebo acidofilního mléka','½ zralého banánu','1 lžíce jemných ovesných vloček','1 odměrka proteinového prášku, pokud ho používáte'],
+ steps:['Všechno rozmixujte dohladka.','Nechte odstát, až nebude studený z lednice.','Pijte pomalu, po doušcích.'],
+ tip:'Koktejl se počítá jako jídlo, ne jako pití. Ostatní nápoje pijte 45–60 minut před ním nebo po něm.'},
+{p:3,name:'Ovesná kaše se skyrem a mangem',course:'Snídaně',portion:'1 porce',time:'10 min',protein:'skyr',
+ art:{t:'bowl',soup:'#EFE6D2',curd:1,dice:1,diceC:'#F5B53F'},
+ ing:['30 g jemných ovesných vloček','150 ml vody nebo mléka bez laktózy','100 g bílého skyru','3 lžíce zralého manga nakrájeného najemno'],
+ steps:['Vločky vařte za míchání asi 5 minut.','Nechte zchladnout, aby kaše byla vlažná.','Vmíchejte skyr a navrch dejte mango.'],
+ tip:'Vybírejte měkké, zralé mango. Kaši neslaďte.'},
+{p:3,name:'Tvarohové knedlíčky s broskví',course:'Sladké jídlo',portion:'2 porce',time:'45 min',protein:'tvaroh, vejce',
+ art:{items:[{k:'sauce',x:150,y:112,rx:56,ry:30,c:C.apricot,op:.85},{k:'balls',x:146,y:92,r:34,n:5,br:17,c:'#F7F1E2'}]},
+ ing:['250 g měkkého tvarohu','1 vejce','80 g dětské krupice','30 g hladké mouky','špetka soli','2 zralé broskve','1 lžička másla'],
+ steps:['Tvaroh, vejce, sůl, krupici a mouku smíchejte a nechte 30 minut odpočinout.','Mokrýma rukama tvořte malé knedlíčky.','Vařte je v osolené vodě 8–10 minut, dokud nevyplavou.','Broskve oloupejte a rozmixujte nebo nakrájejte najemno. Knedlíčky přelijte trochou rozpuštěného másla a podávejte s broskvemi.'],
+ tip:'Nesypte je cukrem ani perníkem. Sladkost dodá ovoce.'},
+{p:3,name:'Pečené jablko s tvarohem',course:'Svačina',portion:'2 porce',time:'35 min',protein:'tvaroh',
+ art:{items:[{k:'apple',x:122,y:96,r:30},{k:'apple',x:178,y:112,r:26}]},
+ ing:['2 zralá jablka','100 g měkkého tvarohu','1 lžíce bílého jogurtu','trochu citronové kůry'],
+ steps:['Jablka umyjte a vykrojte jádřince.','Pečte v pekáčku s trochou vody na 180 °C 25–30 minut doměkka.','Tvaroh vyšlehejte s jogurtem a citronovou kůrou.','Z upečených jablek stáhněte slupku a podávejte vlažná s tvarohem.'],
+ tip:'Slupku nejezte, je tuhá a mechanicky dráždí.'},
+{p:3,name:'Šunková pěna',course:'Svačina',portion:'3 porce',time:'10 min',protein:'šunka, tvaroh',
+ art:{items:[{k:'bread',x:120,y:90,w:66,h:48,rot:-8,spread:'#F4C6C0'},{k:'bread',x:172,y:126,w:60,h:44,rot:10,spread:'#F4C6C0'},{k:'herbs',x:120,y:90,r:18,n:8},{k:'herbs',x:172,y:126,r:16,n:6}]},
+ ing:['150 g kvalitní šunky','100 g měkkého tvarohu nebo lučiny','1 lžička změklého másla','pažitka','veka nebo toustový chléb'],
+ steps:['Šunku nakrájejte a rozmixujte s tvarohem a máslem dohladka.','Ochutnejte. Sůl většinou není potřeba, šunka je slaná.','Mažte na pečivo bez kůrky a posypte pažitkou.'],
+ tip:'Uchovávejte v lednici a spotřebujte do 2 dnů.'},
+{p:3,name:'Vaječná pomazánka s jogurtem',course:'Snídaně',portion:'2 porce',time:'15 min',protein:'vejce, jogurt',
+ art:{items:[{k:'bread',x:120,y:92,w:66,h:48,rot:-8,spread:'#F6E39A'},{k:'bread',x:168,y:128,w:60,h:44,rot:8,spread:'#F6E39A'},{k:'herbs',x:120,y:92,r:18,n:8},{k:'tomato',x:190,y:80,r:15}]},
+ ing:['3 vejce natvrdo','2 lžíce bílého jogurtu','1 lžička změklého másla','pažitka','sůl','pečivo bez kůrky, zralé loupané rajče'],
+ steps:['Vejce nastrouhejte najemno.','Smíchejte je s jogurtem, máslem, pažitkou a solí.','Mažte na pečivo bez kůrky a přidejte plátky loupaného rajčete bez semínek.'],
+ tip:'Pomazánka je bez majonézy a hořčice, obojí žaludek dráždí.'},
+];
+
+const phaseLabel={1:'Fáze 1',2:'Fáze 2',3:'Fáze 3'};
+const GROUP={'Polévka':0,'Oběd':1,'Večeře':1,'Snídaně':2,'Svačina':2,'Sladké jídlo':2};
+const GNAME=['Polévky','Hlavní jídla','Snídaně, svačiny a sladká jídla'];
+const g3=document.querySelector('.recipes[data-phase="3"]');
+const g3groups=GNAME.map((n,k)=>{const d=document.createElement('div');d.className='group';d.id='faze-3-'+['polevky','hlavni','svaciny'][k];d.innerHTML=`<h3 class="group-title">${n} <span></span></h3>`;g3.append(d);return d});
+R.forEach((x,i)=>{
+  const host=x.p===3?g3groups[GROUP[x.course]]:document.querySelector(`.recipes[data-phase="${x.p}"]`);
+  const art=document.createElement('div');art.className='art';art.setAttribute('aria-hidden','true');
+  art.style.color=`var(--p${x.p}-ink)`;
+  art.append(makeArt(x.art.t?x.art:{items:x.art.items},i+1));
+  const a=document.createElement('article');a.className='recipe';a.id='recept-'+(i+1);
+  const body=document.createElement('div');body.className='body';
+  body.innerHTML=`<div class="meta"><span class="tag">${phaseLabel[x.p]} · ${x.course}</span><span>${x.portion}</span><span>${x.time}</span><span>Bílkovina: ${x.protein}</span><span class="src">${x.src?'Z nemocničního letáku':'Navrženo podle doporučení'}</span></div>
+  <h3>${x.name}</h3>
+  <div class="cols"><div><h4>Suroviny</h4><ul class="ing">${x.ing.map(s=>`<li>${s}</li>`).join('')}</ul></div>
+  <div><h4>Postup</h4><ol class="steps">${x.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div></div>
+  <p class="tip"><b>Tip:</b> ${x.tip}</p>`;
+  a.append(art,body);host.append(a);
+});
+/* rejstřík fáze 3 */
+(function(){
+  const idx=document.createElement('nav');idx.className='index';idx.setAttribute('aria-label','Rejstřík receptů fáze 3');
+  idx.innerHTML=g3groups.map(g=>{const items=[...g.querySelectorAll('article')];g.querySelector('.group-title span').textContent=items.length;
+    return `<div><h4><a href="#${g.id}">${g.querySelector('.group-title').firstChild.textContent.trim()}</a></h4><ul>${items.map(a=>`<li><a href="#${a.id}">${a.querySelector('h3').textContent}</a></li>`).join('')}</ul></div>`}).join('');
+  g3.before(idx);
+})();
+
+/* ---------- Hero ---------- */
+(function(){
+  const svg=makeArt({items:[{k:'mash',x:118,y:86,r:26,c:'#F2C06B'},{k:'slab',x:176,y:84,w:44,h:26,c:C.fish,rot:-14,lines:2,lc:'#E4D9C5'},{k:'rice',x:132,y:138,r:20},{k:'carrots',x:180,y:128,r:14,n:4},{k:'herbs',x:118,y:86,r:14,n:5}]},99);
+  document.getElementById('hero-art').style.color='var(--accent)';
+  document.getElementById('hero-art').append(svg);
+})();
+
+/* ---------- Sample days (Nutriční poradna Jičín) ---------- */
+const DAYS={
+1:[['7:00','100 ml nápoje s proteinovým práškem po doušcích',1],['8:00','Sipping, např. Nutridrink Compact Protein 75 ml, po doušcích každé 3–5 min'],['9:00','100 ml neslazeného nápoje',1],['10:00','Krémová polévka s proteinovým práškem'],['11:00','100 ml neslazeného nápoje',1],['12:00','Bramborové pyré s dýní ředěné netučným vývarem'],['13:00','100 ml nápoje s proteinovým práškem',1],['14:00','Sipping, např. Nutridrink Compact Protein 50 ml'],['15:00','100 ml neslazeného nápoje',1],['16:00','Neslazený řecký jogurt ředěný jogurtovým nápojem s kouskem banánu'],['17:00','100 ml nápoje s proteinovým práškem',1],['18:00','Hladká mixovaná a přecezená ovesná kaše s proteinem'],['19:00','100 ml neslazeného proteinového nápoje',1]],
+2:[['7:00','150 ml nápoje s proteinovým práškem',1],['8:00','Tvaroh'],['9:00','150 ml neslazeného nápoje',1],['10:00','Obilná kaše s proteinovým práškem'],['11:00','150 ml neslazeného nápoje',1],['12:00','Batátové pyré s rozmělněným dušeným filé'],['13:00','150 ml nápoje s proteinovým práškem',1],['14:00','Sipping, např. Nutridrink Compact Protein'],['15:00','150 ml neslazeného nápoje',1],['16:00','Kefír'],['17:00','150 ml neslazeného nápoje',1],['18:00','Dýňová polévka s cottage'],['19:00','100 ml neslazeného nápoje',1]],
+3:[['7:00','200 ml nápoje s proteinovým práškem',1],['8:00','Světlé pečivo, cottage, plátkový sýr'],['9:00','200 ml neslazeného nápoje',1],['10:00','Skyr, ovesné vločky, ovoce'],['11:00','200 ml neslazeného nápoje',1],['12:00','Kuřecí plátek, vařené těstoviny'],['13:00','200 ml nápoje s proteinovým práškem',1],['14:00','Tvaroh, toustový chléb, zeleninové pyré'],['15:00','200 ml neslazeného nápoje',1],['16:00','Losos, vařené brambory, dušená zelenina'],['17:00','200 ml neslazeného nápoje',1],['18:00','Acidofilní mléko nebo šunka'],['19:00','200 ml neslazeného nápoje',1]]
+};
+document.querySelectorAll('.day').forEach(d=>{
+  const rows=DAYS[d.dataset.day];
+  d.innerHTML=`<h3>Vzorový den</h3><table><tbody>${rows.map(([t,s,dr])=>`<tr class="${dr?'drink':''}"><td>${t}</td><td>${s}</td></tr>`).join('')}</tbody></table>`;
+});
+
+/* ---------- Foods (Nutriční poradna Jičín) ---------- */
+const FOODS=[
+['Maso','Libové maso: kuřecí, krůtí, králík, omezeně vepřová kýta a kotleta, hovězí kýta. Netučné ryby (treska, tilapie, pstruh, amur, štika). Játra občas.','Tučné maso a ryby, vnitřnosti kromě jater. Smažené, uzené a nakládané maso.'],
+['Uzeniny','Šunka nejvyšší jakosti, kvalitní šunkový salám, kvalitní dietní uzeniny.','Tučné, kořeněné a trvanlivé salámy, paštiky, masové konzervy, jelita, jitrnice, tlačenka, klobásy, špekáčky.'],
+['Mléko a mléčné výrobky','Netučné zakysané výrobky s probiotickou kulturou: jogurty do 3 % tuku, kefír, acidofilní mléko. Nízkotučný tvaroh, tavené sýry do 30 % t. v s., tvrdé sýry typu eidam do 30 % t. v s., čerstvé sýry: žervé, lučina, cottage.','Plnotučné a polotučné výrobky (smetana, šlehačka, smetanové jogurty se zrníčky a oříšky). Pikantní, tučné a zrající sýry.'],
+['Polévky','Vývary z netučného masa a zeleniny, obilné, zeleninové a bramborové polévky (lisované). Vložky: jemné těstoviny, loupaná rýže, krupice, kapání, strouhání, piškotový svítek, vaječná mlhovina, noky.','Luštěninové a tučné polévky.'],
+['Vejce','Vejce jako součást pokrmů nebo vařená.','Smažená vejce, volské oko.'],
+['Tuky','Kvalitní olej (řepkový, olivový, slunečnicový), rostlinná másla, čerstvé máslo, vše v omezeném množství a až do hotového jídla.','Přepálené tuky, tuk ve velkém množství, sádlo, slanina, škvarky, lůj, ztužené tuky.'],
+['Koření','Vývar z kmínu, anýzu, fenyklu, bobkového listu a jedlých hub. Zelené natě: petrželka, pažitka, kopr, libeček, bazalka, majoránka. Citronová a pomerančová kůra a šťáva. Cibule jen na vyvaření.','Pepř, pálivá paprika, kari, chilli, kořenicí směsi, maggi, bujóny, worchester, sójová omáčka, ocet, hořčice, majonéza, tatarská omáčka.'],
+['Přílohy a pečivo','Bílá mouka, lisované krupky a kroupy, jáhly, ovesné vločky, loupaná rýže, brambory, bramborová kaše, noky, houskové a bramborové knedlíky, těstoviny, kuskus, bílé pečivo bez posypu, toustový chléb.','Sladké pečivo (buchty, loupáky, vánočka), vícezrnné, smažené a fritované přílohy (hranolky, krokety), čerstvé pečivo, luštěniny.'],
+['Zelenina','Mrkev, celer a petržel (vařené, dušené, lisované nebo strouhané), dušený špenát, dušená dýně, hlávkový salát jemně krájený, loupaná rajčata, rajská šťáva a protlak, malé množství hrášku.','Nadýmavá zelenina (hlavně košťálová), tvrdá, dřevnatá a se zrníčky nebo slupkami: česnek, cibule, křen, ředkvičky, paprika, okurka, kapusta, zelí, houby.'],
+['Ovoce','Dobře vyzrálé a nenadýmavé: jablka, broskve, meruňky, mango, banán. Vybírejte podle snášenlivosti.','Ovoce se zrníčky a tvrdými slupkami: hroznové víno, rybíz, angrešt, kiwi, rebarbora, hrušky, jahody, borůvky, maliny, ostružiny, fíky, ořechy, semínka. Džem a kompoty kvůli cukru.'],
+['Nápoje','Neslazené nebo mírně slazené neperlivé nápoje, černý, zelený, bylinkový a ovocný čaj, neperlivé minerální a stolní vody, kávovinové nápoje.','Slazené nápoje, džusy, perlivé vody a limonády, zrnková káva, alkohol. Kouření.'],
+['Omáčky','Přírodní šťávy, omáčky zahuštěné lisovanou zeleninou nebo nasucho opraženou moukou, s malým množstvím másla nebo méně tučné zakysané smetany. Tuk až do hotového pokrmu.','Omáčky na cibulovém základě, paprikové, smetanové a houbové.'],
+];
+document.getElementById('foods').innerHTML=FOODS.map(([g,y,n])=>`<tr><th scope="row">${g}</th><td class="y">${y}</td><td class="n">${n}</td></tr>`).join('');
+</script>
