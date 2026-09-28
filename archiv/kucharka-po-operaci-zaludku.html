@@ -9,7 +9,7 @@
   --p1:#DCE8F2; --p1-ink:#2B5C82;
   --p2:#F6E4CE; --p2-ink:#8F531A;
   --p3:#DDEBD9; --p3-ink:#3A6832;
-  --no:#A9472F; --no-soft:#F6E4DE; --yes-soft:#E4EFE3; --warn:#8A5F0E; --warn-soft:#F7EBCF;
+  --no:#A9472F; --no-soft:#F6E4DE; --yes-soft:#E4EFE3;
   --plate:#FCFCF9; --plate-rim:#DFE4DF; --shadow:rgba(20,40,30,.10);
   --f-display:"Alegreya", Georgia, "Times New Roman", serif;
   --f-body:"Alegreya Sans", "Segoe UI", system-ui, sans-serif;
@@ -22,7 +22,7 @@
     --p1:#1A2834; --p1-ink:#9CC6EA;
     --p2:#30251A; --p2-ink:#F0B77A;
     --p3:#1C2C1C; --p3-ink:#A6D49B;
-    --no:#EE9F8B; --no-soft:#33201B; --yes-soft:#1C2B1F; --warn:#E8C170; --warn-soft:#33291A;
+    --no:#EE9F8B; --no-soft:#33201B; --yes-soft:#1C2B1F;
     --plate:#E8ECE8; --plate-rim:#BFC8C2; --shadow:rgba(0,0,0,.35);
   }
 }
@@ -33,7 +33,7 @@
   --p1:#1A2834; --p1-ink:#9CC6EA;
   --p2:#30251A; --p2-ink:#F0B77A;
   --p3:#1C2C1C; --p3-ink:#A6D49B;
-  --no:#EE9F8B; --no-soft:#33201B; --yes-soft:#1C2B1F; --warn:#E8C170; --warn-soft:#33291A;
+  --no:#EE9F8B; --no-soft:#33201B; --yes-soft:#1C2B1F;
   --plate:#E8ECE8; --plate-rim:#BFC8C2; --shadow:rgba(0,0,0,.35);
 }
 
@@ -151,33 +151,6 @@ table.foods{border-collapse:collapse;width:100%;min-width:640px;font-size:.98rem
 .foods td.y{background:var(--yes-soft);width:45%}
 .foods td.n{background:var(--no-soft)}
 
-/* ---------- Food checker ---------- */
-.checker{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;display:grid;gap:18px}
-.checker label{font-family:var(--f-display);font-size:1.3rem;font-weight:700}
-.search{display:flex;gap:10px;flex-wrap:wrap}
-.search input{flex:1 1 260px;min-width:0;font:inherit;font-size:1.2rem;padding:12px 16px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
-.search input:focus{outline:none;border-color:var(--accent)}
-.search button{font:inherit;font-weight:700;padding:12px 18px;border-radius:12px;border:0;background:var(--accent);color:var(--surface);cursor:pointer}
-.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.95rem}
-.chips button{font:inherit;font-size:.95rem;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
-.chips button:hover{border-color:var(--accent)}
-.results{display:grid;gap:12px}
-.hit{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:start;padding:16px 18px;border-radius:14px;background:var(--bg);border:1px solid var(--line)}
-.hit.y{background:var(--yes-soft);border-color:transparent}
-.hit.o{background:var(--warn-soft);border-color:transparent}
-.hit.n{background:var(--no-soft);border-color:transparent}
-.verdict{grid-row:span 3;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 10px;border-radius:8px;background:var(--surface);min-width:8.5em;text-align:center}
-.y .verdict{color:var(--accent)} .o .verdict{color:var(--warn)} .n .verdict{color:var(--no)}
-.hit h3{font-size:1.35rem}
-.hit .why{font-size:1rem}
-.hit .sub{font-size:.88rem;color:var(--muted)}
-.hit .alt{font-weight:700}
-.miss{padding:16px 18px;border-radius:14px;border:1px dashed var(--line);display:grid;gap:8px}
-.miss ul{margin:0;padding-left:1.1em;display:grid;gap:3px;font-size:1rem}
-.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.92rem;color:var(--muted)}
-.legend b.y{color:var(--accent)} .legend b.o{color:var(--warn)} .legend b.n{color:var(--no)}
-@media (max-width:620px){.checker{padding:18px}.hit{grid-template-columns:1fr}.verdict{grid-row:auto;justify-self:start}}
-
 footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);display:grid;grid-template-columns:1.2fr 1fr;gap:28px;font-size:.95rem;color:var(--muted)}
 footer h3{font-family:var(--f-body);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-bottom:8px}
 footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
@@ -206,7 +179,7 @@ footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
 <div class="wrap">
   <header class="hero">
     <div>
-      <div class="eyebrow">Kuchařka pro pacienty po odstranění žaludku</div>
+      <div class="eyebrow">Kuchařka pro pacienty po operaci žaludku</div>
       <h1>Malými <em>lžícemi</em></h1>
       <p class="lead">Recepty a jídelníčky pro první měsíce po částečném nebo úplném odstranění žaludku. Jídla jsou lehce stravitelná, nenadýmavá, málo sladká a v každé porci je zdroj bílkovin.</p>
       <div class="facts">
@@ -227,7 +200,6 @@ footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
     <a href="#faze-1">Recepty fáze 1</a>
     <a href="#faze-2">Recepty fáze 2</a>
     <a href="#faze-3">Recepty fáze 3</a>
-    <a href="#poradna">Je to vhodné?</a>
     <a href="#potraviny">Potraviny</a>
     <a href="#zdroje">Zdroje</a>
   </div>
@@ -346,24 +318,6 @@ footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
       <div class="day" data-day="3"></div>
     </div>
     <div class="recipes" data-phase="3"></div>
-  </section>
-
-  <section id="poradna">
-    <div class="sec-head">
-      <div class="eyebrow">Rychlá kontrola</div>
-      <h2>Je to vhodné?</h2>
-      <p class="muted">Napište potravinu nebo jídlo a hned uvidíte, jestli se hodí do diety po operaci žaludku. Hodnocení vychází z obou nemocničních letáků.</p>
-    </div>
-    <div class="checker">
-      <label for="food-q">Co chcete sníst nebo vypít?</label>
-      <form class="search" id="food-form" role="search">
-        <input id="food-q" type="search" autocomplete="off" placeholder="např. jahody, eidam, perlivá voda" value="jogurt">
-        <button type="submit">Zjistit</button>
-      </form>
-      <div class="chips" aria-label="Příklady"><span class="muted">Zkuste:</span></div>
-      <div class="legend"><span><b class="y">Vhodné</b> můžete jíst</span><span><b class="o">Omezeně</b> jen v malém množství, podle snášenlivosti nebo s úpravou</span><span><b class="n">Nevhodné</b> raději vynechte</span></div>
-      <div class="results" id="food-results" aria-live="polite"></div>
-    </div>
   </section>
 
   <section id="potraviny">
@@ -775,253 +729,4 @@ const FOODS=[
 ['Omáčky','Přírodní šťávy, omáčky zahuštěné lisovanou zeleninou nebo nasucho opraženou moukou, s malým množstvím másla nebo méně tučné zakysané smetany. Tuk až do hotového pokrmu.','Omáčky na cibulovém základě, paprikové, smetanové a houbové.'],
 ];
 document.getElementById('foods').innerHTML=FOODS.map(([g,y,n])=>`<tr><th scope="row">${g}</th><td class="y">${y}</td><td class="n">${n}</td></tr>`).join('');
-
-/* ================= Je to vhodné? =================
-   [názvy oddělené |, stav y/o/n, skupina, důvod, zdroj J/T/Z, náhrada]
-   J = tabulka Nutriční poradny Jičín, T = leták Nemocnice Tábor, Z = odvozeno z obecných zásad obou letáků */
-const DB=[
-/* maso */
-['kuřecí maso|kuře|kuřecí prsa|kuřecí stehno|kuřecí řízek','y','Maso','Libové maso. Vždy bez kůže, vařené, dušené nebo pečené pod alobalem.','J'],
-['krůtí maso|krůta|krůtí prsa','y','Maso','Libové, lehce stravitelné maso.','J'],
-['králík|králičí maso','y','Maso','Libové a jemné maso. Pozor na drobné kůstky.','J'],
-['telecí maso|telecí','y','Maso','Libové maso vhodné na dušení a závitky.','T'],
-['hovězí maso|hovězí kýta|hovězí|roštěná|roštěnky','y','Maso','Libové hovězí, nejlépe kýta. Dusit doměkka, bez šlach a blan.','J'],
-['mleté maso|mleté hovězí|mleté krůtí|mleté kuřecí','y','Maso','Vhodné, pokud je z libového masa. Na karbanátky a sekané řízky pečené nasucho.','T'],
-['vepřové maso|vepřová kýta|vepřová kotleta|vepřová panenka|vepřové','o','Maso','Jen libové kusy, kýta nebo kotleta, a omezeně.','J','kuřecí nebo krůtí maso'],
-['vepřový bůček|bůček|vepřová plec|vepřová krkovice|krkovice','n','Maso','Tučné maso zhoršuje průjmy a zatěžuje trávení.','J','vepřová kýta nebo kuřecí maso'],
-['kachna|husa|kachní maso|husí maso','n','Maso','Tučné maso.','J','krůtí nebo kuřecí maso bez kůže'],
-['jehněčí|skopové','n','Maso','Tučné maso.','Z','telecí nebo libové hovězí'],
-['zvěřina|srnčí|jelení|divočák|daňčí','n','Maso','Zvěřina není po operaci žaludku vhodná.','T','králík nebo telecí'],
-['játra|kuřecí játra|telecí játra|vepřová játra','o','Maso','Jen občas. Dusit krátce, osolit až na konci.','J'],
-['vnitřnosti|ledvinky|srdce|drůbeží žaludky|dršťky|jazyk','n','Maso','Vnitřnosti kromě jater nejsou vhodné.','J','kuřecí játra občas'],
-['kuřecí kůže|kůže z drůbeže|kůžička','n','Maso','Kůže je tučná a tuhá.','Z','maso bez kůže'],
-['uzené maso|uzené|uzenina uzená|kasler|uzená krkovice','n','Maso','Uzené maso je slané, tučné a dráždí.','J','šunka nejvyšší jakosti'],
-['nakládané maso|marinované maso','n','Maso','Nakládané maso je kořeněné a kyselé.','J'],
-['smažený řízek|řízek smažený|smažené maso|trojobal|smažený sýr|smažák','n','Úprava','Smažení je nevhodné. Přepálený tuk dráždí a zhoršuje průjmy.','J','řízek pečený nasucho na nepřilnavé pánvi'],
-['grilované maso|gril|grilování','o','Úprava','Maso nemá mít tvrdou kůrku. Grilujte jen krátce, bez připálení, nebo raději pečte v alobalu.','Z','maso pečené v alobalu'],
-/* ryby */
-['treska|tresčí filé','y','Ryby','Netučná ryba, ideální dušená nebo pečená v alobalu.','J'],
-['tilapie','y','Ryby','Netučná ryba.','J'],
-['pstruh','y','Ryby','Netučná ryba. Pozor na drobné kosti.','J'],
-['amur','y','Ryby','Netučná ryba. Pozor na kosti.','J'],
-['štika','y','Ryby','Netučná ryba. Pozor na kosti.','J'],
-['candát|mořská štika|aljašská treska|pangasius','y','Ryby','Netučná bílá ryba.','Z'],
-['losos','o','Ryby','Tučnější ryba. V jídelníčku poradny je, jezte menší porci vařenou nebo pečenou v alobalu.','J'],
-['kapr','o','Ryby','Středně tučná ryba s mnoha kostmi. Jen pečený nebo dušený, nikdy smažený.','Z','treska nebo pstruh'],
-['makrela|úhoř|sleď|herink','n','Ryby','Tučné ryby.','J','treska, tilapie'],
-['uzená ryba|uzená makrela|uzený losos','n','Ryby','Uzené ryby jsou tučné a slané.','J','dušený losos v malé porci'],
-['rybí konzerva|sardinky|sardinky v oleji|tuňák v oleji','n','Ryby','Konzervy v oleji jsou tučné a slané.','Z','dušené rybí filé'],
-['rybí prsty|obalovaná ryba|smažená ryba|smažený kapr','n','Ryby','Smažené a obalované ryby nejsou vhodné.','J','ryba pečená v alobalu'],
-/* uzeniny */
-['šunka|dušená šunka|kuřecí šunka|krůtí šunka','y','Uzeniny','Jen šunka nejvyšší jakosti.','J'],
-['šunkový salám','y','Uzeniny','Kvalitní šunkový salám je vhodný.','J'],
-['dietní párky|dietní uzenina|dietní salám','y','Uzeniny','Kvalitní dietní uzeniny jsou vhodné v malém množství.','J'],
-['párky|párek|vuřt|špekáček|špekáčky|klobása|klobásy','n','Uzeniny','Tučné a kořeněné uzeniny.','J','šunka nejvyšší jakosti'],
-['salám|vysočina|uherák|herkules|poličan|trvanlivý salám|čabajka|chorizo|salami','n','Uzeniny','Tučné, kořeněné a trvanlivé salámy.','J','šunkový salám nebo šunka'],
-['paštika|játrová paštika','n','Uzeniny','Paštiky jsou tučné.','J','šunková pěna z tvarohu'],
-['jitrnice|jelito|tlačenka|prejt','n','Uzeniny','Tučné uzeniny.','J'],
-['masová konzerva|lančmít|luncheon meat','n','Uzeniny','Masové konzervy jsou tučné a slané.','J'],
-['slanina|anglická slanina|škvarky','n','Tuky','Tučné, uzené a dráždivé.','J'],
-/* mléčné */
-['bílý jogurt|jogurt|řecký jogurt|jogurt bílý','y','Mléčné výrobky','Netučný zakysaný výrobek do 3 % tuku. Bez cukru a bez zrníček.','J'],
-['kefír|kefírové mléko','y','Mléčné výrobky','Zakysaný nápoj, snáší se lépe než mléko.','J'],
-['acidofilní mléko|acido','y','Mléčné výrobky','Zakysané mléko, dobře snášené i při citlivosti na mléko.','J'],
-['podmáslí','y','Mléčné výrobky','Netučné zakysané mléko.','J'],
-['biokys|zakysané mléko|kysané mléko|jogurtový nápoj','y','Mléčné výrobky','Zakysané výrobky s probiotickou kulturou.','J'],
-['skyr','y','Mléčné výrobky','Bohatý na bílkoviny, bez cukru.','J'],
-['tvaroh|měkký tvaroh|nízkotučný tvaroh|tvrdý tvaroh','y','Mléčné výrobky','Výborný zdroj bílkovin. Jezte čerstvý.','J'],
-['cottage|cottage sýr|zrnitý sýr','y','Mléčné výrobky','Čerstvý sýr s hodně bílkovinami.','J'],
-['žervé|lučina|palouček|čerstvý sýr|ricotta|tvarohový sýr','y','Mléčné výrobky','Čerstvé sýry jsou vhodné.','J'],
-['eidam|sýr|sýry|eidam 30|gouda 30|tvrdý sýr|plátkový sýr','y','Mléčné výrobky','Vhodný je tvrdý sýr do 30 % tuku v sušině. Tučnější sýry vynechte.','J'],
-['tavený sýr|sýr v trojúhelníku|lipánek sýr','y','Mléčné výrobky','Tavený sýr do 30 % tuku v sušině.','J'],
-['mozzarella','o','Mléčné výrobky','Čerstvý sýr. Vybírejte light verzi a jezte v malém množství.','Z','cottage nebo lučina'],
-['mléko|kravské mléko|polotučné mléko|plnotučné mléko','o','Mléčné výrobky','Po operaci je častá nesnášenlivost mléka. Zkoušejte ho postupně a v malém množství.','J','mléko bez laktózy nebo kefír'],
-['mléko bez laktózy|bezlaktózové mléko|laktose free','y','Mléčné výrobky','Hodí se na kaše i do vaření, když mléko nesnášíte.','Z'],
-['smetana|smetana ke šlehání|smetana na vaření|šlehačka|šlehaná smetana','n','Mléčné výrobky','Tučné výrobky zhoršují průjmy.','J','bílý jogurt'],
-['zakysaná smetana|kysaná smetana','o','Mléčné výrobky','Jen méně tučná a v malém množství do omáčky.','J','bílý jogurt'],
-['smetanový jogurt|jogurt smetanový|řecký jogurt 10','n','Mléčné výrobky','Plnotučný jogurt.','J','bílý jogurt do 3 % tuku'],
-['ovocný jogurt|jogurt s ovocem|jahodový jogurt|jogurt se zrníčky|jogurt s oříšky|müsli jogurt','n','Mléčné výrobky','Obsahuje cukr a často zrníčka nebo oříšky.','J','bílý jogurt s rozmixovaným banánem'],
-['hermelín|niva|plísňový sýr|gorgonzola|camembert|brie','n','Mléčné výrobky','Tučné a zrající sýry.','J','lučina nebo cottage'],
-['olomoucké tvarůžky|tvarůžky|syreček','n','Mléčné výrobky','Zrající a pikantní sýr.','J'],
-['parmazán|čedar|ementál|gouda 45|eidam 45|uzený sýr|oštěpek','n','Mléčné výrobky','Tučné nebo zrající sýry nad 30 % tuku v sušině.','J','eidam do 30 % tuku'],
-['pudink|puding','o','Mléčné výrobky','Jen s minimem cukru a z mléka, které snášíte.','T','tvaroh s ovocným pyré'],
-['zmrzlina|nanuk|mražený jogurt','n','Sladkosti','Studená a sladká. Může vyvolat dumpingový syndrom.','Z','vlažný tvaroh s banánem'],
-/* vejce */
-['vejce|vařené vejce|vejce natvrdo|vejce naměkko','y','Vejce','Vejce vařená nebo jako součást pokrmů.','J'],
-['míchaná vejce|míchaná vajíčka|vaječná omeleta na páře','y','Vejce','Jen připravená na páře nebo vodní lázni, ne smažená.','T'],
-['smažené vejce|volské oko|vejce na slanině|hemenex','n','Vejce','Smažená vejce nejsou vhodná.','J','vejce natvrdo nebo míchaná na páře'],
-['majonéza|tatarská omáčka|tatarka|remuláda','n','Omáčky','Tučné a dráždivé.','J','bílý jogurt s bylinkami'],
-/* tuky */
-['máslo','y','Tuky','Čerstvé máslo v malém množství, vždy až do hotového jídla.','J'],
-['olivový olej|řepkový olej|slunečnicový olej|olej','y','Tuky','Kvalitní olej v malém množství, nezahřívat, přidat do hotového jídla.','J'],
-['rostlinné máslo|rama|flora|perla|margarín','y','Tuky','Rostlinná másla v malém množství.','J'],
-['sádlo|lůj|ztužený tuk|fritovací tuk|přepálený tuk','n','Tuky','Přepálené a živočišné tuky nejsou vhodné.','J','máslo nebo olej do hotového jídla'],
-/* polévky */
-['vývar|hovězí vývar|kuřecí vývar|zeleninový vývar|vývar z kosti','y','Polévky','Netučný vývar je základ šetřící kuchyně.','J'],
-['zeleninová polévka|mrkvová polévka|dýňová polévka|krémová polévka','y','Polévky','Z povolené zeleniny, nejlépe lisovaná nebo mixovaná.','J'],
-['bramborová polévka|bramboračka','y','Polévky','Vhodná bez hub a smetany.','T'],
-['rajská polévka|rajčatová polévka','y','Polévky','Z protlaku nebo loupaných rajčat, bez octa.','T'],
-['vaječná polévka|polévka s vejcem','y','Polévky','Vhodná, vejce vmíchané jako mlhovina.','J'],
-['luštěninová polévka|hrachová polévka|čočková polévka|čočkovka|fazolová polévka|fazolačka','n','Polévky','Luštěniny nadýmají.','J','bramborová polévka'],
-['gulášová polévka|gulášovka|dršťková polévka|dršťková','n','Polévky','Tučné a kořeněné polévky.','J','hovězí vývar se zeleninou'],
-['zelňačka|kapustová polévka|zelná polévka','n','Polévky','Zelí a kapusta nadýmají.','J'],
-['houbová polévka|kulajda|bramboračka s houbami','n','Polévky','Houby a smetana nejsou vhodné.','J','bramborová polévka bez hub'],
-['instantní polévka|polévka ze sáčku|bujón|bujon|masox|kostka|maggi','n','Koření','Instantní bujóny a sáčkové polévky jsou slané a obsahují dráždivé přísady.','J','domácí netučný vývar'],
-/* přílohy */
-['rýže|bílá rýže|loupaná rýže|basmati','y','Přílohy','Vhodná příloha, vařená doměkka.','J'],
-['brambory|vařené brambory|brambor|vařený brambor','y','Přílohy','Vařené brambory jsou vhodné.','J'],
-['bramborová kaše|kaše','y','Přílohy','Vhodná příloha, lehce stravitelná.','J'],
-['těstoviny|nudle|špagety|kolínka|vřetena','y','Přílohy','Bílé těstoviny uvařené doměkka.','J'],
-['celozrnné těstoviny|celozrnná rýže|natural rýže|hnědá rýže','o','Přílohy','Obsahuje tužší slupky. Zkoušejte až v pozdější fázi.','Z','bílá rýže nebo bílé těstoviny'],
-['noky|halušky|gnocchi','y','Přílohy','Vhodná příloha.','J'],
-['houskový knedlík|knedlík|bramborový knedlík','y','Přílohy','Vhodný, krájejte na tenké plátky a dobře kousejte.','J'],
-['kuskus','y','Přílohy','Lehká obilná příloha.','J'],
-['jáhly|jáhlová kaše','y','Přílohy','Vhodné, nejlépe jako kaše.','J'],
-['ovesné vločky|ovesná kaše|vločky|porridge','y','Přílohy','Jemné vločky jsou vhodné, v 1. a 2. fázi mixované.','J'],
-['krupice|krupicová kaše|dětská krupice','y','Přílohy','Vhodná na kaše a do polévek.','J'],
-['kroupy|krupky|pohanka|bulgur','o','Přílohy','Jen lisované krupky a kroupy, dobře uvařené.','J','rýže nebo jáhly'],
-['hranolky|krokety|bramboráky|americké brambory|opékané brambory|chipsy|brambůrky','n','Přílohy','Smažené a fritované přílohy nejsou vhodné.','J','vařené brambory nebo bramborová kaše'],
-['rohlík|veka|bílé pečivo|houska|bageta','y','Pečivo','Bílé pečivo bez posypu, lépe den staré.','J'],
-['toustový chléb|toust|toastový chléb','y','Pečivo','Vhodný, odkrojte tvrdé kůrky.','J'],
-['chléb|chleba|konzumní chléb','y','Pečivo','Vhodný, lépe starší a bez tvrdé kůrky.','J'],
-['čerstvé pečivo|teplé pečivo','n','Pečivo','Čerstvé pečivo se hůře tráví.','J','den staré pečivo'],
-['vícezrnné pečivo|celozrnné pečivo|celozrnný chléb|pečivo se semínky|kmínový rohlík|sezamový rohlík','n','Pečivo','Zrníčka a semínka mechanicky dráždí.','J','bílé pečivo bez posypu'],
-['slané sušenky|krekry|tyčinky','y','Pečivo','Jen slané netučné sušenky.','J'],
-['vánočka','o','Pečivo','Jen starší a výjimečně. Je sladká a kynutá.','T','toustový chléb s tvarohem'],
-['buchty|koláče|loupák|loupáky|koblihy|kobliha|croissant|záviny','n','Sladkosti','Sladké a kynuté pečivo, často smažené nebo tučné.','J','rýžový nákyp s tvarohem s minimem cukru'],
-['piškoty|dětské piškoty','o','Sladkosti','Obsahují cukr. Jen pár kusů.','Z'],
-['pizza','n','Hotová jídla','Tučná, kořeněná a s tvrdým okrajem.','Z','zapečené těstoviny se šunkou'],
-['hamburger|kebab|gyros|párek v rohlíku|hotdog|fast food','n','Hotová jídla','Tučné, smažené a kořeněné.','Z'],
-/* luštěniny */
-['čočka|fazole|hrách|cizrna|sója|sójové boby|luštěniny|edamame','n','Luštěniny','Luštěniny nadýmají.','J','bramborová kaše nebo rýže'],
-['tofu','o','Luštěniny','Ze sóji, v letácích není. Zkoušejte opatrně a v malém množství.','Z','tvaroh nebo vejce'],
-/* zelenina */
-['mrkev|karotka','y','Zelenina','Vařená, dušená nebo jemně strouhaná.','J'],
-['celer|celer bulvový|řapíkatý celer','y','Zelenina','Malé množství do polévek nebo tepelně upravený.','J'],
-['petržel|petržel kořen','y','Zelenina','Malé množství tepelně upravené.','J'],
-['petrželka|petrželová nať|pažitka|kopr|bazalka|libeček|majoránka|saturejka','y','Koření','Zelené natě a jemné bylinky jsou vhodné.','J'],
-['špenát','y','Zelenina','Dušený, nejlépe protlakový.','J'],
-['dýně|hokkaido|máslová dýně','y','Zelenina','Dušená nebo lisovaná.','J'],
-['batáty|batát|sladké brambory','y','Zelenina','V jídelníčku poradny jako pyré.','J'],
-['hlávkový salát|ledový salát|salát','y','Zelenina','Jemně krájený hlávkový salát.','J'],
-['rajče|rajčata|loupaná rajčata','y','Zelenina','Jen loupaná a bez semínek.','J'],
-['rajčatový protlak|protlak|rajská šťáva|passata','y','Zelenina','Vhodný do omáček a polévek.','J'],
-['cuketa','o','Zelenina','V tabulce není. Loupaná a dušená se obvykle snáší, zkoušejte podle tolerance.','Z'],
-['hrášek','o','Zelenina','Jen malé množství.','J'],
-['brokolice|květák|kapusta|zelí|kysané zelí|růžičková kapusta|kedluben|kedlubna|kapustičky','n','Zelenina','Košťálová zelenina silně nadýmá.','J','mrkev nebo dýně'],
-['okurka|salátová okurka|kyselé okurky|nakládané okurky|okurky','n','Zelenina','Okurky nadýmají, nakládané jsou navíc kyselé.','J','loupané rajče'],
-['paprika|paprika zelenina|zelená paprika|červená paprika','n','Zelenina','Tuhá slupka a nadýmání.','J','loupané rajče'],
-['ředkvička|ředkvičky|ředkev|křen','n','Zelenina','Ostré a dráždivé.','J'],
-['cibule|jarní cibulka|šalotka','o','Zelenina','Jen vyvařená v polévce nebo spařená, nikdy smažená.','J'],
-['česnek|medvědí česnek','n','Koření','Dráždí a nadýmá.','J','zelené bylinky'],
-['pórek','n','Zelenina','Nadýmá.','Z','mrkev nebo celer'],
-['houby|žampiony|hříbky|shiitake','n','Zelenina','Houby se špatně tráví.','J'],
-['kukuřice|kukuřičná zrna','n','Zelenina','Tvrdé slupky zrn mechanicky dráždí.','Z'],
-['syrová zelenina|zeleninový salát|mrkvový salát','o','Zelenina','Jen jemně nastrouhaná povolená zelenina, v pozdější fázi.','T','dušená zelenina'],
-/* ovoce */
-['jablko|jablka','y','Ovoce','Zralé, bez slupky. Pomáhá předcházet dumpingovému syndromu.','T'],
-['banán|banány','y','Ovoce','Zralý banán pomáhá předcházet dumpingovému syndromu.','T'],
-['broskev|broskve|nektarinka','y','Ovoce','Zralá a loupaná.','J'],
-['meruňka|meruňky','y','Ovoce','Zralé a loupané.','J'],
-['mango','y','Ovoce','Zralé a měkké.','J'],
-['hruška|hrušky','n','Ovoce','Syrové hrušky nejsou vhodné.','J','zralé jablko'],
-['třešně|višně','n','Ovoce','Nevhodné, slupka a pecky.','T','zralá broskev'],
-['jahody|jahoda|maliny|malina|borůvky|borůvka|ostružiny|brusinky|rybíz|angrešt|jeřabiny|lesní ovoce','n','Ovoce','Drobná zrníčka a tuhé slupky mechanicky dráždí.','J','meruňka nebo mango'],
-['kiwi|fíky|fík|rebarbora','n','Ovoce','Zrníčka a kyselost dráždí.','J','zralé mango'],
-['hroznové víno|hrozny|hroznové','n','Ovoce','Tuhá slupka a zrníčka.','J','zralý banán'],
-['sušené ovoce|rozinky|datle|sušené švestky|brusinky sušené','n','Ovoce','Sušené ovoce je sladké a tuhé.','T','čerstvé zralé jablko'],
-['ořechy|vlašské ořechy|lískové ořechy|arašídy|mandle|kešu|burské oříšky','n','Ovoce','Tvrdé kousky mechanicky dráždí.','J'],
-['semínka|lněné semínko|chia|slunečnicová semínka|dýňová semínka|sezam','n','Ovoce','Semínka a zrníčka dráždí.','J'],
-['kompot|kompoty','o','Ovoce','Kupované kompoty obsahují hodně cukru. Domácí bez cukru ze zralého ovoce je vhodný.','J','domácí jablečný kompot bez cukru'],
-['ovocná přesnídávka|přesnídávka|jablečné pyré','y','Ovoce','Vhodná bez přidaného cukru.','T'],
-['džem|marmeláda|povidla','n','Sladkosti','Hodně cukru a často zrníčka.','J','ovocné pyré bez cukru'],
-/* sladkosti */
-['cukr|třtinový cukr','n','Sladkosti','Cukr vyvolává dumpingový syndrom. Omezte ho na minimum.','T','zralé ovoce'],
-['med','n','Sladkosti','Med je také jednoduchý cukr a může vyvolat dumpingový syndrom.','Z','zralý banán'],
-['čokoláda|bonbony|sladkosti|tyčinka|lízátko|nutella','n','Sladkosti','Cukr a tuk vyvolávají dumpingový syndrom.','T','banán nebo jablko'],
-['dort|dorty|šlehačkový dort|máslový krém|zákusek|zákusky','n','Sladkosti','Máslové krémy a šlehačka nejsou vhodné.','T','rýžový nákyp s tvarohem'],
-['sladké sušenky|oplatky|perník','n','Sladkosti','Obsahují hodně cukru.','Z','slané netučné sušenky'],
-['umělé sladidlo|sladidlo|stévie','o','Sladkosti','V letácích není. Malé množství obvykle nevadí, ale sladké chutě je lepší omezit.','Z'],
-/* koření */
-['sůl','o','Koření','Solte mírně. Jídlo nemá být příliš slané.','J'],
-['pepř|chilli|chili|kari|curry|pálivá paprika|kajenský pepř','n','Koření','Pikantní a dráždivé koření.','J','zelené bylinky'],
-['sladká paprika|mletá paprika','o','Koření','Jen podle individuální snášenlivosti.','J'],
-['kmín','y','Koření','Nejlépe jako kmínový odvar: povařit a přecedit.','J'],
-['bobkový list|nové koření|fenykl|anýz','y','Koření','Vhodné na vyvaření do vývaru.','J'],
-['citron|citronová šťáva|citronová kůra|pomerančová kůra','y','Koření','Kůra a šťáva na dochucení v malém množství.','J'],
-['skořice|vanilka','o','Koření','V letácích není. Špetka obvykle nevadí.','Z'],
-['kořenicí směs|grilovací koření|gyros koření|podravka|vegeta','n','Koření','Kořenicí směsi obsahují dráždivé přísady.','J','sůl a zelené bylinky'],
-['ocet|octová zálivka','n','Koření','Kyselé a dráždivé.','J','kapka citronové šťávy'],
-['hořčice','n','Koření','Pikantní a dráždivá.','J'],
-['kečup','n','Koření','Obsahuje cukr a ocet.','Z','rajčatový protlak'],
-['sójová omáčka|worchester|worcester|rybí omáčka','n','Koření','Slané a dráždivé.','J'],
-/* omáčky */
-['rajská omáčka|rajská','y','Omáčky','Vhodná omáčka, zahuštěná nasucho opraženou moukou.','T'],
-['koprová omáčka|koprovka','y','Omáčky','Vhodná, s jogurtem nebo trochou méně tučné zakysané smetany.','T'],
-['zeleninová omáčka|přírodní šťáva|šťáva z masa','y','Omáčky','Přírodní šťávy a omáčky z povolené zeleniny.','J'],
-['svíčková|smetanová omáčka|houbová omáčka|paprikáš|segedín|segedínský guláš|guláš|cibulová omáčka|znojemská','n','Omáčky','Smetanové, paprikové, cibulové a houbové omáčky nejsou vhodné.','J','rajská nebo koprová omáčka'],
-['jíška|smažená jíška','o','Omáčky','Jen dietní jíška: mouka opražená nasucho bez tuku.','J'],
-/* nápoje */
-['voda|neperlivá voda|pitná voda|stolní voda|neperlivá minerálka','y','Nápoje','Pijte po doušcích 45–60 minut před jídlem nebo po něm.','J'],
-['perlivá voda|sodovka|perlivá minerálka|minerálka|mattoni|limonáda|kola|coca cola|pepsi|sprite','n','Nápoje','Oxid uhličitý nadýmá, sladké nápoje vyvolávají dumping.','J','neperlivá voda'],
-['čaj|ovocný čaj|bylinkový čaj|heřmánkový čaj|mátový čaj','y','Nápoje','Neslazený nebo jen mírně slazený, vlažný.','J'],
-['černý čaj|zelený čaj','y','Nápoje','Vhodný, spíše slabší a vlažný.','J'],
-['káva|zrnková káva|espresso|turek|instantní káva','n','Nápoje','Zrnková káva dráždí.','J','kávovinový nápoj'],
-['bílá káva|kávovinový nápoj|melta|caro|cikorka|obilná káva','y','Nápoje','Kávovinové nápoje jsou vhodné, s mlékem jen pokud ho snášíte.','J'],
-['džus|ovocná šťáva|100% džus|pomerančový džus','o','Nápoje','Přírodní šťávy jen ředěné vodou. Neředěné džusy obsahují hodně cukru.','T','šťáva ředěná vodou 1:3'],
-['sirup|šťáva ze sirupu|ledový čaj|ice tea|energetický nápoj|red bull','n','Nápoje','Hodně cukru nebo kofeinu.','J','neslazený čaj'],
-['alkohol|pivo|víno|nealkoholické pivo|pálenka|slivovice|rum|vodka|prosecco|šampaňské','n','Nápoje','Alkohol je po operaci žaludku nevhodný. Nealkoholické pivo je perlivé.','J'],
-['nutridrink|sipping|proteinový nápoj|protein|proteinový prášek|fresubin|resource|protifar','y','Doplňky','Doporučený doplněk bílkovin. Asi 30 g prášku denně, rozdělit do jídel.','J'],
-['kouření|cigarety|tabák','n','Ostatní','Kouření je nevhodné.','J'],
-/* způsob přípravy */
-['vaření|vařené|dušení|dušené|pára|na páře|v alobalu|vodní lázeň','y','Úprava','Doporučené způsoby přípravy.','J'],
-['smažení|smažené|fritování|fritované|friťák','n','Úprava','Smažení a fritování jsou nevhodné.','J','pečení v alobalu nebo dušení'],
-['pečené|pečení|zapékání|zapečené','o','Úprava','Pečení v alobalu nebo pod poklicí je vhodné, bez tvrdé kůrky.','J'],
-];
-const SRC={J:'Nutriční poradna Jičín',T:'Nemocnice Tábor',Z:'odvozeno z obecných zásad, ověřte u terapeuta'};
-const VERD={y:'Vhodné',o:'Omezeně',n:'Nevhodné'};
-const norm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9% ]/g,' ').replace(/\s+/g,' ').trim();
-const stem=w=>w.length>5?w.slice(0,w.length-2):w.length>4?w.slice(0,w.length-1):w;
-const IDX=DB.map((d,i)=>({i,al:d[0].split('|').map(norm)}));
-function score(q,a){
-  if(a===q)return 100;
-  if(a.startsWith(q))return 85-(a.length-q.length)*.2;
-  const qs=q.split(' ').map(stem),as=a.split(' ').map(stem);
-  const all=qs.every(t=>as.some(w=>w.startsWith(t)||t.startsWith(w)&&w.length>=4));
-  if(all)return 70-Math.abs(a.length-q.length)*.2;
-  if(q.includes(a)&&a.length>=4)return 55+a.length*.3;
-  const some=qs.filter(t=>t.length>=3&&as.some(w=>w.startsWith(t)||t.startsWith(w)&&w.length>=4)).length;
-  if(some)return 25+some*8;
-  return 0;
-}
-function search(raw){
-  const q=norm(raw);if(!q)return[];
-  return IDX.map(x=>({i:x.i,s:Math.max(...x.al.map(a=>score(q,a)))})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s)
-    .filter((x,k,arr)=>x.s>=arr[0].s-35).slice(0,6).map(x=>DB[x.i]);
-}
-const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-function render(raw){
-  const out=document.getElementById('food-results');
-  if(!raw.trim()){out.innerHTML='';return}
-  const hits=search(raw);
-  if(!hits.length){
-    out.innerHTML=`<div class="miss"><b>„${esc(raw)}“ v seznamu nemám.</b><p class="muted" style="font-size:1rem">Zkuste jiný název nebo obecnější slovo (např. „sýr“ místo značky). Jinak si projděte, jestli potravina není:</p>
-    <ul><li>tučná, smažená, fritovaná nebo uzená</li><li>pikantní, hodně slaná, kyselá nebo sladká</li><li>nadýmavá: luštěniny, košťálová zelenina, perlivé nápoje</li><li>tvrdá nebo se zrníčky, semínky a tuhou slupkou</li></ul>
-    <p style="font-size:1rem">Pokud platí cokoli z toho, raději ji vynechte a zeptejte se svého nutričního terapeuta.</p></div>`;
-    return;
-  }
-  out.innerHTML=hits.map(([names,st,grp,why,src,alt])=>`<article class="hit ${st}">
-    <span class="verdict">${VERD[st]}</span>
-    <h3>${esc(names.split('|')[0].replace(/^./,c=>c.toUpperCase()))}</h3>
-    <p class="why">${why}${alt?` <span class="alt">Místo toho: ${alt}.</span>`:''}</p>
-    <p class="sub">${grp} · zdroj: ${SRC[src]}</p></article>`).join('');
-}
-(function(){
-  const inp=document.getElementById('food-q');
-  const chips=document.querySelector('#poradna .chips');
-  ['banán','jahody','eidam','perlivá voda','hrášek','losos','čočka','káva'].forEach(t=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.addEventListener('click',()=>{inp.value=t;render(t);inp.focus()});chips.append(b)});
-  document.getElementById('food-form').addEventListener('submit',e=>{e.preventDefault();render(inp.value)});
-  inp.addEventListener('input',()=>render(inp.value));
-  render(inp.value);
-})();
 </script>
