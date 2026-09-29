@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="cs">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Týdenní jídelníček</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;0,800;1,500&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+<style>
+:root{
+  --bg:#F3F6F3; --surface:#FFFFFF; --ink:#1E2B27; --muted:#56675F; --line:#D6E0DA;
+  --accent:#2E6A57; --accent-soft:#E0EDE6;
+  --p3:#DDEBD9; --p3-ink:#3A6832;
+  --warn:#8A5F0E; --warn-soft:#F7EBCF;
+  --f-display:"Alegreya", Georgia, "Times New Roman", serif;
+  --f-body:"Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#111816; --surface:#19221F; --ink:#E3ECE7; --muted:#9BAFA6; --line:#2B3833;
+    --accent:#80C8AB; --accent-soft:#1E3029;
+    --p3:#1C2C1C; --p3-ink:#A6D49B;
+    --warn:#E8C170; --warn-soft:#33291A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111816; --surface:#19221F; --ink:#E3ECE7; --muted:#9BAFA6; --line:#2B3833;
+  --accent:#80C8AB; --accent-soft:#1E3029;
+  --p3:#1C2C1C; --p3-ink:#A6D49B;
+  --warn:#E8C170; --warn-soft:#33291A;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.55;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.12}
+p{margin:0}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+
+header{padding-block:40px 28px;display:grid;gap:12px;max-width:46em}
+header h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800}
+header h1 em{font-style:italic;font-weight:500;color:var(--accent)}
+.lead{font-size:1.15rem}
+
+nav.toc{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding:10px 16px}
+nav.toc .wrap{display:flex;gap:6px 18px;flex-wrap:wrap;font-size:.98rem}
+nav.toc a{text-decoration:none;color:var(--ink);font-weight:500;padding:4px 0;border-bottom:2px solid transparent}
+nav.toc a:hover{border-color:var(--accent)}
+nav.toc a.back{color:var(--accent)}
+
+section{padding-block:48px 8px;scroll-margin-top:56px}
+.sec-head{display:grid;gap:8px;margin-bottom:24px;max-width:46em}
+.sec-head h2{font-size:clamp(1.8rem,3.4vw,2.5rem)}
+
+.tips{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.tip{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:.98rem}
+.tip b{display:block;font-family:var(--f-display);font-size:1.08rem;margin-bottom:2px}
+
+/* ---------- Days ---------- */
+.days{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;scroll-margin-top:56px}
+.day h3{font-size:1.45rem;padding:14px 18px;background:var(--p3);color:var(--p3-ink);display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.day h3 .today{font-family:var(--f-body);font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:var(--surface);color:var(--accent);border-radius:999px;padding:3px 10px}
+.day.is-today{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.meals{list-style:none;margin:0;padding:0}
+.meal{display:grid;grid-template-columns:5.2em 1fr;gap:2px 12px;padding:10px 18px;border-top:1px solid var(--line)}
+.meal:first-child{border-top:0}
+.meal .when{grid-row:span 2;font-size:.85rem;color:var(--muted);line-height:1.3;padding-top:3px}
+.meal .when b{display:block;color:var(--ink);font-size:.95rem;font-variant-numeric:tabular-nums}
+.meal .what a{font-weight:500;text-decoration-thickness:1px;text-underline-offset:3px}
+.meal .note{font-size:.88rem;color:var(--muted)}
+.meal .note.cook{color:var(--warn)}
+.meal.main .what{font-family:var(--f-display);font-size:1.12rem;font-weight:700}
+.meal.main .what a{font-weight:700}
+.drinks{padding:10px 18px;border-top:1px dashed var(--line);font-size:.9rem;color:var(--muted);background:var(--accent-soft)}
+
+/* ---------- Shopping list ---------- */
+.shop-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+.btn{font:inherit;font-weight:700;padding:10px 16px;border-radius:12px;border:0;background:var(--accent);color:var(--surface);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--line)}
+.progress{font-size:.95rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.shop{columns:3 300px;column-gap:16px}
+.group{break-inside:avoid;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px 10px;margin-bottom:16px}
+.group h3{font-size:1.2rem;margin-bottom:6px}
+.group ul{list-style:none;margin:0;padding:0}
+.item{border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.item label{display:grid;grid-template-columns:auto 1fr;gap:0 12px;align-items:start;padding:9px 0;cursor:pointer}
+.item input{width:22px;height:22px;margin:2px 0 0;accent-color:var(--accent)}
+.item .name{font-weight:500}
+.item .qty{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:700;white-space:nowrap}
+.item .for{grid-column:2;font-size:.85rem;color:var(--muted);line-height:1.35}
+.item input:checked ~ span{text-decoration:line-through;opacity:.55}
+.pantry{background:var(--warn-soft);border-color:transparent}
+.pantry h3{color:var(--warn)}
+
+.note-box{margin-top:12px;font-size:.95rem;color:var(--muted);max-width:52em}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:.95rem;color:var(--muted)}
+
+@media (max-width:900px){
+  .days{grid-template-columns:1fr}
+  .tips{grid-template-columns:1fr}
+}
+@media (max-width:620px){
+  body{font-size:17px}
+  nav.toc .wrap{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav.toc .wrap::-webkit-scrollbar{display:none}
+  .meal{grid-template-columns:4.4em 1fr;padding-inline:14px}
+  .day h3{padding-inline:14px}
+}
+@media print{
+  body{background:#fff;color:#000;font-size:11pt;padding:0}
+  nav.toc,.shop-tools,.no-print{display:none!important}
+  section{padding-block:12px 0;break-before:auto}
+  #nakup{break-before:page}
+  .day,.group{break-inside:avoid;border-color:#bbb}
+  .day h3{background:#eee;color:#000}
+  .day.is-today{box-shadow:none;border-color:#bbb}
+  .drinks{background:none}
+  a{color:#000;text-decoration:none}
+  .item input:checked ~ span{text-decoration:none;opacity:1}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Fáze 3 · měkká šetřící strava · pro 1 osobu</div>
+    <h1>Jídelníček <em>na týden</em></h1>
+    <p class="lead">Pět jídel denně od pondělí do neděle a nákupní seznam na celý týden. Jídla jsou z <a href="index.html#faze-3">receptů fáze 3</a>, klepnutím na název otevřete recept.</p>
+  </header>
+</div>
+
+<nav class="toc" aria-label="Obsah">
+  <div class="wrap">
+    <a class="back" href="index.html">← Kuchařka</a>
+    <a href="#jidelnicek">Jídelníček</a>
+    <a href="#nakup">Nákupní seznam</a>
+    <span id="day-links" style="display:contents"></span>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="jidelnicek">
+    <div class="sec-head">
+      <div class="eyebrow">Pondělí až neděle</div>
+      <h2>Co jíst každý den</h2>
+      <p class="muted">Časy jsou orientační. Důležité je jíst zhruba každé 2–3 hodiny a mezi jídly pít. Jídla, která se vaří na dvě porce, jsou naplánovaná tak, aby se zbytek snědl hned další den.</p>
+    </div>
+    <div class="tips">
+      <div class="tip"><b>Pití mezi jídly</b>Pijte po doušcích 45–60 minut před jídlem nebo po něm. Za den víc než 1,5 litru neslazených neperlivých nápojů.</div>
+      <div class="tip"><b>Vývar předem</b>Na začátku týdne uvařte asi 2 litry netučného vývaru a zamrazte ho po 250–500 ml. Spotřebuje se skoro v každém obědě.</div>
+      <div class="tip"><b>Zbytky nejdéle 2 dny</b>Druhou porci dejte hned do lednice a snězte do druhého dne. Co nesníte, zamrazte.</div>
+    </div>
+    <div class="days" id="days"></div>
+    <p class="note-box">Jídelníček je vzor. Když vám nějaké jídlo nesedí, vyměňte ho za jiné ze stejné skupiny v kuchařce a nové potraviny zkoušejte po jedné. Porce upravte podle toho, kolik snesete.</p>
+  </section>
+
+  <section id="nakup">
+    <div class="sec-head">
+      <div class="eyebrow">Na celý týden</div>
+      <h2>Nákupní seznam</h2>
+      <p class="muted">Množství jsou sečtená ze všech receptů v jídelníčku a zaokrouhlená na běžná balení. Ryby, maso a zralé ovoce je lepší koupit na dvakrát, v pondělí a ve čtvrtek.</p>
+    </div>
+    <div class="shop-tools">
+      <button class="btn" type="button" onclick="window.print()">Vytisknout</button>
+      <button class="btn ghost" type="button" id="reset">Zrušit zaškrtnutí</button>
+      <span class="progress" id="progress" aria-live="polite"></span>
+    </div>
+    <div class="shop" id="shop"></div>
+  </section>
+
+  <footer>
+    <p>Jídelníček vychází z receptů kuchařky <a href="index.html">Malými lžícemi</a> a ze zásad českých nemocničních letáků. Nenahrazuje doporučení lékaře ani nutričního terapeuta.</p>
+  </footer>
+</main>
+
+<script>
+/* [čas, druh, název, číslo receptu v index.html nebo 0, poznámka, 'cook' = uvařit víc] */
+const WEEK=[
+['Pondělí',[
+ ['7:00','Snídaně','Ovesná kaše se skyrem a mangem',37],
+ ['10:00','Svačina','Banánový koktejl s kefírem',36],
+ ['12:30','Oběd','Kuřecí plátek s těstovinami a mrkví',14],
+ ['15:30','Svačina','Tvarohová pomazánka s pažitkou na toustovém chlebu',19,'Pomazánka vydrží i na úterní svačinu.','cook'],
+ ['18:30','Večeře','Losos v alobalu s bramborem a zeleninou',15],
+]],
+['Úterý',[
+ ['7:00','Snídaně','Míchaná vejce na páře se šunkou',18],
+ ['10:00','Svačina','Tvarohová pomazánka s pažitkou',19,'Zbytek z pondělí.'],
+ ['12:30','Oběd','Krůtí kuličky v rajské omáčce s rýží',32,'Uvařte 2 porce, druhá je na středeční oběd.','cook'],
+ ['15:30','Svačina','Pečené jablko s tvarohem',39,'Upečte obě jablka, druhé je na středu.','cook'],
+ ['18:30','Večeře','Kuřecí rizoto s mrkví',34],
+]],
+['Středa',[
+ ['7:00','Snídaně','Vaječné muffiny s cottage a špenátem',45,'Upečte poloviční dávku (3 kusy) z 2 vajec. Vydrží do čtvrtka.','cook'],
+ ['10:00','Svačina','Pečené jablko s tvarohem',39,'Zbytek z úterý.'],
+ ['12:30','Oběd','Krůtí kuličky v rajské omáčce s rýží',32,'Zbytek z úterý.'],
+ ['15:30','Svačina','Vaječný muffin',45],
+ ['18:30','Večeře','Treska v koprové omáčce s bramborem',31],
+]],
+['Čtvrtek',[
+ ['7:00','Snídaně','Vaječný muffin',45,'Poslední kus.'],
+ ['10:00','Svačina','Banánový koktejl s kefírem',36],
+ ['12:30','Oběd','Dušený králík s mrkví a bramborovou kaší',29,'Uvařte 2 porce, druhá je na páteční oběd.','cook'],
+ ['15:30','Svačina','Šunková pěna na toustovém chlebu',40,'Vydrží i na páteční svačinu.','cook'],
+ ['18:30','Večeře','Pstruh v alobalu s bramborovou kaší',30],
+]],
+['Pátek',[
+ ['7:00','Snídaně','Ovesná kaše se skyrem a mangem',37],
+ ['10:00','Svačina','Šunková pěna na toustovém chlebu',40,'Zbytek ze čtvrtka.'],
+ ['12:30','Oběd','Dušený králík s mrkví a bramborovou kaší',29,'Zbytek ze čtvrtka.'],
+ ['15:30','Svačina','Avokádovo-tuňáková pěna na toustovém chlebu',46,'Druhá porce je na sobotní svačinu.','cook'],
+ ['18:30','Večeře','Zapečené těstoviny se šunkou',35,'Zbytek je na sobotní oběd.','cook'],
+]],
+['Sobota',[
+ ['7:00','Snídaně','Vaječná pomazánka s jogurtem',41,'Druhá porce je na nedělní snídani.','cook'],
+ ['10:00','Svačina','Avokádovo-tuňáková pěna',46,'Zbytek z pátku.'],
+ ['12:30','Oběd','Zapečené těstoviny se šunkou',35,'Zbytek z pátku.'],
+ ['15:30','Svačina','Banánový koktejl s kefírem',36],
+ ['18:30','Večeře','Pečený losos se špenátem a batátovým pyré',43],
+]],
+['Neděle',[
+ ['7:00','Snídaně','Vaječná pomazánka s jogurtem',41,'Zbytek ze soboty.'],
+ ['10:00','Svačina','Sklenka kefíru (150 ml), vlažného',0],
+ ['12:30','Oběd','Pečené kuře s rýží a jablečným kompotem',28,'Upečte celé množství. Asi 100 g masa odložte na večerní polévku, zbytek zamrazte.','cook'],
+ ['15:30','Svačina','Bílý jogurt s rozmačkaným ½ banánu',0],
+ ['18:30','Večeře','Řecká citronová polévka s kuřecím masem',42,'Z kuřete od oběda. Polévka se počítá jako tekutina, pijte až za hodinu.'],
+]],
+];
+
+/* [skupina, [[název, množství, na co]]] */
+const SHOP=[
+['Maso a ryby',[
+ ['Kuřecí prsa','200 g','Kuřecí plátek (Po), rizoto (Út)'],
+ ['Kuřecí stehna bez kůže nebo 1 prso','asi 300 g','Pečené kuře a polévka (Ne)'],
+ ['Mleté krůtí maso','200 g','Krůtí kuličky (Út)'],
+ ['Králičí stehna','2 ks (asi 400 g)','Dušený králík (Čt)'],
+ ['Filé z lososa bez kůže','2 × 100 g','Losos v alobalu (Po), pečený losos (So)'],
+ ['Filé z tresky','120 g','Treska v koprové omáčce (St)'],
+ ['Pstruh','1 ks (asi 250 g)','Pstruh v alobalu (Čt)'],
+ ['Šunka nejvyšší jakosti','300 g','Míchaná vejce, šunková pěna, zapečené těstoviny'],
+ ['Tuňák ve vlastní šťávě','1 konzerva','Avokádovo-tuňáková pěna (Pá)'],
+]],
+['Mléčné výrobky a vejce',[
+ ['Vejce','12 ks','Míchaná vejce, kuličky, muffiny, těstoviny, pomazánka, polévka'],
+ ['Měkký tvaroh','2 × 250 g','Pomazánka, pečené jablko, šunková pěna'],
+ ['Bílý jogurt do 3 % tuku','asi 450 g (3 kelímky)','Zapečené těstoviny, koprová omáčka, pomazánky, nedělní svačina'],
+ ['Bílý skyr','2 × 100 g','Ovesná kaše (Po, Pá)'],
+ ['Kefír nebo acidofilní mléko','600 ml','Banánové koktejly, nedělní svačina'],
+ ['Cottage sýr','1 malé balení','Vaječné muffiny (St)'],
+ ['Eidam do 30 % tuku','100 g','Rizoto, muffiny, zapečené těstoviny'],
+ ['Mléko bez laktózy','0,5 l','Ovesná kaše, bramborová kaše'],
+ ['Máslo','1 kostka','Do hotových jídel, po lžičce'],
+]],
+['Zelenina',[
+ ['Mrkev','8 ks (asi 800 g)','Do většiny obědů a večeří a na vývar'],
+ ['Brambory','1 kg','Losos, treska, králík, pstruh'],
+ ['Petržel (kořen)','2 ks','Králík a vývar'],
+ ['Celer bulvový','1 malý','Kuličky v rajské omáčce, králík, vývar'],
+ ['Cuketa','1 malá','Losos v alobalu (Po)'],
+ ['Batát','1 malý (asi 150 g)','Pečený losos (So)'],
+ ['Čerstvý listový špenát','1 balení (asi 125 g)','Muffiny (St), pečený losos (So)'],
+ ['Zralá rajčata','2 ks','Loupaná k pomazánkám'],
+ ['Rajčatový protlak','1 malá konzerva','Krůtí kuličky (Út)'],
+ ['Mražený hrášek','malé balení','Rizoto (Út), stačí lžíce'],
+ ['Pažitka a kopr','po 1 svazku','Pomazánky, muffiny, losos, treska, pstruh'],
+ ['Citron','1 ks','Treska, pstruh, tuňáková pěna, polévka'],
+]],
+['Ovoce',[
+ ['Zralé banány','3 ks','Koktejly a nedělní svačina'],
+ ['Jablka','3 ks','Pečené jablko (Út), kompot (Ne)'],
+ ['Zralé mango','1 ks','Ovesná kaše (Po, Pá)'],
+ ['Zralé avokádo','1 ks','Tuňáková pěna (Pá)'],
+]],
+['Pečivo a přílohy',[
+ ['Toustový chléb','1 balení','Snídaně a svačiny, kůrky odkrojte'],
+ ['Jemné ovesné vločky','1 balení','Ovesná kaše, koktejly'],
+ ['Loupaná rýže','500 g','Kuličky, rizoto, kuře, polévka'],
+ ['Drobné těstoviny','1 balení (potřeba 150 g)','Kuřecí plátek (Po), zapečené těstoviny (Pá)'],
+]],
+['Na vývar',[
+ ['Kuřecí skelet nebo 2 křídla','1 ks','Asi 2 litry vývaru na celý týden'],
+]],
+];
+const PANTRY=['hladká mouka','strouhanka z bílého pečiva','sůl','olivový nebo řepkový olej','bobkový list','sušená bazalka','proteinový prášek bez příchuti, pokud ho používáte','alobal a pečicí papír','forma na muffiny'];
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const slug=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+
+/* ---------- Jídelníček ---------- */
+const todayIdx=(new Date().getDay()+6)%7;
+document.getElementById('days').innerHTML=WEEK.map(([day,meals],d)=>`
+  <article class="day${d===todayIdx?' is-today':''}" id="${slug(day)}">
+    <h3>${day}${d===todayIdx?'<span class="today">Dnes</span>':''}</h3>
+    <ol class="meals">${meals.map(([t,kind,name,r,note,cook])=>`
+      <li class="meal${kind==='Oběd'||kind==='Večeře'?' main':''}">
+        <span class="when"><b>${t}</b>${kind}</span>
+        <span class="what">${r?`<a href="index.html#recept-${r}">${esc(name)}</a>`:esc(name)}</span>
+        ${note?`<span class="note${cook?' cook':''}">${esc(note)}</span>`:''}
+      </li>`).join('')}
+    </ol>
+    <p class="drinks">Mezi jídly: voda, neslazený čaj, 200 ml nápoje s proteinovým práškem.</p>
+  </article>`).join('');
+document.getElementById('day-links').innerHTML=WEEK.map(([day])=>`<a href="#${slug(day)}">${day.slice(0,2)}</a>`).join('');
+
+/* ---------- Nákupní seznam ---------- */
+const KEY='jidelnicek-nakup-v1';
+let checked={};
+try{checked=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){checked={}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(checked))}catch(e){}};
+const shop=document.getElementById('shop');
+shop.innerHTML=SHOP.map(([g,items],gi)=>`
+  <div class="group"><h3>${g}</h3><ul>${items.map(([n,q,f],ii)=>{const id=`i${gi}-${ii}`;return`
+    <li class="item"><label><input type="checkbox" data-id="${id}"${checked[id]?' checked':''}>
+      <span><span class="name">${esc(n)}</span> · <span class="qty">${esc(q)}</span></span>
+      <span class="for">${esc(f)}</span></label></li>`}).join('')}</ul></div>`).join('')+
+  `<div class="group pantry"><h3>Pravděpodobně máte doma</h3><ul>${PANTRY.map((n,ii)=>{const id=`p-${ii}`;return`
+    <li class="item"><label><input type="checkbox" data-id="${id}"${checked[id]?' checked':''}><span class="name">${esc(n)}</span></label></li>`}).join('')}</ul></div>`;
+const boxes=[...shop.querySelectorAll('input[type=checkbox]')];
+const progress=()=>{const n=boxes.filter(b=>b.checked).length;document.getElementById('progress').textContent=`Máte ${n} z ${boxes.length} položek`};
+shop.addEventListener('change',e=>{const b=e.target;if(!b.dataset.id)return;if(b.checked)checked[b.dataset.id]=1;else delete checked[b.dataset.id];save();progress()});
+document.getElementById('reset').addEventListener('click',()=>{boxes.forEach(b=>b.checked=false);checked={};save();progress()});
+progress();
+</script>
