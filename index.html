@@ -1,3 +1,7 @@
+<!doctype html>
+<html lang="cs">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Malými lžícemi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -194,8 +198,23 @@ footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
   .recipe .art svg{max-width:420px}
   footer{grid-template-columns:1fr}
 }
+section,footer,.group,.recipe{scroll-margin-top:64px}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 @media (max-width:620px){
   body{font-size:17px}
+  nav.toc .wrap{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  nav.toc .wrap::-webkit-scrollbar{display:none}
+  .hero-art{max-width:220px;justify-self:center}
+  .search input{flex-basis:0}
+  .search button{padding:12px 14px}
+  table.foods{min-width:0}
+  .foods thead{display:none}
+  .foods tr,.foods th,.foods td{display:block;width:auto}
+  .foods tbody th{width:auto;padding-top:18px}
+  .foods td.y,.foods td.n{width:auto;border-top:0}
+  .foods td.y::before,.foods td.n::before{display:block;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:4px}
+  .foods td.y::before{content:'Vhodné';color:var(--accent)}
+  .foods td.n::before{content:'Nevhodné';color:var(--no)}
   .cols{grid-template-columns:1fr;gap:16px}
   .rules{grid-template-columns:1fr}
   .recipe .body{padding:18px}
@@ -221,19 +240,37 @@ footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
 
 <nav class="toc" aria-label="Obsah">
   <div class="wrap">
+    <a href="#poradna">Je to vhodné?</a>
     <a href="#zasady">Zásady</a>
     <a href="#dumping">Dumping</a>
     <a href="#faze">Tři fáze</a>
     <a href="#faze-1">Recepty fáze 1</a>
     <a href="#faze-2">Recepty fáze 2</a>
     <a href="#faze-3">Recepty fáze 3</a>
-    <a href="#poradna">Je to vhodné?</a>
     <a href="#potraviny">Potraviny</a>
     <a href="#zdroje">Zdroje</a>
   </div>
 </nav>
 
 <main class="wrap">
+
+  <section id="poradna">
+    <div class="sec-head">
+      <div class="eyebrow">Rychlá kontrola</div>
+      <h2>Je to vhodné?</h2>
+      <p class="muted">Napište potravinu nebo jídlo a hned uvidíte, jestli se hodí do diety po operaci žaludku. Hodnocení vychází z obou českých nemocničních letáků, doplněných zahraničními materiály.</p>
+    </div>
+    <div class="checker">
+      <label for="food-q">Co chcete sníst nebo vypít?</label>
+      <form class="search" id="food-form" role="search">
+        <input id="food-q" type="search" autocomplete="off" placeholder="např. jahody, eidam, perlivá voda" value="jogurt">
+        <button type="submit">Zjistit</button>
+      </form>
+      <div class="chips" aria-label="Příklady"><span class="muted">Zkuste:</span></div>
+      <div class="legend"><span><b class="y">Vhodné</b> můžete jíst</span><span><b class="o">Omezeně</b> jen v malém množství, podle snášenlivosti nebo s úpravou</span><span><b class="n">Nevhodné</b> raději vynechte</span></div>
+      <div class="results" id="food-results" aria-live="polite"></div>
+    </div>
+  </section>
 
   <section id="zasady">
     <div class="sec-head">
@@ -244,14 +281,18 @@ footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
     <div class="rules">
       <div class="rule"><span class="big">5–6×</span><h3>Malé porce, často</h3><p>Jezte zhruba každé 2 hodiny, přestávka by neměla být delší než 2–2,5 hodiny. Porci zvětšujte postupně podle toho, co snesete.</p></div>
       <div class="rule"><span class="big">B</span><h3>Bílkovina v každé porci</h3><p>Maso, ryba, vejce, tvaroh, jogurt, cottage. Pomáhá proteinový prášek: asi 30 g za den rozdělených do čaje, polévek, kaší a jogurtů.</p></div>
-      <div class="rule"><span class="big">45′</span><h3>Pití odděleně od jídla</h3><p>Pijte 45–60 minut před jídlem nebo po něm, ne během jídla. Neslazené a neperlivé nápoje, bez alkoholu.</p></div>
+      <div class="rule"><span class="big">45′</span><h3>Pití odděleně od jídla</h3><p>Pijte 45–60 minut před jídlem nebo po něm, ne během jídla. K jídlu nanejvýš asi 120 ml. Polévka i proteinový nápoj se počítají jako tekutina. Neslazené a neperlivé nápoje, bez alkoholu.</p></div>
       <div class="rule"><span class="big">10″</span><h3>Pomalu a v klidu</h3><p>Každé sousto důkladně rozkousejte. Při potížích se zuby maso a zeleninu umelte, nastrouhejte nebo rozmixujte.</p></div>
       <div class="rule"><span class="big">0</span><h3>Co nejméně cukru</h3><p>Sladkosti a slazené nápoje vyvolávají dumpingový syndrom. Sladkou chuť dodá zralý banán nebo jablko.</p></div>
       <div class="rule"><span class="big">≈37°</span><h3>Vlažné, ne horké ani studené</h3><p>Jídlo i nápoje podávejte spíš vlažné. Z lednice nechte jogurt nebo kefír chvíli odstát.</p></div>
       <div class="rule"><span class="big">~</span><h3>Vařit, dusit, péct v alobalu</h3><p>Nesmažte a nefritujte. Maso opečte jen krátce nasucho na nepřilnavé pánvi, podlijte vývarem a duste. Tuk přidejte až do hotového jídla.</p></div>
-      <div class="rule"><span class="big">?</span><h3>Mléko zkoušejte opatrně</h3><p>Po operaci bývá častá nesnášenlivost mléka. Lépe se snášejí kefír, acidofilní mléko, podmáslí nebo výrobky bez laktózy.</p></div>
-      <div class="rule"><span class="big">B12</span><h3>Vitaminy a minerály</h3><p>Hlídejte hlavně vitamin B12, vitamin D, železo a vápník. Doplňky proberte s lékařem.</p></div>
+      <div class="rule"><span class="big">?</span><h3>Mléko zkoušejte opatrně</h3><p>Po operaci bývá častá nesnášenlivost mléka. Vyzkoušejte nejdřív asi 120 ml. Lépe se snášejí kefír, acidofilní mléko, podmáslí, jogurt, tvrdý sýr nebo výrobky bez laktózy. Nesnášenlivost po pár měsících často zmizí.</p></div>
+      <div class="rule"><span class="big">B12</span><h3>Vitaminy a minerály</h3><p>Hlídejte hlavně vitamin B12, vitamin D, železo a vápník. Po úplném odstranění žaludku se B12 obvykle podává injekcí, například každé 3 měsíce. Často se doporučuje i denní multivitamin. Dávky určí lékař.</p></div>
+      <div class="rule"><span class="big">⏰</span><h3>Jezte podle hodin</h3><p>Pocit hladu po operaci často chybí, proto nečekejte, až přijde. Jezte podle rozvrhu, klidně si nastavte budík. Porce se časem vrátí asi na 40–80 % původní velikosti.</p></div>
+      <div class="rule"><span class="big">↑</span><h3>Po jídle vsedě</h3><p>Proti refluxu zůstaňte po jídle asi hodinu vsedě. Pokud si chcete lehnout, podložte si horní polovinu těla. Naposledy jezte 2 hodiny před spaním a noste volné oblečení.</p></div>
+      <div class="rule"><span class="big">kg</span><h3>Deník a váha</h3><p>Zapisujte si, co a kolik jste snědli a jaké potíže přišly. Važte se každé 3–5 dní ve stejnou dobu. Když hubnete, ozvěte se nutričnímu terapeutovi.</p></div>
     </div>
+    <p class="note"><b>Bezpečné skladování:</b> zbytky dejte hned do lednice a spotřebujte do 2 dnů. Rozmrazujte v lednici, ne na lince, a ohřejte, dokud se z jídla nepáří.</p>
   </section>
 
   <section id="dumping">
@@ -274,7 +315,7 @@ footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
       <div class="help">
         <span class="when">Co pomáhá</span>
         <h3>Úprava jídla</h3>
-        <ul><li>jíst často a po malých porcích</li><li>cukr omezit na minimum</li><li>pít 45–60 minut mimo jídlo</li><li>mléko a laktózu zařazovat postupně</li><li>po jídle si na chvíli lehnout</li></ul>
+        <ul><li>jíst často a po malých porcích</li><li>cukr omezit na minimum</li><li>pít 45–60 minut mimo jídlo</li><li>mléko a laktózu zařazovat postupně</li><li>rozpustná vláknina: zralý banán, ovesná kaše, jablečné pyré</li><li>na etiketě hlídat přidaný cukr (cukr, med, sirup, glukóza, fruktóza); přirozený cukr v ovoci a jogurtu nevadí, když ho jíte s bílkovinou</li><li>pozor na výrobky „bez cukru“ se sorbitolem nebo xylitolem, způsobují průjem</li><li>po jídle si na chvíli lehnout s podloženou horní polovinou těla</li></ul>
         <p style="font-size:.95rem">Když potíže neodeznívají, obraťte se na lékaře nebo nutričního terapeuta.</p>
       </div>
     </div>
@@ -289,7 +330,7 @@ footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
     <div class="phases">
       <a class="phase-card ph1" href="#faze-1"><span class="num">1</span><span class="when">Asi od 5. dne</span><h3>Tekutá a hladká strava</h3><p>Hustota jogurtového nápoje: jídlo proteče vidličkou. Krémové polévky, hladké kaše, pyré.</p><span class="go">5 receptů →</span></a>
       <a class="phase-card ph2" href="#faze-2"><span class="num">2</span><span class="when">Asi od 3. týdne</span><h3>Kaše a pyré</h3><p>Hustota bramborové kaše nebo přesnídávky. Stále mixujeme, přidáváme rybu, maso a tvaroh.</p><span class="go">6 receptů →</span></a>
-      <a class="phase-card ph3" href="#faze-3"><span class="num">3</span><span class="when">Asi od 5. týdne</span><h3>Měkká šetřící strava</h3><p>Postupně pevná jídla. Nové potraviny zkoušíme po jedné a sledujeme, jak je snášíme.</p><span class="go">30 receptů →</span></a>
+      <a class="phase-card ph3" href="#faze-3"><span class="num">3</span><span class="when">Asi od 5. týdne</span><h3>Měkká šetřící strava</h3><p>Postupně pevná jídla. Nové potraviny zkoušíme po jedné a sledujeme, jak je snášíme.</p><span class="go">35 receptů →</span></a>
     </div>
     <p class="note">Přechod mezi fázemi je u každého jiný. Řiďte se tím, jak se cítíte, a pokyny svého lékaře.</p>
   </section>
@@ -348,24 +389,6 @@ footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
     <div class="recipes" data-phase="3"></div>
   </section>
 
-  <section id="poradna">
-    <div class="sec-head">
-      <div class="eyebrow">Rychlá kontrola</div>
-      <h2>Je to vhodné?</h2>
-      <p class="muted">Napište potravinu nebo jídlo a hned uvidíte, jestli se hodí do diety po operaci žaludku. Hodnocení vychází z obou nemocničních letáků.</p>
-    </div>
-    <div class="checker">
-      <label for="food-q">Co chcete sníst nebo vypít?</label>
-      <form class="search" id="food-form" role="search">
-        <input id="food-q" type="search" autocomplete="off" placeholder="např. jahody, eidam, perlivá voda" value="jogurt">
-        <button type="submit">Zjistit</button>
-      </form>
-      <div class="chips" aria-label="Příklady"><span class="muted">Zkuste:</span></div>
-      <div class="legend"><span><b class="y">Vhodné</b> můžete jíst</span><span><b class="o">Omezeně</b> jen v malém množství, podle snášenlivosti nebo s úpravou</span><span><b class="n">Nevhodné</b> raději vynechte</span></div>
-      <div class="results" id="food-results" aria-live="polite"></div>
-    </div>
-  </section>
-
   <section id="potraviny">
     <div class="sec-head">
       <div class="eyebrow">Při nákupu</div>
@@ -387,6 +410,16 @@ footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
         <li><i>Po operaci žaludku – léčebná doporučení pro pacienty.</i> ZS Martina Kodadová, SOLF OO JIP Nemocnice Tábor a.s., 28. 2. 2018. Z tohoto letáku pochází sekaný řízek, roštěnky a rýžový nákyp s tvarohem.</li>
         <li><i>Výživa po operacích žaludku (gastrektomii).</i> Kateřina Záborská, DiS., nutriční terapeutka, Nutriční poradna Jičín, 07/2025. Odtud pochází vzorové dny, tabulka potravin a jídla, podle kterých jsou navrženy ostatní recepty.</li>
       </ul>
+      <h3>Zahraniční materiály (anglicky)</h3>
+      <ul>
+        <li><a href="https://www.cuh.nhs.uk/patient-information/eating-for-health-after-gastrectomy/" target="_blank" rel="noopener"><i>Eating for health after gastrectomy.</i></a> Cambridge University Hospitals NHS, verze 7, 2026. Jíst podle hodin, velikost porcí, vitamin B12 v injekcích, vitamin D, železo s vitaminem C, nápady na malá jídla.</li>
+        <li><a href="https://www.health.qld.gov.au/__data/assets/pdf_file/0018/154035/gastro-gastrectomy.pdf" target="_blank" rel="noopener"><i>Gastrectomy.</i></a> Queensland Health, PDF.</li>
+        <li><a href="https://www.mskcc.org/pdf/cancer-care/patient-education/eating-after-your-gastrectomy" target="_blank" rel="noopener"><i>Diet and nutrition before and after your gastrectomy.</i></a> Memorial Sloan Kettering Cancer Center, PDF, 2026. Tekutiny k jídlu, nesnášenlivost cukru, tuku a mléka, reflux, jídelní deník, skladování jídla, vzorové jídelníčky.</li>
+        <li><a href="https://ccr.cancer.gov/surgical-oncology-program/clinical-team/diet-and-nutrition-after-gastrectomy-your-plan" target="_blank" rel="noopener"><i>Diet and nutrition after gastrectomy: your plan.</i></a> National Cancer Institute, Center for Cancer Research. První fáze v 6.–8. týdnu, přidaný a přirozený cukr, čtení etiket, cukerné alkoholy, tabulka potravin.</li>
+        <li><a href="https://healthonline.washington.edu/sites/default/files/record_pdfs/Gastrectomy-Diet.pdf" target="_blank" rel="noopener"><i>Gastrectomy diet.</i></a> UW Medicine, PDF, 2021. Měkká strava, tabulka potravin, zdroje bílkovin, recepty na proteinové nápoje.</li>
+        <li><a href="https://www.regionaldigestiveconsultants.com/diets/Anti-DumpingPost-GastrectomyDiet.pdf" target="_blank" rel="noopener"><i>Anti-dumping post-gastrectomy diet.</i></a> Regional Digestive Consultants, PDF. Pravidla proti dumpingu, tabulka potravin, vzorový den.</li>
+      </ul>
+      <p>Zahraniční materiály některé rady z českých letáků doplňují. Kde se liší, například když doporučují přidávat do jídla smetanu nebo majonézu kvůli kaloriím, drží se kuchařka českých letáků.</p>
     </div>
     <div class="warn">
       <p><b>Důležité:</b> Kuchařka nenahrazuje doporučení lékaře ani nutričního terapeuta. Recepty označené „navrženo podle doporučení“ vznikly podle obou letáků a je dobré je před použitím ukázat svému nutričnímu terapeutovi. Pokud máte jiné pokyny od svého týmu, řiďte se jimi.</p>
@@ -712,6 +745,31 @@ const R=[
  ing:['3 vejce natvrdo','2 lžíce bílého jogurtu','1 lžička změklého másla','pažitka','sůl','pečivo bez kůrky, zralé loupané rajče'],
  steps:['Vejce nastrouhejte najemno.','Smíchejte je s jogurtem, máslem, pažitkou a solí.','Mažte na pečivo bez kůrky a přidejte plátky loupaného rajčete bez semínek.'],
  tip:'Pomazánka je bez majonézy a hořčice, obojí žaludek dráždí.'},
+{p:3,name:'Řecká citronová polévka s kuřecím masem',course:'Polévka',portion:'2 malé porce',time:'30 min',protein:'kuřecí maso, žloutek',
+ art:{t:'bowl',soup:'#F1DE9A',grains:1,eggwisps:1,herbs:1},
+ ing:['500 ml netučného kuřecího vývaru','40 g loupané rýže (basmati nebo arborio)','100 g vařeného kuřecího masa bez kůže','1 žloutek','šťáva z ½ citronu','sůl'],
+ steps:['Ve vývaru uvařte rýži úplně doměkka.','Přidejte kuřecí maso natrhané nebo nasekané najemno.','V misce rozšlehejte žloutek s citronovou šťávou.','Za stálého šlehání k němu po lžících přilijte naběračku teplého vývaru, aby se žloutek nesrazil.','Směs vlijte zpět do hrnce a na mírném ohni míchejte 1–2 minuty, až polévka zhoustne. Už ji nevařte.','Mírně osolte.'],
+ tip:'Polévka se počítá jako tekutina, proto ji nejezte spolu s pitím. V řecké kuchyni se jmenuje avgolemono.'},
+{p:3,name:'Pečený losos se špenátem a batátovým pyré',course:'Večeře',portion:'1 porce',time:'35 min',protein:'losos',
+ art:{items:[{k:'slab',x:124,y:88,w:64,h:36,c:C.salmon,rot:-10,lines:4},{k:'mash',x:176,y:120,r:28,c:C.pumpkin,butter:1},{k:'greens',x:116,y:136,r:22},{k:'herbs',x:124,y:86,r:14,n:5}]},
+ ing:['80–100 g filetu z lososa bez kůže','kapka citronové šťávy','100 g batátů','1 lžička másla','hrst čerstvého listového špenátu','kapka olivového oleje','sůl'],
+ steps:['Lososa osolte, pokapejte citronem, zabalte do alobalu a pečte na 180 °C asi 12–15 minut doměkka.','Batáty oloupejte, nakrájejte a vařte asi 15 minut doměkka.','Batáty rozmačkejte a máslo vmíchejte až do hotového pyré.','Špenát poduste pod pokličkou s lžící vody asi 3 minuty, až zvadne. Nasekejte ho najemno a přidejte kapku oleje.','Lososa rozdělte vidličkou na malé kousky a podávejte s pyré a špenátem.'],
+ tip:'Losos je tučnější ryba, proto stačí menší porce. Batátové pyré nesladěte.'},
+{p:3,name:'Lososové placičky s jogurtovým dipem',course:'Oběd',portion:'4 malé placičky',time:'30 min',protein:'losos, vejce, jogurt',
+ art:{items:[{k:'mash',x:112,y:92,r:22,c:'#E9A27A'},{k:'mash',x:150,y:80,r:20,c:'#E9A27A'},{k:'mash',x:128,y:130,r:21,c:'#E9A27A'},{k:'sauce',x:186,y:118,rx:26,ry:22,c:'#CFE0A8'},{k:'herbs',x:186,y:118,r:14,n:5}]},
+ ing:['1 konzerva lososa ve vlastní šťávě (asi 170 g), scezená','1 vejce','2 lžíce jemně mletých ovesných vloček','sůl, kopr','Dip: ¼ zralého avokáda, 2 lžíce bílého jogurtu do 3 % tuku, kapka citronové šťávy'],
+ steps:['Lososa rozeberte vidličkou a pečlivě odstraňte kůži a kůstky.','Smíchejte ho s vejcem, mletými vločkami, koprem a špetkou soli.','Vytvarujte 4 malé tenké placičky a položte je na plech s pečicím papírem.','Pečte na 190 °C asi 15 minut, v polovině je otočte.','Avokádo rozmačkejte s jogurtem a citronem dohladka.','Podávejte jednu placičku s lžičkou dipu, třeba s bramborovou kaší.'],
+ tip:'Placičky nesmažte. Pečené na papíře jsou stejně dobré a lehčí. Vločky rozemelete v mixéru.'},
+{p:3,name:'Vaječné muffiny s cottage a špenátem',course:'Snídaně',portion:'6 kusů',time:'30 min',protein:'vejce, cottage, sýr',
+ art:{items:[{k:'mash',x:112,y:92,r:24,c:C.egg},{k:'greens',x:112,y:92,r:10},{k:'mash',x:168,y:86,r:24,c:C.egg},{k:'greens',x:168,y:86,r:10},{k:'mash',x:140,y:138,r:24,c:C.egg},{k:'greens',x:140,y:138,r:10}]},
+ ing:['4 vejce','120 g cottage sýru','30 g eidamu do 30 % tuku, jemně nastrouhaného','hrst dušeného špenátu, vymačkaného a nasekaného','sůl, pažitka nebo petrželka'],
+ steps:['Troubu předehřejte na 175 °C a vymažte 6 důlků formy na muffiny.','Vejce rozšlehejte s cottage, eidamem, špenátem, bylinkami a špetkou soli.','Směs rozdělte do formy.','Pečte 20–22 minut, až vejce ztuhnou.','Nechte trochu vychladnout a podávejte vlažné.'],
+ tip:'Na jedno jídlo stačí jeden muffin. Každé sousto dobře rozkousejte. V lednici vydrží 2 dny.'},
+{p:3,name:'Avokádovo-tuňáková pěna',course:'Svačina',portion:'2–3 porce',time:'10 min',protein:'tuňák',
+ art:{items:[{k:'bread',x:118,y:90,w:66,h:48,rot:-8,spread:'#C3D08F'},{k:'bread',x:172,y:126,w:60,h:44,rot:10,spread:'#C3D08F'},{k:'herbs',x:172,y:126,r:16,n:8}]},
+ ing:['½ konzervy tuňáka ve vlastní šťávě, scezeného','¼–½ zralého avokáda','1 lžíce bílého jogurtu','pár kapek citronové šťávy','špetka soli','veka nebo toustový chléb bez kůrky'],
+ steps:['Avokádo rozmačkejte vidličkou.','Přidejte tuňáka, jogurt a citronovou šťávu.','Rozmixujte nebo rozmačkejte dohladka a mírně osolte.','Mažte na pečivo bez kůrky.'],
+ tip:'Tuňák z konzervy je slaný, sůl proto přidávejte opatrně. Pěnu jezte čerstvou.'},
 ];
 
 const phaseLabel={1:'Fáze 1',2:'Fáze 2',3:'Fáze 3'};
@@ -812,6 +870,10 @@ const DB=[
 ['uzená ryba|uzená makrela|uzený losos','n','Ryby','Uzené ryby jsou tučné a slané.','J','dušený losos v malé porci'],
 ['rybí konzerva|sardinky|sardinky v oleji|tuňák v oleji','n','Ryby','Konzervy v oleji jsou tučné a slané.','Z','dušené rybí filé'],
 ['rybí prsty|obalovaná ryba|smažená ryba|smažený kapr','n','Ryby','Smažené a obalované ryby nejsou vhodné.','J','ryba pečená v alobalu'],
+['tuňák|tuňák ve vlastní šťávě|tuňák konzerva|tuňák v konzervě','o','Ryby','Jen ve vlastní šťávě a scezený. Konzervy jsou slané, jezte menší porci.','W','dušená treska'],
+['losos v konzervě|lososová konzerva|konzervovaný losos','o','Ryby','Ve vlastní šťávě, bez kůže a kůstek. Hodí se na pečené placičky.','W'],
+['krevety|krab|humr|garnáty','o','Ryby','Jen dobře uvařené a nakrájené nadrobno. Zkoušejte opatrně.','W','treska'],
+['mušle|slávky|ústřice|kalamáry|chobotnice|sépie|plody moře','n','Ryby','Tuhé a gumové, špatně se kousají i tráví.','W','treska nebo pstruh'],
 /* uzeniny */
 ['šunka|dušená šunka|kuřecí šunka|krůtí šunka','y','Uzeniny','Jen šunka nejvyšší jakosti.','J'],
 ['šunkový salám','y','Uzeniny','Kvalitní šunkový salám je vhodný.','J'],
@@ -834,6 +896,8 @@ const DB=[
 ['žervé|lučina|palouček|čerstvý sýr|ricotta|tvarohový sýr','y','Mléčné výrobky','Čerstvé sýry jsou vhodné.','J'],
 ['eidam|sýr|sýry|eidam 30|gouda 30|tvrdý sýr|plátkový sýr','y','Mléčné výrobky','Vhodný je tvrdý sýr do 30 % tuku v sušině. Tučnější sýry vynechte.','J'],
 ['tavený sýr|sýr v trojúhelníku|lipánek sýr','y','Mléčné výrobky','Tavený sýr do 30 % tuku v sušině.','J'],
+['rostlinné mléko|sójové mléko|mandlové mléko|rýžové mléko|ovesné mléko','o','Mléčné výrobky','Jen neslazené. Hodí se jako náhrada mléka, když nesnášíte laktózu.','W','mléko bez laktózy'],
+['sušené mléko','o','Mléčné výrobky','Obohatí kaši o bílkovinu, ale obsahuje laktózu. Zkoušejte, jen když mléko snášíte.','C','proteinový prášek'],
 ['mozzarella','o','Mléčné výrobky','Čerstvý sýr. Vybírejte light verzi a jezte v malém množství.','Z','cottage nebo lučina'],
 ['mléko|kravské mléko|polotučné mléko|plnotučné mléko','o','Mléčné výrobky','Po operaci je častá nesnášenlivost mléka. Zkoušejte ho postupně a v malém množství.','J','mléko bez laktózy nebo kefír'],
 ['mléko bez laktózy|bezlaktózové mléko|laktose free','y','Mléčné výrobky','Hodí se na kaše i do vaření, když mléko nesnášíte.','Z'],
@@ -847,7 +911,7 @@ const DB=[
 ['pudink|puding','o','Mléčné výrobky','Jen s minimem cukru a z mléka, které snášíte.','T','tvaroh s ovocným pyré'],
 ['zmrzlina|nanuk|mražený jogurt','n','Sladkosti','Studená a sladká. Může vyvolat dumpingový syndrom.','Z','vlažný tvaroh s banánem'],
 /* vejce */
-['vejce|vařené vejce|vejce natvrdo|vejce naměkko','y','Vejce','Vejce vařená nebo jako součást pokrmů.','J'],
+['vejce|žloutek|bílek|vařené vejce|vejce natvrdo|vejce naměkko','y','Vejce','Vejce vařená nebo jako součást pokrmů.','J'],
 ['míchaná vejce|míchaná vajíčka|vaječná omeleta na páře','y','Vejce','Jen připravená na páře nebo vodní lázni, ne smažená.','T'],
 ['smažené vejce|volské oko|vejce na slanině|hemenex','n','Vejce','Smažená vejce nejsou vhodná.','J','vejce natvrdo nebo míchaná na páře'],
 ['majonéza|tatarská omáčka|tatarka|remuláda','n','Omáčky','Tučné a dráždivé.','J','bílý jogurt s bylinkami'],
@@ -857,7 +921,7 @@ const DB=[
 ['rostlinné máslo|rama|flora|perla|margarín','y','Tuky','Rostlinná másla v malém množství.','J'],
 ['sádlo|lůj|ztužený tuk|fritovací tuk|přepálený tuk','n','Tuky','Přepálené a živočišné tuky nejsou vhodné.','J','máslo nebo olej do hotového jídla'],
 /* polévky */
-['vývar|hovězí vývar|kuřecí vývar|zeleninový vývar|vývar z kosti','y','Polévky','Netučný vývar je základ šetřící kuchyně.','J'],
+['vývar|hovězí vývar|kuřecí vývar|zeleninový vývar|vývar z kosti|kostní vývar|bone broth','y','Polévky','Netučný vývar je základ šetřící kuchyně.','J'],
 ['zeleninová polévka|mrkvová polévka|dýňová polévka|krémová polévka','y','Polévky','Z povolené zeleniny, nejlépe lisovaná nebo mixovaná.','J'],
 ['bramborová polévka|bramboračka','y','Polévky','Vhodná bez hub a smetany.','T'],
 ['rajská polévka|rajčatová polévka','y','Polévky','Z protlaku nebo loupaných rajčat, bez octa.','T'],
@@ -868,7 +932,7 @@ const DB=[
 ['houbová polévka|kulajda|bramboračka s houbami','n','Polévky','Houby a smetana nejsou vhodné.','J','bramborová polévka bez hub'],
 ['instantní polévka|polévka ze sáčku|bujón|bujon|masox|kostka|maggi','n','Koření','Instantní bujóny a sáčkové polévky jsou slané a obsahují dráždivé přísady.','J','domácí netučný vývar'],
 /* přílohy */
-['rýže|bílá rýže|loupaná rýže|basmati','y','Přílohy','Vhodná příloha, vařená doměkka.','J'],
+['rýže|bílá rýže|loupaná rýže|basmati|arborio|rizotová rýže','y','Přílohy','Vhodná příloha, vařená doměkka.','J'],
 ['brambory|vařené brambory|brambor|vařený brambor','y','Přílohy','Vařené brambory jsou vhodné.','J'],
 ['bramborová kaše|kaše','y','Přílohy','Vhodná příloha, lehce stravitelná.','J'],
 ['těstoviny|nudle|špagety|kolínka|vřetena','y','Přílohy','Bílé těstoviny uvařené doměkka.','J'],
@@ -878,6 +942,11 @@ const DB=[
 ['kuskus','y','Přílohy','Lehká obilná příloha.','J'],
 ['jáhly|jáhlová kaše','y','Přílohy','Vhodné, nejlépe jako kaše.','J'],
 ['ovesné vločky|ovesná kaše|vločky|porridge','y','Přílohy','Jemné vločky jsou vhodné, v 1. a 2. fázi mixované.','J'],
+['ovesná mouka|mleté vločky|mleté ovesné vločky','y','Přílohy','Jemná mouka do placiček, kaší a zahušťování.','Z'],
+['mandlová mouka','o','Přílohy','Jemně mletá, ale tučná. Celé mandle nejsou vhodné.','Z','ovesná mouka'],
+['müsli|granola|cereálie se sušeným ovocem|křupavé müsli','n','Přílohy','Obsahuje sušené ovoce, ořechy, semínka a často cukr.','N','ovesná kaše'],
+['kukuřičné lupínky|cornflakes|rýžové křupky|cereálie','o','Přílohy','Jen neslazené a namočené v mléce nebo jogurtu. Jezte je s bílkovinou.','W','ovesná kaše'],
+['quinoa|quinoa kaše','o','Přílohy','Obsahuje hodně vlákniny. Zkoušejte až v pozdější fázi.','N','kuskus'],
 ['krupice|krupicová kaše|dětská krupice','y','Přílohy','Vhodná na kaše a do polévek.','J'],
 ['kroupy|krupky|pohanka|bulgur','o','Přílohy','Jen lisované krupky a kroupy, dobře uvařené.','J','rýže nebo jáhly'],
 ['hranolky|krokety|bramboráky|americké brambory|opékané brambory|chipsy|brambůrky','n','Přílohy','Smažené a fritované přílohy nejsou vhodné.','J','vařené brambory nebo bramborová kaše'],
@@ -895,6 +964,7 @@ const DB=[
 /* luštěniny */
 ['čočka|fazole|hrách|cizrna|sója|sójové boby|luštěniny|edamame','n','Luštěniny','Luštěniny nadýmají.','J','bramborová kaše nebo rýže'],
 ['tofu','o','Luštěniny','Ze sóji, v letácích není. Zkoušejte opatrně a v malém množství.','Z','tvaroh nebo vejce'],
+['hummus|cizrnová pomazánka','o','Luštěniny','Jemný hummus zkoušejte jen v malém množství. Luštěniny nadýmají a hummus bývá s česnekem.','W','tvarohová pomazánka'],
 /* zelenina */
 ['mrkev|karotka','y','Zelenina','Vařená, dušená nebo jemně strouhaná.','J'],
 ['celer|celer bulvový|řapíkatý celer','y','Zelenina','Malé množství do polévek nebo tepelně upravený.','J'],
@@ -919,6 +989,7 @@ const DB=[
 ['pórek','n','Zelenina','Nadýmá.','Z','mrkev nebo celer'],
 ['houby|žampiony|hříbky|shiitake','n','Zelenina','Houby se špatně tráví.','J'],
 ['kukuřice|kukuřičná zrna','n','Zelenina','Tvrdé slupky zrn mechanicky dráždí.','Z'],
+['zelené fazolky|fazolové lusky|červená řepa|řepa','o','Zelenina','Jen dobře uvařené doměkka a v malém množství.','W','mrkev'],
 ['syrová zelenina|zeleninový salát|mrkvový salát','o','Zelenina','Jen jemně nastrouhaná povolená zelenina, v pozdější fázi.','T','dušená zelenina'],
 /* ovoce */
 ['jablko|jablka','y','Ovoce','Zralé, bez slupky. Pomáhá předcházet dumpingovému syndromu.','T'],
@@ -926,6 +997,11 @@ const DB=[
 ['broskev|broskve|nektarinka','y','Ovoce','Zralá a loupaná.','J'],
 ['meruňka|meruňky','y','Ovoce','Zralé a loupané.','J'],
 ['mango','y','Ovoce','Zralé a měkké.','J'],
+['avokádo|guacamole','o','Ovoce','Zralé a rozmačkané, v malém množství, protože je tučné. Guacamole jen bez česneku a chilli.','W'],
+['meloun|cukrový meloun|vodní meloun|žlutý meloun','o','Ovoce','Zralý a bez semínek, v malém množství a spolu s bílkovinou.','N','zralý banán'],
+['papája|papaya','o','Ovoce','Zralá, loupaná a bez semínek.','W'],
+['pomeranč|mandarinka|grep|citrusy|pomelo','n','Ovoce','Kyselé a s tuhými blánami. Citronová šťáva na dochucení vadí méně.','D','zralá broskev'],
+['ananas|granátové jablko|granátové jablko zrníčka','n','Ovoce','Vláknité a se zrníčky.','W','zralé mango'],
 ['hruška|hrušky','n','Ovoce','Syrové hrušky nejsou vhodné.','J','zralé jablko'],
 ['třešně|višně','n','Ovoce','Nevhodné, slupka a pecky.','T','zralá broskev'],
 ['jahody|jahoda|maliny|malina|borůvky|borůvka|ostružiny|brusinky|rybíz|angrešt|jeřabiny|lesní ovoce','n','Ovoce','Drobná zrníčka a tuhé slupky mechanicky dráždí.','J','meruňka nebo mango'],
@@ -935,16 +1011,20 @@ const DB=[
 ['datle|datle sušené|datlový sirup|datlové kuličky|medjool','n','Ovoce','Datle jsou sušené ovoce s velmi vysokým obsahem cukru, který vyvolává dumpingový syndrom. Jsou lepivé, vláknité a mají tuhou slupku.','T','zralý banán nebo zralé jablko'],
 ['ořechy|vlašské ořechy|lískové ořechy|arašídy|mandle|kešu|burské oříšky','n','Ovoce','Tvrdé kousky mechanicky dráždí.','J'],
 ['semínka|lněné semínko|chia|slunečnicová semínka|dýňová semínka|sezam','n','Ovoce','Semínka a zrníčka dráždí.','J'],
+['arašídové máslo|burákové máslo|mandlové máslo|oříškové máslo|ořechové máslo','o','Ovoce','Jen hladké a bez cukru, lžička, nejlépe rozmixovaná v koktejlu. Celé ořechy vhodné nejsou.','M'],
+['popcorn|kokos|strouhaný kokos|kokosové chipsy','n','Sladkosti','Tvrdé a vláknité kousky mechanicky dráždí.','D'],
 ['kompot|kompoty','o','Ovoce','Kupované kompoty obsahují hodně cukru. Domácí bez cukru ze zralého ovoce je vhodný.','J','domácí jablečný kompot bez cukru'],
 ['ovocná přesnídávka|přesnídávka|jablečné pyré','y','Ovoce','Vhodná bez přidaného cukru.','T'],
 ['džem|marmeláda|povidla','n','Sladkosti','Hodně cukru a často zrníčka.','J','ovocné pyré bez cukru'],
 /* sladkosti */
 ['cukr|třtinový cukr','n','Sladkosti','Cukr vyvolává dumpingový syndrom. Omezte ho na minimum.','T','zralé ovoce'],
 ['med','n','Sladkosti','Med je také jednoduchý cukr a může vyvolat dumpingový syndrom.','Z','zralý banán'],
-['čokoláda|bonbony|sladkosti|tyčinka|lízátko|nutella','n','Sladkosti','Cukr a tuk vyvolávají dumpingový syndrom.','T','banán nebo jablko'],
+['čokoláda|bonbony|karamely|lékořice|sladkosti|tyčinka|lízátko|nutella','n','Sladkosti','Cukr a tuk vyvolávají dumpingový syndrom.','T','banán nebo jablko'],
 ['dort|dorty|šlehačkový dort|máslový krém|zákusek|zákusky','n','Sladkosti','Máslové krémy a šlehačka nejsou vhodné.','T','rýžový nákyp s tvarohem'],
 ['sladké sušenky|oplatky|perník','n','Sladkosti','Obsahují hodně cukru.','Z','slané netučné sušenky'],
-['umělé sladidlo|sladidlo|stévie','o','Sladkosti','V letácích není. Malé množství obvykle nevadí, ale sladké chutě je lepší omezit.','Z'],
+['umělé sladidlo|sladidlo|stévie','o','Sladkosti','Stévie, sukralóza a aspartam dumping nevyvolávají, malé množství obvykle nevadí. Sladké chutě je ale lepší omezit. Pozor na sorbitol, xylitol a erytritol, ty způsobují průjem.','N'],
+['sorbitol|xylitol|erytritol|mannitol|žvýkačky bez cukru|bonbony bez cukru|cukerné alkoholy','n','Sladkosti','Cukerné alkoholy způsobují nadýmání a průjem. Najdete je ve výrobcích „bez cukru“.','N','malé množství stévie'],
+['želé bez cukru|želatina|dietní želé','o','Sladkosti','Jen bez cukru.','D'],
 /* koření */
 ['sůl','o','Koření','Solte mírně. Jídlo nemá být příliš slané.','J'],
 ['pepř|chilli|chili|kari|curry|pálivá paprika|kajenský pepř','n','Koření','Pikantní a dráždivé koření.','J','zelené bylinky'],
@@ -971,6 +1051,9 @@ const DB=[
 ['černý čaj|zelený čaj','y','Nápoje','Vhodný, spíše slabší a vlažný.','J'],
 ['káva|zrnková káva|espresso|turek|instantní káva','n','Nápoje','Zrnková káva dráždí.','J','kávovinový nápoj'],
 ['bílá káva|kávovinový nápoj|melta|caro|cikorka|obilná káva','y','Nápoje','Kávovinové nápoje jsou vhodné, s mlékem jen pokud ho snášíte.','J'],
+['bezkofeinová káva|decaf|káva bez kofeinu','o','Nápoje','Slabá a vlažná, mimo jídlo. Zrnkovou kávu s kofeinem raději vynechte.','N','kávovinový nápoj'],
+['kakao|neslazené kakao','o','Nápoje','Jen neslazené, v malém množství a s mlékem, které snášíte.','N'],
+['horká čokoláda|kakao s cukrem|granko|kakaový nápoj','n','Nápoje','Obsahuje hodně cukru, který vyvolává dumping.','M','neslazené kakao v malém množství'],
 ['džus|ovocná šťáva|100% džus|pomerančový džus','o','Nápoje','Přírodní šťávy jen ředěné vodou. Neředěné džusy obsahují hodně cukru.','T','šťáva ředěná vodou 1:3'],
 ['sirup|šťáva ze sirupu|ledový čaj|ice tea|energetický nápoj|red bull','n','Nápoje','Hodně cukru nebo kofeinu.','J','neslazený čaj'],
 ['alkohol|pivo|víno|nealkoholické pivo|pálenka|slivovice|rum|vodka|prosecco|šampaňské','n','Nápoje','Alkohol je po operaci žaludku nevhodný. Nealkoholické pivo je perlivé.','J'],
@@ -981,7 +1064,7 @@ const DB=[
 ['smažení|smažené|fritování|fritované|friťák','n','Úprava','Smažení a fritování jsou nevhodné.','J','pečení v alobalu nebo dušení'],
 ['pečené|pečení|zapékání|zapečené','o','Úprava','Pečení v alobalu nebo pod poklicí je vhodné, bez tvrdé kůrky.','J'],
 ];
-const SRC={J:'Nutriční poradna Jičín',T:'Nemocnice Tábor',Z:'odvozeno z obecných zásad, ověřte u terapeuta'};
+const SRC={J:'Nutriční poradna Jičín',T:'Nemocnice Tábor',Z:'odvozeno z obecných zásad, ověřte u terapeuta',C:'CUH NHS Cambridge',M:'Memorial Sloan Kettering',N:'National Cancer Institute',W:'UW Medicine',D:'Regional Digestive Consultants'};
 const VERD={y:'Vhodné',o:'Omezeně',n:'Nevhodné'};
 const norm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9% ]/g,' ').replace(/\s+/g,' ').trim();
 const stem=w=>w.length>5?w.slice(0,w.length-2):w.length>4?w.slice(0,w.length-1):w;
@@ -1022,7 +1105,7 @@ function render(raw){
 (function(){
   const inp=document.getElementById('food-q');
   const chips=document.querySelector('#poradna .chips');
-  ['banán','jahody','eidam','perlivá voda','hrášek','losos','čočka','káva'].forEach(t=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.addEventListener('click',()=>{inp.value=t;render(t);inp.focus()});chips.append(b)});
+  ['banán','avokádo','jahody','eidam','perlivá voda','hrášek','losos','čočka','káva'].forEach(t=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.addEventListener('click',()=>{inp.value=t;render(t);inp.focus()});chips.append(b)});
   document.getElementById('food-form').addEventListener('submit',e=>{e.preventDefault();render(inp.value)});
   inp.addEventListener('input',()=>render(inp.value));
   render(inp.value);
