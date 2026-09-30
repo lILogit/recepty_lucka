@@ -144,6 +144,27 @@ section{padding-block:56px 8px}
 .index li a:hover{border-color:var(--accent)}
 .tip{background:var(--accent-soft);border-radius:10px;padding:10px 14px;font-size:.98rem}
 .tip b{color:var(--accent)}
+.feedback{display:flex}
+.feedback:has(.like[hidden]){display:none}
+.like{font:inherit;font-weight:700;display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;border:2px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.like .heart{color:var(--no);font-size:1.15em;line-height:1}
+.like[aria-pressed="true"]{background:var(--no-soft);border-color:var(--no)}
+.like:disabled{opacity:.6;cursor:default}
+.comment{display:grid;gap:12px;max-width:44em;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+.comment .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.comment label{display:grid;gap:3px;font-size:.9rem;color:var(--muted)}
+.comment input,.comment textarea{font:inherit;font-size:1rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;width:100%}
+.comment textarea{min-height:140px;resize:vertical}
+.comment input:focus,.comment textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.comment .hp{position:absolute;left:-9999px}
+.comment .status{margin:0;font-size:.88rem;color:var(--muted)}
+.comment .status.err{color:var(--no)}
+.comment .status.ok{color:var(--accent);font-weight:700}
+.comment .send{justify-self:start;font:inherit;font-weight:700;padding:9px 18px;border-radius:12px;border:0;background:var(--accent);color:var(--surface);cursor:pointer}
+.comment .send:disabled{opacity:.6;cursor:default}
+@media (max-width:620px){.comment .row{grid-template-columns:1fr}.comment{padding:16px}}
+@media print{.feedback,#komentar{display:none}}
 
 /* ---------- Foods ---------- */
 .foods-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
@@ -249,6 +270,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     <a href="#faze-3">Recepty fáze 3</a>
     <a href="jidelnicek.html"><b>Jídelníček na týden</b></a>
     <a href="#potraviny">Potraviny</a>
+    <a href="#komentar">Napište nám</a>
     <a href="#zdroje">Zdroje</a>
   </div>
 </nav>
@@ -405,6 +427,22 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     </div>
   </section>
 
+  <section id="komentar">
+    <div class="sec-head">
+      <div class="eyebrow">Zpětná vazba</div>
+      <h2>Napište nám</h2>
+      <p class="muted">Máte zkušenost s recepty, nápad nebo připomínku ke kuchařce? Komentář přijde e-mailem autorce, na webu se nezveřejní.</p>
+    </div>
+    <form class="comment" novalidate>
+      <div class="row"><label>Jméno (nepovinné)<input name="name" maxlength="80" autocomplete="name"></label>
+      <label>E-mail pro odpověď (nepovinný)<input name="email" type="email" maxlength="120" autocomplete="email"></label></div>
+      <label>Komentář<textarea name="message" required maxlength="2000"></textarea></label>
+      <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="send" type="submit">Odeslat</button>
+      <p class="status" role="status"></p>
+    </form>
+  </section>
+
   <footer id="zdroje">
     <div>
       <h3>Zdroje</h3>
@@ -430,6 +468,11 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 </main>
 
 <script>
+/* ================= Komentáře a lajky ================= */
+const WEB3FORMS_KEY='48e8debe-99bb-4433-bb19-8f021158b925';      // přístupový klíč z web3forms.com
+const FIREBASE_CONFIG=null;  // {apiKey, authDomain, projectId, appId} z konzole Firebase
+const slug=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+
 /* ================= Illustrations ================= */
 const NS='http://www.w3.org/2000/svg';
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -842,9 +885,64 @@ R.forEach((x,i)=>{
   <h3>${x.name}</h3>
   <div class="cols"><div><h4>Suroviny</h4><ul class="ing">${x.ing.map(s=>`<li>${s}</li>`).join('')}</ul></div>
   <div><h4>Postup</h4><ol class="steps">${x.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div></div>
-  <p class="tip"><b>Tip:</b> ${x.tip}</p>`;
+  <p class="tip"><b>Tip:</b> ${x.tip}</p>
+  <div class="feedback">
+    <button type="button" class="like" aria-pressed="false" hidden><span class="heart" aria-hidden="true">♡</span><span class="sr">Líbí se mi</span> <span class="n"></span></button>
+  </div>`;
+  a.dataset.key=slug(x.name);
   a.append(art,body);host.append(a);
 });
+
+/* ---------- Komentáře (Web3Forms) ---------- */
+document.addEventListener('submit',async e=>{
+  const f=e.target;if(!f.matches('form.comment'))return;
+  e.preventDefault();
+  const st=f.querySelector('.status'),btn=f.querySelector('button[type=submit]');
+  const say=(t,c)=>{st.textContent=t;st.className='status'+(c?' '+c:'')};
+  const d=Object.fromEntries(new FormData(f));
+  if(!d.message.trim())return say('Napište prosím komentář.','err');
+  if(d.email&&!f.email.checkValidity())return say('E-mail nevypadá správně.','err');
+  if(!WEB3FORMS_KEY)return say('Odesílání komentářů zatím není nastavené.','err');
+  btn.disabled=true;say('Odesílám…');
+  try{
+    const res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({access_key:WEB3FORMS_KEY,subject:'Komentář ke kuchařce Malými lžícemi',from_name:'Malými lžícemi',
+        name:d.name||'Anonym',email:d.email||undefined,message:d.message,botcheck:!!d.botcheck})});
+    const j=await res.json().catch(()=>({}));
+    if(!res.ok||j.success===false)throw new Error(j.message||res.status);
+    f.reset();say('Děkujeme, komentář byl odeslán.','ok');
+  }catch(err){say('Komentář se nepodařilo odeslat. Zkuste to prosím později.','err')}
+  finally{btn.disabled=false}
+});
+
+/* ---------- Lajky (Firebase Firestore) ---------- */
+(async function(){
+  if(!FIREBASE_CONFIG)return;
+  const V='https://www.gstatic.com/firebasejs/10.14.1/';
+  let fs,db;
+  try{
+    const app=await import(V+'firebase-app.js');
+    fs=await import(V+'firebase-firestore.js');
+    db=fs.getFirestore(app.initializeApp(FIREBASE_CONFIG));
+  }catch(err){return}
+  let liked={};
+  try{liked=JSON.parse(localStorage.getItem('likes')||'{}')||{}}catch(err){}
+  const save=()=>{try{localStorage.setItem('likes',JSON.stringify(liked))}catch(err){}};
+  const counts={};
+  try{(await fs.getDocs(fs.collection(db,'likes'))).forEach(d=>counts[d.id]=d.data().n||0)}catch(err){return}
+  const paint=(b,k)=>{const on=!!liked[k];b.setAttribute('aria-pressed',on);b.querySelector('.heart').textContent=on?'♥':'♡';b.querySelector('.n').textContent=counts[k]||''};
+  document.querySelectorAll('.recipe').forEach(a=>{
+    const b=a.querySelector('.like'),k=a.dataset.key;
+    paint(b,k);b.hidden=false;
+    b.addEventListener('click',async()=>{
+      const d=liked[k]?-1:1;
+      liked[k]=d>0;counts[k]=Math.max(0,(counts[k]||0)+d);paint(b,k);b.disabled=true;
+      try{await fs.setDoc(fs.doc(db,'likes',k),{n:fs.increment(d)},{merge:true});save()}
+      catch(err){liked[k]=d<0;counts[k]=Math.max(0,(counts[k]||0)-d);paint(b,k)}
+      finally{b.disabled=false}
+    });
+  });
+})();
 /* rejstřík fáze 3 */
 (function(){
   const idx=document.createElement('nav');idx.className='index';idx.setAttribute('aria-label','Rejstřík receptů fáze 3');
