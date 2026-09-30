@@ -329,9 +329,9 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
       <p class="muted">Recepty v kuchařce jsou řazené podle fází. V každé kapitole najdete i vzorový den od nutriční terapeutky.</p>
     </div>
     <div class="phases">
-      <a class="phase-card ph1" href="#faze-1"><span class="num">1</span><span class="when">Asi od 5. dne</span><h3>Tekutá a hladká strava</h3><p>Hustota jogurtového nápoje: jídlo proteče vidličkou. Krémové polévky, hladké kaše, pyré.</p><span class="go">5 receptů →</span></a>
-      <a class="phase-card ph2" href="#faze-2"><span class="num">2</span><span class="when">Asi od 3. týdne</span><h3>Kaše a pyré</h3><p>Hustota bramborové kaše nebo přesnídávky. Stále mixujeme, přidáváme rybu, maso a tvaroh.</p><span class="go">6 receptů →</span></a>
-      <a class="phase-card ph3" href="#faze-3"><span class="num">3</span><span class="when">Asi od 5. týdne</span><h3>Měkká šetřící strava</h3><p>Postupně pevná jídla. Nové potraviny zkoušíme po jedné a sledujeme, jak je snášíme.</p><span class="go">35 receptů →</span></a>
+      <a class="phase-card ph1" href="#faze-1"><span class="num">1</span><span class="when">Asi od 5. dne</span><h3>Tekutá a hladká strava</h3><p>Hustota jogurtového nápoje: jídlo proteče vidličkou. Krémové polévky, hladké kaše, pyré.</p><span class="go">6 receptů →</span></a>
+      <a class="phase-card ph2" href="#faze-2"><span class="num">2</span><span class="when">Asi od 3. týdne</span><h3>Kaše a pyré</h3><p>Hustota bramborové kaše nebo přesnídávky. Stále mixujeme, přidáváme rybu, maso a tvaroh.</p><span class="go">10 receptů →</span></a>
+      <a class="phase-card ph3" href="#faze-3"><span class="num">3</span><span class="when">Asi od 5. týdne</span><h3>Měkká šetřící strava</h3><p>Postupně pevná jídla. Nové potraviny zkoušíme po jedné a sledujeme, jak je snášíme.</p><span class="go">40 receptů →</span></a>
     </div>
     <p class="note">Přechod mezi fázemi je u každého jiný. Řiďte se tím, jak se cítíte, a pokyny svého lékaře.</p>
   </section>
@@ -772,6 +772,58 @@ const R=[
  ing:['½ konzervy tuňáka ve vlastní šťávě, scezeného','¼–½ zralého avokáda','1 lžíce bílého jogurtu','pár kapek citronové šťávy','špetka soli','veka nebo toustový chléb bez kůrky'],
  steps:['Avokádo rozmačkejte vidličkou.','Přidejte tuňáka, jogurt a citronovou šťávu.','Rozmixujte nebo rozmačkejte dohladka a mírně osolte.','Mažte na pečivo bez kůrky.'],
  tip:'Tuňák z konzervy je slaný, sůl proto přidávejte opatrně. Pěnu jezte čerstvou.'},
+
+/* ---------- Další recepty (recepty.md) ---------- */
+{p:1,name:'Zeleninová polévka s rýží',course:'Polévka',portion:'2 malé porce',time:'35 min',protein:'proteinový prášek',
+ art:{t:'bowl',soup:'#F0B45E',swirl:'#FBE7C7',herbs:1},
+ ing:['1 mrkev','100 g dýně hokkaido','1 menší brambora','2 lžíce loupané rýže','400 ml netučného zeleninového vývaru','1 odměrka proteinového prášku bez příchuti','1 lžička másla','sůl, jemně nasekaná zelená petrželka'],
+ steps:['Zeleninu oloupejte a nakrájejte na kostičky.','S propláchnutou rýží ji vařte ve vývaru úplně doměkka, asi 25 minut.','Rozmixujte dohladka a přeceďte. Rýže polévku jemně zahustí.','Nařeďte vývarem, až polévka proteče vidličkou.','Do vlažné polévky vmíchejte protein, máslo a petrželku.'],
+ tip:'Květák a hrášek do polévky nedávejte, nadýmají. Dýně a mrkev jsou šetrnější.'},
+{p:2,name:'Krémová kuřecí polévka s mrkví',course:'Polévka',portion:'2 malé porce',time:'40 min',protein:'kuřecí maso, jogurt',
+ art:{t:'bowl',soup:'#F2B36A',swirl:'#FBE7C7',curd:1},
+ ing:['80 g kuřecích prsou bez kůže','2 mrkve','kousek petržele a celeru','1 menší brambora','400 ml vody nebo netučného vývaru','špetka mletého kmínu','sůl','1 lžička másla','2 lžíce bílého jogurtu do 3 % tuku'],
+ steps:['Maso a oloupanou zeleninu zalijte vodou, přidejte kmín a sůl a vařte doměkka, asi 30 minut.','Vývar slijte stranou.','Maso a zeleninu rozmixujte dohladka a vývarem nařeďte do hustoty krémové polévky.','Do vlažné polévky vmíchejte máslo a jogurt.'],
+ tip:'Místo smetany je zde jogurt. Ve fázi 3 můžete polévku jíst i s jemnými nudlemi nebo kapáním.'},
+{p:2,name:'Bramborová kaše s vejcem',course:'Večeře',portion:'1 porce',time:'25 min',protein:'vejce',
+ art:{items:[{k:'mash',x:148,y:100,r:54,c:C.potato,butter:1},{k:'eggGrated',x:148,y:98,r:30},{k:'herbs',x:148,y:100,r:36,n:10}]},
+ ing:['150 g brambor','1 vejce natvrdo','50 ml mléka bez laktózy nebo vývaru','1 lžička másla','sůl','jemně nasekaná pažitka'],
+ steps:['Brambory oloupejte a uvařte doměkka v osolené vodě.','Sceďte, prolisujte a s teplým mlékem nebo vývarem vyšlehejte na hladkou kaši.','Vejce nastrouhejte najemno a vmíchejte do kaše.','Máslo přidejte až na závěr a posypte pažitkou.'],
+ tip:'Vejce je v kaši hlavní zdroj bílkovin, proto ho sníte jako první.'},
+{p:2,name:'Ovesná kaše s pečeným jablkem a skořicí',course:'Snídaně',portion:'1 porce',time:'15 min',protein:'tvaroh',
+ art:{t:'bowl',soup:'#EADBB8',swirl:'#E8B55B',curd:1},
+ ing:['30 g jemných ovesných vloček','200 ml vody nebo mléka bez laktózy','1 zralé jablko','50 g měkkého tvarohu','špetka skořice','1 lžička másla'],
+ steps:['Jablko oloupejte, nakrájejte a poduste s lžící vody doměkka, nebo ho upečte. Rozmačkejte na pyré.','Vločky vařte za míchání asi 5 minut, až zhoustnou.','Kaši rozmixujte dohladka.','Po mírném vychladnutí vmíchejte tvaroh, máslo, jablečné pyré a skořici.'],
+ tip:'Vločky a jablko obsahují rozpustnou vlákninu, která zpomaluje průchod jídla a pomáhá proti dumpingu. Kaši neslaďte.'},
+{p:2,name:'Výživný mléčný koktejl',course:'Svačina',portion:'1 porce',time:'5 min',protein:'tvaroh, proteinový prášek',
+ art:{t:'glass',c:'#F6EFDD',top:52,slice:1},
+ ing:['150 ml mléka bez laktózy nebo kefíru','80 g měkkého tvarohu','¼–½ zralého banánu','1 odměrka proteinového prášku, pokud ho používáte'],
+ steps:['Všechno rozmixujte dohladka.','Nechte odstát, až nebude studený z lednice.','Pijte pomalu po doušcích, ne na jeden zátah.'],
+ tip:'Hodí se ve dnech, kdy se vám nechce jíst. Med ani cukr nepřidávejte, vyvolávají dumping. Koktejl se počítá jako jídlo, ne jako pití.'},
+{p:3,name:'Kuřecí nákyp s mrkvovým pyré',course:'Oběd',portion:'2 porce',time:'40 min',protein:'kuřecí maso, vejce',
+ art:{items:[{k:'slab',x:122,y:92,w:70,h:44,c:C.chicken,rot:-6,lines:0},{k:'mash',x:182,y:118,r:30,c:'#F09A4D',butter:1},{k:'herbs',x:122,y:90,r:20,n:6}]},
+ ing:['200 g mletého kuřecího masa','1 vejce','2 lžíce strouhanky','2 lžíce mléka bez laktózy nebo vývaru','sůl','máslo na vymazání','Pyré: 2 mrkve, 1 lžička másla, trocha vývaru'],
+ steps:['Maso smíchejte s vejcem, strouhankou, mlékem a solí.','Směs dejte do formy vymazané máslem.','Zakryjte alobalem, aby nákyp neoschl, a pečte na 180 °C asi 25 minut.','Mrkev uvařte doměkka a rozmixujte s máslem a trochou vývaru na pyré.','Nákyp podávejte vlažný s pyré.'],
+ tip:'Nákyp je velmi jemný a dobře se kouše. Připečené okraje nejezte.'},
+{p:3,name:'Pečené rybí filé s kořenovou zeleninou',course:'Večeře',portion:'1 porce',time:'30 min',protein:'ryba',
+ art:{items:[{k:'slab',x:130,y:92,w:72,h:38,c:C.fish,rot:-10,lines:3,lc:'#E4D9C5'},{k:'carrots',x:118,y:136,r:22,n:6},{k:'dice',x:180,y:124,r:20,n:8,c:'#EFE7C8'},{k:'mash',x:186,y:82,r:22,c:C.potato},{k:'herbs',x:130,y:90,r:16,n:5}]},
+ ing:['120 g filé z tresky, štiky nebo pstruha bez kostí','1 mrkev','kousek celeru a petržele','1 lžička másla','kapka citronové šťávy','sůl','bramborová kaše nebo vařené brambory'],
+ steps:['Zeleninu oloupejte a nakrájejte na tenká kolečka.','Na alobal dejte plátek másla, zeleninu a na ni rybu. Osolte a zakápněte citronem.','Alobal pevně uzavřete a pečte na 180 °C asi 20 minut.','Zkontrolujte kosti a podávejte s bramborovou kaší.'],
+ tip:'V uzavřeném alobalu zůstane ryba vláčná a nevznikne kůrka.'},
+{p:3,name:'Šlehaný tvaroh s banánem a piškoty',course:'Svačina',portion:'1 porce',time:'5 min',protein:'tvaroh',
+ art:{t:'glass',jar:1,c:C.curd,top:74,fruit:'#F7EBC0'},
+ ing:['150 g měkkého tvarohu','2–3 lžíce mléka bez laktózy nebo bílého jogurtu','½ zralého banánu','pár kapek citronové šťávy','2 dětské piškoty'],
+ steps:['Tvaroh vyšlehejte s mlékem a citronovou šťávou do pěny.','Banán rozmačkejte a vmíchejte.','Piškoty rozdrobte navrch.'],
+ tip:'Piškoty obsahují cukr, proto stačí dva. Banán jídlo přirozeně osladí.'},
+{p:3,name:'Krupicová kaše s kakaem',course:'Snídaně',portion:'1 porce',time:'10 min',protein:'proteinový prášek',
+ art:{t:'bowl',soup:'#F4ECD6',swirl:'#8A5A3C'},
+ ing:['25 g dětské krupice','250 ml mléka bez laktózy','1 odměrka proteinového prášku','1 lžička másla','½ lžičky neslazeného kakaa'],
+ steps:['Mléko přiveďte k varu a za stálého míchání vsypte krupici.','Vařte 3–4 minuty, až kaše zhoustne.','Odstavte, nechte trochu zchladnout a vmíchejte protein.','Navrch dejte máslo a poprašte kakaem.'],
+ tip:'Používejte jen neslazené kakao a kaši neslaďte. Podávejte vlažnou.'},
+{p:3,name:'Kuřecí játrová pěna s mrkví',course:'Svačina',portion:'3 porce',time:'25 min',protein:'kuřecí játra',
+ art:{items:[{k:'bread',x:120,y:90,w:66,h:48,rot:-8,spread:'#A9745A'},{k:'bread',x:172,y:126,w:60,h:44,rot:10,spread:'#A9745A'},{k:'carrots',x:180,y:78,r:14,n:3}]},
+ ing:['150 g kuřecích jater','1 mrkev','100 ml vývaru','1 lžička másla','sůl, špetka majoránky','starší pečivo bez kůrky nebo vařená zelenina'],
+ steps:['Játra očistěte od blan. Mrkev nakrájejte na kolečka.','Mrkev duste ve vývaru 10 minut, přidejte játra a duste dalších 8–10 minut doměkka.','Rozmixujte s máslem dohladka, osolte a ochuťte majoránkou.','Podávejte s vařenou zeleninou nebo na starším pečivu.'],
+ tip:'Na rozdíl od kupovaných paštik je pěna libová. Játra jezte jen občas, například jednou za týden.'},
 ];
 
 const phaseLabel={1:'Fáze 1',2:'Fáze 2',3:'Fáze 3'};
