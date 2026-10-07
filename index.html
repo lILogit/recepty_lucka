@@ -186,6 +186,12 @@ table.foods{border-collapse:collapse;width:100%;min-width:640px;font-size:.98rem
 .chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.95rem}
 .chips button{font:inherit;font-size:.95rem;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
 .chips button:hover{border-color:var(--accent)}
+.result-links ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.result-links li{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;padding:8px 2px;border-top:1px solid var(--line)}
+.result-links li:first-child{border-top:0}
+.result-links a{font-weight:700;text-decoration:none;border-bottom:1px solid var(--line)}
+.result-links a:hover{border-color:var(--accent)}
+.result-links .tag{font-size:.82rem;color:var(--muted)}
 .results{display:grid;gap:12px}
 .hit{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:start;padding:16px 18px;border-radius:14px;background:var(--bg);border:1px solid var(--line)}
 .hit.y{background:var(--yes-soft);border-color:transparent}
@@ -265,6 +271,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     <a href="#zasady">Zásady</a>
     <a href="#dumping">Dumping</a>
     <a href="#faze">Tři fáze</a>
+    <a href="#hledani-receptu">Hledat recepty</a>
     <a href="#faze-1">Recepty fáze 1</a>
     <a href="#faze-2">Recepty fáze 2</a>
     <a href="#faze-3">Recepty fáze 3</a>
@@ -353,9 +360,26 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     <div class="phases">
       <a class="phase-card ph1" href="#faze-1"><span class="num">1</span><span class="when">Asi od 5. dne</span><h3>Tekutá a hladká strava</h3><p>Hustota jogurtového nápoje: jídlo proteče vidličkou. Krémové polévky, hladké kaše, pyré.</p><span class="go">6 receptů →</span></a>
       <a class="phase-card ph2" href="#faze-2"><span class="num">2</span><span class="when">Asi od 3. týdne</span><h3>Kaše a pyré</h3><p>Hustota bramborové kaše nebo přesnídávky. Stále mixujeme, přidáváme rybu, maso a tvaroh.</p><span class="go">10 receptů →</span></a>
-      <a class="phase-card ph3" href="#faze-3"><span class="num">3</span><span class="when">Asi od 5. týdne</span><h3>Měkká šetřící strava</h3><p>Postupně pevná jídla. Nové potraviny zkoušíme po jedné a sledujeme, jak je snášíme.</p><span class="go">40 receptů →</span></a>
+      <a class="phase-card ph3" href="#faze-3"><span class="num">3</span><span class="when">Asi od 5. týdne</span><h3>Měkká šetřící strava</h3><p>Postupně pevná jídla. Nové potraviny zkoušíme po jedné a sledujeme, jak je snášíme.</p><span class="go">90 receptů →</span></a>
     </div>
     <p class="note">Přechod mezi fázemi je u každého jiný. Řiďte se tím, jak se cítíte, a pokyny svého lékaře.</p>
+  </section>
+
+  <section id="hledani-receptu">
+    <div class="sec-head">
+      <div class="eyebrow">Všechny recepty na jednom místě</div>
+      <h2>Hledejte recepty podle klíčového slova</h2>
+      <p class="muted">Napište surovinu, druh masa nebo chod, například „hovězí“, „treska“ nebo „tvaroh“, a zobrazí se jen odpovídající recepty ze všech tří fází.</p>
+    </div>
+    <div class="checker">
+      <label for="recipe-q">Co chcete vařit?</label>
+      <form class="search" id="recipe-form" role="search">
+        <input id="recipe-q" type="search" autocomplete="off" placeholder="např. hovězí, treska, tvaroh">
+        <button type="submit">Hledat</button>
+      </form>
+      <p class="muted" id="recipe-count" aria-live="polite"></p>
+      <div class="result-links" id="recipe-results" aria-live="polite"></div>
+    </div>
   </section>
 
   <section class="chapter c1" id="faze-1">
@@ -472,6 +496,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 const WEB3FORMS_KEY='48e8debe-99bb-4433-bb19-8f021158b925';      // přístupový klíč z web3forms.com
 const FIREBASE_CONFIG=null;  // {apiKey, authDomain, projectId, appId} z konzole Firebase
 const slug=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const normSearch=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
 
 /* ================= Illustrations ================= */
 const NS='http://www.w3.org/2000/svg';
@@ -867,6 +892,258 @@ const R=[
  ing:['150 g kuřecích jater','1 mrkev','100 ml vývaru','1 lžička másla','sůl, špetka majoránky','starší pečivo bez kůrky nebo vařená zelenina'],
  steps:['Játra očistěte od blan. Mrkev nakrájejte na kolečka.','Mrkev duste ve vývaru 10 minut, přidejte játra a duste dalších 8–10 minut doměkka.','Rozmixujte s máslem dohladka, osolte a ochuťte majoránkou.','Podávejte s vařenou zeleninou nebo na starším pečivu.'],
  tip:'Na rozdíl od kupovaných paštik je pěna libová. Játra jezte jen občas, například jednou za týden.'},
+
+/* ---------- Dalších 50 receptů fáze 3 (recepty.md) ---------- */
+{p:3,name:'Jemný vývar z krůtího masa s krupicí a vaječnou mlhovinou',course:'Polévka',portion:'3–4 porce',time:'1 h',protein:'krůtí maso, vejce',
+ art:{t:'bowl',soup:'#F2C879',eggwisps:1,herbs:1},
+ ing:['300 g krůtích prsou','1 mrkev','kousek petržele','400 ml vody','1 vejce','2 lžíce krupice','sůl, kmín'],
+ steps:['Krůtí maso zalijte vodou, přidejte kmín a vyvářejte asi 40 minut, až maso zcela zkřehne.','Mrkev a petržel oloupejte, nakrájejte na drobné kostičky a přidejte do vývaru na posledních 15 minut.','Krupici za stálého míchání opražte nasucho v suché pánvi do zlatova a vmíchejte do vroucího vývaru.','Vejce rozšlehejte a vlijte do vroucího vývaru tenkým pramínkem za stálého míchání, ať vznikne jemná mlhovina.','Maso vyjměte, rozdrobte na vlákna a vraťte zpět do polévky. Dosolte.'],
+ tip:'Cibuli do vývaru nedávejte vůbec, nebo ji jen na konci vyvaření vyjměte. Podávejte vlažné.'},
+{p:3,name:'Krémová bramborovo-mrkvová polévka',course:'Polévka',portion:'2–3 porce',time:'35 min',protein:'proteinový prášek nebo jogurt',
+ art:{t:'bowl',soup:'#EE9A4A',swirl:'#FBE7C7'},
+ ing:['2 brambory','2 mrkve','400 ml zeleninového vývaru','1 lžička másla','1 odměrka proteinového prášku nebo 2 lžíce bílého jogurtu','sůl'],
+ steps:['Brambory a mrkev oloupejte, nakrájejte na kostičky a vařte ve vývaru doměkka, asi 20 minut.','Zeleninu i s vývarem rozmixujte dohladka a přes sítko přeceďte, aby polévka byla úplně lisovaná.','Podle potřeby nařeďte vývarem.','Do vlažné polévky vmíchejte máslo a protein nebo jogurt.'],
+ tip:'Polévka má zůstat hladká, bez kousků. Je vhodná i v dřívější fázi, jen víc naředěná.'},
+{p:3,name:'Kuřecí vývar s jemnými těstovinami a petrželkou',course:'Polévka',portion:'3 porce',time:'45 min',protein:'kuřecí maso',
+ art:{t:'bowl',soup:'#F3D08A',noodles:1,herbs:1},
+ ing:['250 g kuřecích prsou','1 mrkev nastrouhaná','400 ml vody','hrst drobných těstovin (hvězdičky nebo rýže)','sůl','zelená petrželka'],
+ steps:['Kuřecí maso zalijte vodou a vařte doměkka, asi 25 minut, pěnu odebírejte.','Maso vyjměte, nastrouhanou mrkev přidejte do vývaru a vařte 10 minut.','Těstoviny přisypte a vařte doměkka podle návodu.','Maso nakrájejte na drobné kostičky, vraťte do polévky a posypte petrželkou.'],
+ tip:'Cibuli do vývaru nedávejte. Vývar můžete po vyvaření přecedit a zeleninu s těstovinami vařit zvlášť.'},
+{p:3,name:'Dýňový krém s kuskusem',course:'Polévka',portion:'2–3 porce',time:'30 min',protein:'proteinový prášek',
+ art:{t:'bowl',soup:'#EE9440',swirl:'#F7C77A'},
+ ing:['300 g dýně hokkaido','1 menší brambora','400 ml zeleninového vývaru','2 lžíce kuskusu','1 lžička másla','1 odměrka proteinového prášku','sůl'],
+ steps:['Dýni a bramboru oloupejte, nakrájejte a vařte ve vývaru doměkka, asi 15 minut.','Rozmixujte dohladka.','Kuskus zalijte troškou horké vody, necho nabobtnat asi 5 minut a zamíchejte do polévky, ať ji jemně zahustí.','Po mírném vychladnutí vmíchejte máslo a protein.'],
+ tip:'Dýně hokkaido se nemusí loupat dokonale, slupka po uvaření zjemní a rozmixuje se spolu s ostatním.'},
+{p:3,name:'Rýžová polévka se strouhanou kořenovou zeleninou',course:'Polévka',portion:'3 porce',time:'35 min',protein:'proteinový prášek nebo kuřecí maso',
+ art:{t:'bowl',soup:'#F2CE87',grains:1,herbs:1},
+ ing:['1 mrkev','kousek petržele a celeru','2 lžíce loupané rýže','400 ml zeleninového nebo kuřecího vývaru','sůl','zelená petrželka'],
+ steps:['Kořenovou zeleninu oloupejte a najemno nastrouhejte.','Vývar přiveďte k varu, vsypte propláchnutou rýži a zeleninu.','Vařte na mírném ohni asi 20 minut, dokud nebude rýže i zelenina úplně měkká.','Posypte petrželkou a podávejte vlažné.'],
+ tip:'Pro víc bílkovin přidejte do hotové polévky odměrku proteinového prášku nebo drobné kostičky vařeného kuřecího masa.'},
+{p:3,name:'Krupicová polévka s vaječným svítkem',course:'Polévka',portion:'2 porce',time:'30 min',protein:'vejce',
+ art:{t:'bowl',soup:'#F2CE87',grains:1},
+ ing:['400 ml zeleninového nebo masového vývaru','2 lžíce krupice','1 vejce','1 lžička mléka','sůl','pažitka'],
+ steps:['Krupici opražte nasucho na pánvi do zlatova a vmíchejte do vroucího vývaru. Vařte 5 minut.','Vejce rozšlehejte s mlékem a solí, na pánvi upečte nasucho tenký svítek jako omeletu.','Svítek nechte zchladnout a nakrájejte na úzké nudličky.','Polévku podávejte s nudličkami svítku navrch, posypané pažitkou.'],
+ tip:'Svítek je šetrnější náhrada klasické vaječné jíšky, protože se nesmaží na tuku.'},
+{p:3,name:'Bramborová lisovaná polévka s kmínem a majoránkou',course:'Polévka',portion:'2–3 porce',time:'35 min',protein:'proteinový prášek',
+ art:{t:'bowl',soup:'#EADBB8',swirl:'#E8B55B'},
+ ing:['3 brambory','400 ml zeleninového vývaru','špetka mletého kmínu','majoránka','1 lžička másla','1 odměrka proteinového prášku','sůl'],
+ steps:['Brambory oloupejte, nakrájejte a vařte ve vývaru s kmínem doměkka, asi 20 minut.','Zeleninu i s vývarem rozmixujte a přeceďte přes sítko, aby polévka byla úplně hladká.','Dochuťte majoránkou a solí.','Do vlažné polévky vmíchejte máslo a protein.'],
+ tip:'Majoránku přidávejte až ke konci vaření, jinak polévka zhořkne.'},
+{p:3,name:'Rybí vývar z tresky s těstovinovou rýží',course:'Polévka',portion:'2 porce',time:'30 min',protein:'treska',
+ art:{t:'bowl',soup:'#F3E5CF',grains:1,herbs:1},
+ ing:['150 g filé z tresky','1 mrkev','kousek petržele','350 ml vody nebo zeleninového vývaru','2 lžíce drobné těstovinové rýže (risoni)','sůl','zelená petrželka'],
+ steps:['Mrkev a petržel oloupejte, nakrájejte na drobné kostičky a vařte ve vodě nebo vývaru asi 10 minut.','Přisypte těstovinovou rýži a vařte podle návodu doměkka.','Tresku nakrájejte na kostičky, vložte do polévky a poduste 5 minut, až zbělá a rozpadá se.','Osolte a posypte petrželkou.'],
+ tip:'Rybu nevařte dlouho, aby nebyla suchá. Před podáváním zkontrolujte, že v ní nezůstaly kosti.'},
+{p:3,name:'Dušená kuřecí prsa na kmíně s rýží',course:'Oběd',portion:'2 porce',time:'35 min',protein:'kuřecí maso',
+ art:{items:[{k:'slab',x:120,y:92,w:68,h:40,c:C.chicken,rot:-6,lines:0},{k:'rice',x:186,y:110,r:28},{k:'herbs',x:120,y:90,r:18,n:6}]},
+ ing:['300 g kuřecích prsou','200 ml vývaru','špetka mletého kmínu','1 lžička hladké mouky','1 lžička másla','sůl','loupaná rýže na přílohu'],
+ steps:['Kuřecí prsa krátce opečte nasucho na nepřilnavé pánvi z obou stran, aby zůstala vláčná.','Podlijte vývarem s kmínem a duste pod pokličkou doměkka, asi 20 minut.','Výpek zahustěte nasucho opraženou moukou rozmíchanou v trošce vody.','Máslo vmíchejte až do hotové omáčky. Podávejte s vařenou loupanou rýží.'],
+ tip:'Maso musí být bez šlach a kůže. Omáčku zahušťujte moukou, ne jíškou na tuku.'},
+{p:3,name:'Krůtí plátek na bazalce s mrkvovým pyré',course:'Oběd',portion:'2 porce',time:'35 min',protein:'krůtí maso',
+ art:{items:[{k:'slab',x:118,y:92,w:66,h:38,c:'#E7C79A',rot:-8,lines:0},{k:'mash',x:182,y:112,r:30,c:C.carrot,butter:1},{k:'herbs',x:118,y:90,r:16,n:6}]},
+ ing:['300 g krůtích prsou','200 ml vývaru','pár lístků čerstvé bazalky','kapka olivového oleje','2 mrkve na pyré','1 lžička másla','sůl'],
+ steps:['Krůtí plátky duste ve vývaru s bazalkou doměkka, asi 20 minut.','Mrkev uvařte zvlášť doměkka a rozmixujte s máslem na pyré.','Krůtí maso podlijte výpekem a na konec zakápněte kapkou olivového oleje.','Podávejte s mrkvovým pyré.'],
+ tip:'Olej přidávejte jen v malém množství a až do hotového jídla, nikdy na smažení.'},
+{p:3,name:'Králík na libečku s vařenými brambory',course:'Oběd',portion:'2–3 porce',time:'1 h 30 min',protein:'králičí maso',
+ art:{items:[{k:'slab',x:122,y:96,w:70,h:40,c:'#E8CBAE',rot:-6,lines:0},{k:'mash',x:184,y:118,r:28,c:C.potato},{k:'herbs',x:122,y:94,r:18,n:7}]},
+ ing:['400 g králičího hřbetu','300 ml vývaru','čerstvý nebo sušený libeček','sůl','brambory na přílohu','1 lžička másla'],
+ steps:['Králičí maso opečte krátce nasucho na pánvi a vložte do pekáče s vývarem a libečkem.','Duste pod pokličkou na mírném ohni asi 1 hodinu, dokud maso nezkřehne.','Brambory uvařte doměkka ve slupce, oloupejte a rozpulte.','Maso podávejte s výpekem zahuštěným troškou mouky a s bramborami.'],
+ tip:'Libeček dodá pokrmu výraznou chuť bez nutnosti cibule nebo koření.'},
+{p:3,name:'Kuřecí rizoto s dušenou mrkví a hráškem',course:'Oběd',portion:'2 porce',time:'35 min',protein:'kuřecí maso',
+ art:{items:[{k:'rice',x:140,y:104,r:46},{k:'dice',x:140,y:104,r:34,n:10,c:C.chicken},{k:'peas',x:140,y:104,r:34,n:8}]},
+ ing:['150 g kuřecích prsou','120 g loupané rýže','1 mrkev','2 lžíce hrášku','400 ml kuřecího vývaru','1 lžička másla','sůl'],
+ steps:['Kuřecí maso nakrájejte na drobné kostičky a krátce opečte nasucho.','Přisypte rýži, zalijte vývarem a duste pod pokličkou, za občasného podlévání, asi 18 minut.','Mrkev nakrájejte na kostičky a hrášek přidejte v polovině vaření.','Na závěr vmíchejte máslo a podle potřeby dosolte.'],
+ tip:'Hrášku dávejte jen malé množství, ve větším může nadýmat.'},
+{p:3,name:'Krůtí nudličky na majoránce s těstovinami',course:'Oběd',portion:'2 porce',time:'30 min',protein:'krůtí maso',
+ art:{items:[{k:'pasta',x:130,y:106,r:36},{k:'dice',x:180,y:98,r:26,n:8,c:'#E7C79A'},{k:'herbs',x:180,y:96,r:16,n:5}]},
+ ing:['250 g krůtích prsou','200 ml vývaru','majoránka','kapka řepkového oleje','těstoviny na přílohu','sůl'],
+ steps:['Krůtí maso nakrájejte na úzké nudličky.','Krátce opečte nasucho na pánvi a podlijte vývarem s majoránkou.','Duste pod pokličkou doměkka, asi 15 minut.','Na závěr zakápněte kapkou oleje a podávejte s vařenými těstovinami.'],
+ tip:'Nudličky krájejte po vláknech, maso tak zůstane křehké a dobře se kouše.'},
+{p:3,name:'Pečená kuřecí prsa v alobalu s dušeným špenátem a bramborovou kaší',course:'Oběd',portion:'2 porce',time:'45 min',protein:'kuřecí maso',
+ art:{items:[{k:'slab',x:118,y:90,w:66,h:40,c:C.chicken,rot:-6,lines:0},{k:'mash',x:182,y:118,r:28,c:C.potato,butter:1},{k:'greens',x:176,y:84,r:20}]},
+ ing:['300 g kuřecích prsou','mražený protlakový špenát','3 brambory','1 lžička másla','sůl','citronová šťáva'],
+ steps:['Kuřecí prsa osolte, zakápněte citronovou šťávou a pečte zabalená v alobalu na 180 °C asi 25 minut.','Brambory uvařte doměkka a rozmačkejte s máslem na kaši.','Špenát rozmrazte a krátce poduste bez tuku, bez cibule a česneku.','Maso po upečení nakrájejte a podávejte s kaší a špenátem.'],
+ tip:'Pečení v alobalu nahrazuje smažení, maso zůstává vláčné bez tuku.'},
+{p:3,name:'Králičí hřbet na krupici a mrkvi',course:'Oběd',portion:'2 porce',time:'1 h 15 min',protein:'králičí maso',
+ art:{items:[{k:'slab',x:122,y:94,w:66,h:36,c:'#E8CBAE',rot:-6,lines:0},{k:'grated',x:184,y:112,r:28},{k:'herbs',x:122,y:92,r:16,n:6}]},
+ ing:['300 g králičího hřbetu','300 ml vývaru','2 lžíce krupice','1 mrkev nastrouhaná','sůl','zelená petrželka'],
+ steps:['Králičí maso krátce opečte nasucho a vložte do pekáče s vývarem.','Duste pod pokličkou asi 50 minut, až maso zkřehne.','Nastrouhanou mrkev přidejte v polovině vaření.','Krupici vmíchejte do výpeku, ať omáčku zjemní a zahustí, a dojte pár minut provařit.'],
+ tip:'Králičí maso je libové a jemné, hodí se i pro první zkoušky pevnější stravy.'},
+{p:3,name:'Kuřecí plátek na pomerančové šťávě s kuskusem',course:'Oběd',portion:'2 porce',time:'30 min',protein:'kuřecí maso',
+ art:{items:[{k:'slab',x:120,y:92,w:66,h:38,c:C.chicken,rot:-6,lines:0},{k:'couscous',x:184,y:114,r:28},{k:'herbs',x:120,y:90,r:16,n:5}]},
+ ing:['300 g kuřecích prsou','200 ml vývaru','kůra a šťáva z ½ pomeranče','kuskus na přílohu','1 lžička másla','sůl'],
+ steps:['Kuřecí plátky krátce opečte nasucho a podlijte vývarem s pomerančovou kůrou a šťávou.','Duste pod pokličkou doměkka, asi 15 minut.','Kuskus zalijte horkým vývarem a necho nabobtnat.','Maso podávejte s výpekem a kuskusem.'],
+ tip:'Pomerančová kůra dodá pokrmu svěží chuť bez nutnosti cukru.'},
+{p:3,name:'Drcené krůtí maso zapékané s těstovinami a vajíčkem',course:'Večeře',portion:'3 porce',time:'45 min',protein:'krůtí maso, vejce',
+ art:{items:[{k:'pasta',x:140,y:104,r:40},{k:'scramble',x:140,y:100,r:30},{k:'dice',x:140,y:104,r:30,n:8,c:'#E7C79A'}]},
+ ing:['250 g krůtího mletého masa','150 g vařených těstovin','2 vejce','50 ml mléka bez laktózy','sůl, zelená petrželka','máslo na vymazání'],
+ steps:['Krůtí maso krátce opražte nasucho na pánvi, bez tuku.','Smíchejte s vařenými těstovinami, vejci a mlékem.','Vlijte do zapékací misky vymazané máslem.','Pečte na 180 °C asi 25 minut, dokud nákyp neztuhne.'],
+ tip:'Nákyp je lehký a bez tuku na smažení, hodí se i jako teplá večeře.'},
+{p:3,name:'Kuřecí rolka plněná šunkou nejvyšší jakosti s bramborovým pyré',course:'Oběd',portion:'2 porce',time:'40 min',protein:'kuřecí maso, šunka',
+ art:{items:[{k:'slab',x:120,y:92,w:64,h:36,c:C.chicken,rot:-6,lines:2,lc:'#EFA3A0'},{k:'mash',x:182,y:116,r:28,c:C.potato,butter:1}]},
+ ing:['2 tenké plátky kuřecích prsou','2 plátky šunky nejvyšší jakosti','200 ml vývaru','brambory na pyré','1 lžička másla','sůl'],
+ steps:['Kuřecí plátky rozklepejte, naplňte šunkou a pevně zarolujte.','Rolky vložte do pekáčku, podlijte vývarem a vložte do parního hrnce nebo pod pokličku na mírný var.','Vařte v páře nebo duste doměkka, asi 20 minut.','Brambory uvařte a rozmačkejte s máslem na kaši, podávejte s rolkou nakrájenou na kolečka.'],
+ tip:'Příprava v páře nahrazuje smažení a maso zůstává vláčné.'},
+{p:3,name:'Králičí stehno dušené na celeru a petrželi s noky',course:'Oběd',portion:'2 porce',time:'1 h 30 min',protein:'králičí maso',
+ art:{items:[{k:'slab',x:122,y:94,w:66,h:38,c:'#E8CBAE',rot:-6,lines:0},{k:'knedlik',x:188,y:116,n:3,dx:10,dy:8},{k:'herbs',x:122,y:92,r:16,n:6}]},
+ ing:['2 králičí stehna','kousek celeru a petržele','300 ml vývaru','1 lžička hladké mouky','sůl','noky na přílohu'],
+ steps:['Stehna krátce opečte nasucho na pánvi.','Celer a petržel oloupejte, nastrouhejte a přidejte k masu s vývarem.','Duste pod pokličkou asi 1 hodinu doměkka.','Omáčku zahustěte nasucho opraženou moukou a podávejte s noky.'],
+ tip:'Kořenová zelenina omáčku přirozeně zjemní, smetana ani jíška na tuku nejsou potřeba.'},
+{p:3,name:'Kuřecí plátek se šunkou a tvrdým sýrem do 30 % t. v s.',course:'Večeře',portion:'2 porce',time:'35 min',protein:'kuřecí maso, šunka, sýr',
+ art:{items:[{k:'slab',x:130,y:96,w:76,h:42,c:C.chicken,rot:-4,lines:2,lc:'#EFA3A0'},{k:'grated',x:130,y:86,r:24,bg:'#F3E0A6'}]},
+ ing:['2 kuřecí plátky','2 plátky šunky nejvyšší jakosti','50 g tvrdého sýra do 30 % t. v s.','trocha vývaru','sůl'],
+ steps:['Kuřecí plátky osolte a vložte do zapékací misky s trochou vývaru.','Na každý plátek položte šunku a nastrouhaný sýr.','Pečte na 180 °C zakryté alobalem, asi 20 minut.','Alobal sundejte na poslední 5 minut, aby se sýr pouze rozehřál, ne zapekl do tvrda.'],
+ tip:'Sýr vybírejte s nižším obsahem tuku a nepřehánějte množství, je slaný.'},
+{p:3,name:'Dušená hovězí kýta na celeru s houskovým knedlíkem',course:'Oběd',portion:'3 porce',time:'2 h',protein:'hovězí maso',
+ art:{items:[{k:'slab',x:120,y:94,w:70,h:40,c:C.meat,rot:-6,lines:2},{k:'knedlik',x:188,y:118,n:3,dx:10,dy:8},{k:'herbs',x:120,y:92,r:16,n:5}]},
+ ing:['400 g hovězí kýty','kousek celeru','300 ml vývaru','1 lžička hladké mouky','sůl','houskový knedlík na přílohu'],
+ steps:['Hovězí kýtu zbavte šlach a blan, krátce opečte nasucho na pánvi.','Vložte do pekáčku, podlijte vývarem a přidejte oloupaný a nakrájený celer.','Duste pod pokličkou na mírném ohni asi 1,5 hodiny, dokud maso nezkřehne.','Zeleninový základ i s výpekem prolisujte nebo rozmixujte dohladka a zahustěte nasucho opraženou moukou.'],
+ tip:'Hovězí kýta je libová, ale potřebuje dlouhé a pomalé dušení, aby úplně zkřehla.'},
+{p:3,name:'Vepřová kotleta bez kosti dušená na kmíně s vařeným bramborem',course:'Oběd',portion:'2 porce',time:'1 h',protein:'vepřové maso',
+ art:{items:[{k:'slab',x:120,y:94,w:66,h:38,c:'#C98B6A',rot:-6,lines:0},{k:'mash',x:184,y:116,r:26,c:C.potato},{k:'herbs',x:120,y:92,r:16,n:5}]},
+ ing:['2 vepřové kotlety bez kosti','200 ml vývaru','špetka mletého kmínu','sůl','vařené brambory na přílohu'],
+ steps:['Kotlety zbavte tuku a blan, krátce opečte nasucho na pánvi.','Podlijte vývarem s kmínem a duste pod pokličkou doměkka, asi 40 minut.','Brambory uvařte doměkka ve slupce, oloupejte.','Maso podávejte s výpekem a vařenými brambory.'],
+ tip:'Vepřové maso jezte jen libové a v omezeném množství, podle vlastní snášenlivosti.'},
+{p:3,name:'Hovězí plátek na citronu a fenyklu s rýží',course:'Oběd',portion:'2 porce',time:'1 h',protein:'hovězí maso',
+ art:{items:[{k:'slab',x:120,y:94,w:66,h:38,c:C.meat,rot:-6,lines:2},{k:'rice',x:184,y:112,r:26},{k:'herbs',x:120,y:92,r:16,n:5}]},
+ ing:['300 g hovězí kýty','200 ml vývaru','kapka citronové šťávy','špetka fenyklových semínek','sůl','loupaná rýže na přílohu'],
+ steps:['Hovězí maso nakrájejte na plátky přes vlákna a krátce opečte nasucho.','Podlijte vývarem, přidejte fenykl a duste pod pokličkou doměkka, asi 45 minut.','Na konci zakápněte citronovou šťávou.','Podávejte s vařenou rýží.'],
+ tip:'Citron pomáhá maso zjemnit a dodá svěží chuť bez potřeby ostrého koření.'},
+{p:3,name:'Vepřová kýta na mrkvi s těstovinami',course:'Oběd',portion:'2–3 porce',time:'1 h 15 min',protein:'vepřové maso',
+ art:{items:[{k:'slab',x:120,y:94,w:66,h:38,c:'#C98B6A',rot:-6,lines:0},{k:'pasta',x:186,y:112,r:26},{k:'carrots',x:120,y:90,r:16,n:5}]},
+ ing:['300 g libové vepřové kýty','2 mrkve nastrouhané','250 ml vývaru','sůl','těstoviny na přílohu'],
+ steps:['Vepřovou kýtu zbavte tuku, krátce opečte nasucho.','Podlijte vývarem a přidejte nastrouhanou mrkev.','Duste pod pokličkou doměkka, asi 50 minut.','Podávejte s vařenými těstovinami.'],
+ tip:'Mrkev se během dušení rozvaří a omáčku přirozeně zahustí.'},
+{p:3,name:'Dušená telecí/hovězí játra na kmíně s rýží',course:'Oběd',portion:'2 porce',time:'25 min',protein:'játra',
+ art:{items:[{k:'liver',x:140,y:100,r:34},{k:'rice',x:140,y:100,r:20}]},
+ ing:['200 g telecích nebo hovězích jater','150 ml vývaru','špetka mletého kmínu','1 lžička másla','sůl','loupaná rýže na přílohu'],
+ steps:['Játra očistěte od blan a nakrájejte na proužky.','Krátce je poduste ve vývaru s kmínem, asi 8–10 minut, déle by ztvrdla.','Máslo vmíchejte až do hotových jater.','Podávejte s vařenou rýží.'],
+ tip:'Játra jsou vhodná jen příležitostně, například jednou za týden, a bez cibule.'},
+{p:3,name:'Hovězí nudličky se zahuštěnou dýňovou omáčkou a kuskusem',course:'Večeře',portion:'2 porce',time:'50 min',protein:'hovězí maso',
+ art:{items:[{k:'slab',x:118,y:92,w:60,h:34,c:C.meat,rot:-8,lines:2},{k:'sauce',x:160,y:112,rx:40,ry:18,c:'#EE9440'},{k:'couscous',x:196,y:108,r:20}]},
+ ing:['250 g hovězí kýty','150 g dýně hokkaido','200 ml vývaru','1 lžička zakysané smetany','sůl','kuskus na přílohu'],
+ steps:['Hovězí maso nakrájejte na nudličky přes vlákna a krátce opečte nasucho.','Dýni oloupejte, nakrájejte a vařte s masem ve vývaru doměkka, asi 40 minut.','Dýni vyjměte a rozmixujte na omáčku, zjemněnou lžičkou zakysané smetany.','Maso zalijte omáčkou a podávejte s kuskusem.'],
+ tip:'Dýně nahrazuje smetanovou jíšku a omáčku přirozeně zahustí.'},
+{p:3,name:'Vepřový plátek na majoránce s bramborovou kaší',course:'Oběd',portion:'2 porce',time:'50 min',protein:'vepřové maso',
+ art:{items:[{k:'slab',x:120,y:94,w:66,h:38,c:'#C98B6A',rot:-6,lines:0},{k:'mash',x:184,y:116,r:28,c:C.potato,butter:1}]},
+ ing:['300 g libové vepřové kýty','200 ml vývaru','majoránka','sůl','brambory na kaši','1 lžička másla'],
+ steps:['Vepřové maso zbavte tuku, krátce opečte nasucho.','Podlijte vývarem s majoránkou a duste v páře nebo pod pokličkou doměkka, asi 40 minut.','Brambory uvařte a rozmačkejte s máslem na kaši.','Maso podávejte s výpekem a bramborovou kaší.'],
+ tip:'Majoránku přidávejte spíš ke konci dušení, aby si zachovala vůni.'},
+{p:3,name:'Pstruh pečený na pečicím papíru s vařeným bramborem a koprem',course:'Večeře',portion:'1 porce',time:'30 min',protein:'pstruh',
+ art:{items:[{k:'fish',x:128,y:96,rot:-6},{k:'mash',x:196,y:118,r:24,c:C.potato},{k:'herbs',x:120,y:88,r:14,n:5}]},
+ ing:['1 pstruh (filé)','kousek másla','čerstvý kopr','kapka citronové šťávy','sůl','vařené brambory na přílohu'],
+ steps:['Filé položte na pečicí papír, osolte, zakápněte citronem a navrch dejte plátek másla a kopr.','Papír pevně zabalte.','Pečte na 180 °C asi 15 minut.','Podávejte s vařenými brambory.'],
+ tip:'Pečicí papír funguje podobně jako alobal, ryba v něm zůstane vláčná bez tuku na smažení.'},
+{p:3,name:'Dušená treska na másle a petrželce s bramborovou kaší',course:'Oběd',portion:'1–2 porce',time:'25 min',protein:'treska',
+ art:{items:[{k:'slab',x:124,y:94,w:62,h:30,c:C.fish,rot:-10,lines:3,lc:'#E4D9C5'},{k:'mash',x:190,y:116,r:28,c:C.potato,butter:1},{k:'herbs',x:124,y:90,r:14,n:5}]},
+ ing:['200 g filé z tresky','100 ml vývaru','1 lžička másla','zelená petrželka','sůl','brambory na kaši'],
+ steps:['Tresku vložte do pánve s vývarem a duste pod pokličkou asi 8–10 minut, dokud nezbělá.','Brambory uvařte a rozmačkejte na kaši.','Máslo a petrželku vmíchejte až do hotové ryby, ne za vaření.','Podávejte s bramborovou kaší.'],
+ tip:'Rybu nepřevařujte, jinak bude suchá a drolí se na vlákna.'},
+{p:3,name:'Tilapie na fenyklu a anýzu s loupanou rýží',course:'Oběd',portion:'1–2 porce',time:'25 min',protein:'tilapie',
+ art:{items:[{k:'slab',x:124,y:94,w:62,h:30,c:C.fish,rot:-10,lines:3,lc:'#E4D9C5'},{k:'rice',x:190,y:114,r:26}]},
+ ing:['200 g filé z tilapie','200 ml rybího nebo zeleninového vývaru','špetka fenyklových semínek','špetka anýzu','sůl','loupaná rýže na přílohu'],
+ steps:['Vývar přiveďte k varu s fenyklem a anýzem.','Filé vložte do vývaru a duste doměkka, asi 10 minut.','Vyjměte opatrně, aby se nerozpadlo.','Podávejte s vařenou rýží a troškou výpeku.'],
+ tip:'Fenykl a anýz dodají rybě svěží chuť bez potřeby ostrého koření.'},
+{p:3,name:'Štika na kmíně s vařeným bramborem',course:'Oběd',portion:'1–2 porce',time:'25 min',protein:'štika',
+ art:{items:[{k:'slab',x:124,y:94,w:62,h:30,c:C.fish,rot:-10,lines:3,lc:'#E4D9C5'},{k:'mash',x:190,y:116,r:24,c:C.potato}]},
+ ing:['200 g filé ze štiky','kousek másla','špetka mletého kmínu','sůl','vařené brambory na přílohu','kapka olivového oleje'],
+ steps:['Filé vložte do parního hrnce nebo na pečicí papír, posypte kmínem a osolte.','Vařte v páře nebo pečte zabalené asi 12–15 minut doměkka.','Před podáváním zakápněte kapkou olivového oleje.','Podávejte s vařenými brambory.'],
+ tip:'Štika má drobné kůstky, maso proto před podáváním pečlivě prohlédněte.'},
+{p:3,name:'Filé z amura dušené na citronové šťávě s kuskusem',course:'Oběd',portion:'1–2 porce',time:'25 min',protein:'amur',
+ art:{items:[{k:'slab',x:124,y:94,w:62,h:30,c:C.fish,rot:-10,lines:3,lc:'#E4D9C5'},{k:'couscous',x:190,y:114,r:26},{k:'herbs',x:124,y:90,r:14,n:5}]},
+ ing:['200 g filé z amura','150 ml vody nebo vývaru','kapka citronové šťávy','zelená petrželka','sůl','kuskus na přílohu'],
+ steps:['Filé vložte do pánve s trochou vody nebo vývaru.','Duste pod pokličkou doměkka, asi 10 minut.','Na konci zakápněte citronovou šťávou a posypte petrželkou.','Podávejte s kuskusem zalitým horkým vývarem.'],
+ tip:'Amur má víc drobných kůstek, maso před podáváním pečlivě zkontrolujte.'},
+{p:3,name:'Zapékaná treska s nízkotučným tvarohem a brambory',course:'Večeře',portion:'2 porce',time:'40 min',protein:'treska, tvaroh',
+ art:{items:[{k:'slab',x:120,y:92,w:60,h:30,c:C.fish,rot:-8,lines:3,lc:'#E4D9C5'},{k:'dice',x:180,y:108,r:26,n:8,c:C.potato},{k:'herbs',x:120,y:88,r:14,n:5}]},
+ ing:['250 g filé z tresky','3 brambory','100 g nízkotučného tvarohu','2 lžíce mléka bez laktózy','sůl','zelená pažitka'],
+ steps:['Brambory uvařte doměkka, oloupejte a nakrájejte na kolečka.','Do zapékací misky dejte vrstvu brambor, na ni tresku.','Tvaroh rozmíchejte s mlékem a solí a rozetřete na rybu.','Pečte na 180 °C asi 20 minut, dokud se tvaroh nezapeče.'],
+ tip:'Tvaroh nahrazuje smetanu a dodá pokrmu bílkoviny bez zbytečného tuku.'},
+{p:3,name:'Rybí karbanátky z tresky a ovesných vloček',course:'Oběd',portion:'4 malé karbanátky',time:'30 min',protein:'treska, vejce',
+ art:{items:[{k:'patty',x:122,y:92,rx:26,ry:18},{k:'patty',x:176,y:118,rx:24,ry:16},{k:'herbs',x:122,y:90,r:14,n:5}]},
+ ing:['250 g filé z tresky','2 lžíce jemných ovesných vloček','1 vejce','sůl','zelená petrželka'],
+ steps:['Tresku jemně nasekejte nebo propasírujte, zkontrolujte kosti.','Smíchejte s vločkami, vejcem, solí a petrželkou.','Vytvořte malé placičky.','Pečte na pečicím papíru v troubě na 190 °C asi 15 minut z obou stran, bez smažení.'],
+ tip:'Vločky nahrazují strouhanku a karbanátky jemně zahustí bez cukru.'},
+{p:3,name:'Sladká jáhlová kaše s banánem a skořicí',course:'Snídaně',portion:'1 porce',time:'20 min',protein:'proteinový prášek nebo jogurt',
+ art:{t:'bowl',soup:'#F2E0A0',swirl:'#E8B55B'},
+ ing:['30 g jáhel','200 ml vody nebo mléka bez laktózy','½ zralého banánu','špetka skořice','1 odměrka proteinového prášku nebo 2 lžíce jogurtu'],
+ steps:['Jáhly propláchněte a vařte ve vodě nebo mléce asi 15 minut, až zhoustnou.','Rozmixujte dohladka.','Banán rozmačkejte a vmíchejte spolu se skořicí.','Po mírném vychladnutí přidejte protein nebo jogurt.'],
+ tip:'Jáhly jsou jemná a nenadýmavá obilnina, dobře se hodí i do časnějších fází.'},
+{p:3,name:'Ovesná kaše s dušeným jablkem a anýzem',course:'Snídaně',portion:'1 porce',time:'15 min',protein:'proteinový prášek',
+ art:{t:'bowl',soup:'#EADBB8',swirl:'#F6EDD6'},
+ ing:['30 g jemných ovesných vloček','200 ml vody nebo mléka bez laktózy','1 zralé jablko','špetka anýzu','1 odměrka proteinového prášku'],
+ steps:['Jablko oloupejte, nakrájejte a poduste s lžící vody a anýzem doměkka.','Rozmačkejte na pyré.','Vločky vařte ve vodě nebo mléce asi 5–7 minut, až zhoustnou.','Po mírném vychladnutí vmíchejte jablečné pyré a protein.'],
+ tip:'Anýz zklidňuje trávení a jablko dodá přirozenou sladkost bez cukru.'},
+{p:3,name:'Tvarohové noky s ovocným přelivem z meruněk',course:'Sladké jídlo',portion:'2 porce',time:'30 min',protein:'tvaroh, vejce',
+ art:{items:[{k:'knedlik',x:140,y:104,n:4,dx:12,dy:6},{k:'compote',x:198,y:92,r:22}]},
+ ing:['200 g měkkého tvarohu','1 vejce','3 lžíce hladké mouky','4 zralé meruňky','voda na vaření'],
+ steps:['Tvaroh smíchejte s vejcem a moukou na hladké těsto.','Z těsta tvořte malé noky a vařte ve vroucí vodě asi 5 minut, dokud nevyplavou.','Meruňky oloupejte, odstraňte pecky a podušte s lžící vody na pyré.','Noky podávejte s teplým meruňkovým přelivem.'],
+ tip:'Přeliv je neslazený, sladkost dodají jen dobře vyzrálé meruňky.'},
+{p:3,name:'Dušená dýně se žervé a vařenými brambory',course:'Večeře',portion:'2 porce',time:'30 min',protein:'žervé',
+ art:{items:[{k:'mash',x:128,y:100,r:40,c:C.pumpkin},{k:'mash',x:188,y:118,r:24,c:C.potato},{k:'herbs',x:128,y:98,r:24,n:8}]},
+ ing:['300 g dýně hokkaido','50 g žervé','sůl','pár lístků bazalky','brambory na přílohu'],
+ steps:['Dýni oloupejte, nakrájejte a duste bez tuku doměkka, asi 15 minut.','Brambory uvařte doměkka zvlášť.','Dýni rozmačkejte, vmíchejte žervé a osolte, ochuťte bazalkou.','Podávejte s vařenými brambory.'],
+ tip:'Žervé dodá krémovou chuť a bílkoviny bez smetany.'},
+{p:3,name:'Pečené brambory plněné cottage sýrem a pažitkou',course:'Večeře',portion:'2 porce',time:'1 h',protein:'cottage sýr',
+ art:{items:[{k:'slab',x:140,y:100,w:70,h:46,c:C.potato,lines:0},{k:'grated',x:140,y:92,r:22,bg:C.curd},{k:'herbs',x:140,y:92,r:16,n:8}]},
+ ing:['2 velké brambory','100 g cottage sýru','sůl','jemně nakrájená pažitka'],
+ steps:['Brambory omyjte, zabalte do alobalu a pečte na 200 °C asi 45 minut, dokud nejsou měkké.','Rozpulte a dužinu trochu rozmačkejte vidličkou.','Naplňte cottage sýrem smíchaným s pažitkou a solí.','Podávejte teplé.'],
+ tip:'Slupku brambory nejezte, je tužší a hůř se tráví.'},
+{p:3,name:'Dušený špenát s vařeným vejcem a bramborovým knedlíkem',course:'Večeře',portion:'2 porce',time:'30 min',protein:'vejce',
+ art:{items:[{k:'mash',x:128,y:100,r:40,c:'#9DBB6A'},{k:'eggGrated',x:128,y:98,r:24},{k:'knedlik',x:196,y:118,n:2,dx:10,dy:8}]},
+ ing:['300 g mraženého protlakového špenátu','1 lžička hladké mouky','2 vejce natvrdo','sůl','bramborový knedlík na přílohu'],
+ steps:['Špenát rozmrazte a krátce poduste bez tuku, bez cibule a česneku.','Zahustěte nasucho opraženou moukou rozmíchanou v trošce vody.','Vejce natvrdo nastrouhejte nebo nakrájejte a vmíchejte nebo přidejte navrch.','Podávejte s bramborovým knedlíkem.'],
+ tip:'Vejce dodá pokrmu bílkoviny, špenát samotný jich má málo.'},
+{p:3,name:'Pohanková/jáhelná kaše s broskvovým pyré',course:'Snídaně',portion:'1 porce',time:'20 min',protein:'tvaroh nebo proteinový prášek',
+ art:{t:'bowl',soup:'#EFE0B0',swirl:'#F4A64A'},
+ ing:['30 g pohankových nebo jáhlových vloček','200 ml vody nebo mléka bez laktózy','½ zralé broskve','2 lžíce tvarohu nebo 1 odměrka proteinového prášku'],
+ steps:['Vločky vařte ve vodě nebo mléce asi 10 minut, až zhoustnou.','Rozmixujte dohladka.','Broskev oloupejte, odstraňte pecku a rozmačkejte na pyré.','Po mírném vychladnutí vmíchejte broskvové pyré a tvaroh nebo protein.'],
+ tip:'Dobře vyzrálá broskev osladí kaši přirozeně, cukr není potřeba.'},
+{p:3,name:'Bramborové noky s nízkotučným tvarohem a skořicí',course:'Sladké jídlo',portion:'2 porce',time:'30 min',protein:'tvaroh',
+ art:{items:[{k:'knedlik',x:140,y:104,n:4,dx:12,dy:6},{k:'grated',x:198,y:90,r:20,bg:C.curd}]},
+ ing:['2 brambory','1 vejce','4 lžíce hladké mouky','100 g nízkotučného tvarohu','špetka skořice','½ zralého banánu nebo zralá meruňka'],
+ steps:['Brambory uvařte, oloupejte a rozmačkejte, po vychladnutí smíchejte s vejcem a moukou na těsto.','Tvořte malé noky a vařte ve vroucí vodě, dokud nevyplavou.','Tvaroh rozmíchejte s rozmačkaným banánem nebo meruňkou a skořicí.','Noky podávejte s tvarohovou směsí navrch.'],
+ tip:'Banán nebo meruňka dodají pokrmu sladkost bez přidaného cukru.'},
+{p:3,name:'Bílý jogurt do 3 % tuku s nakrájeným banánem a jáhlovými pukanci',course:'Svačina',portion:'1 porce',time:'5 min',protein:'jogurt',
+ art:{t:'glass',jar:1,c:'#F6EFDD',top:70,fruit:'#E8B55B'},
+ ing:['150 g bílého jogurtu do 3 % tuku','½ zralého banánu','lžička jáhlových pukanců bez cukru'],
+ steps:['Banán nakrájejte na kolečka.','Vmíchejte do jogurtu nebo naskládejte navrch.','Posypte jáhlovými pukanci.'],
+ tip:'Pukance vybírejte neslazené, ne müsli tyčinky nebo sladké cereálie.'},
+{p:3,name:'Toustový chléb s žervé a šunkou nejvyšší jakosti',course:'Svačina',portion:'1 porce',time:'5 min',protein:'žervé, šunka',
+ art:{items:[{k:'bread',x:128,y:96,w:64,h:46,rot:-6,spread:'#F3EDE0'},{k:'ham',x:128,y:90,rx:26,ry:16,rot:-6}]},
+ ing:['1 plátek toustového chleba bez kůrky','žervé','1 plátek šunky nejvyšší jakosti'],
+ steps:['Toustový chléb natřete žervé.','Navrch položte plátek šunky.','Podle potřeby rozkrojte na menší kousky.'],
+ tip:'Toustový chléb je jemnější než čerstvé pečivo a lépe se tráví.'},
+{p:3,name:'Domácí pultová pomazánka z nízkotučného tvarohu, Lučiny a mrkve',course:'Svačina',portion:'3–4 porce',time:'10 min',protein:'tvaroh',
+ art:{items:[{k:'grated',x:140,y:100,r:40,bg:C.curd},{k:'carrots',x:140,y:98,r:26,n:10}]},
+ ing:['150 g nízkotučného tvarohu','50 g Lučiny','1 mrkev nastrouhaná','sůl','pažitka'],
+ steps:['Tvaroh rozmíchejte s Lučinou do hladkého krému.','Mrkev najemno nastrouhejte a vmíchejte.','Osolte a posypte pažitkou.','Podávejte na toustovém chlebu nebo s vařenou zeleninou.'],
+ tip:'Pomazánka vydrží v lednici 2 dny, déle ji neskladujte.'},
+{p:3,name:'Kefírové smoothie s banánem a mangem',course:'Svačina',portion:'1 porce',time:'5 min',protein:'kefír',
+ art:{t:'glass',c:'#E7D79A',top:60},
+ ing:['150 ml kefíru do 3 % tuku','½ zralého banánu','kousek zralého manga'],
+ steps:['Všechno ovoce oloupejte a nakrájejte na kostičky.','Rozmixujte s kefírem dohladka.','Necho chvíli odstát, aby nápoj nebyl studený z lednice.'],
+ tip:'Mango vybírejte dobře vyzrálé, nezralé může dráždit trávení.'},
+{p:3,name:'Světlý rohlík s tvrdým sýrem Eidam do 30 % t. v s. a hlávkovým salátem',course:'Svačina',portion:'1 porce',time:'5 min',protein:'sýr',
+ art:{items:[{k:'roll',x:140,y:100,r:34},{k:'greens',x:196,y:92,r:16}]},
+ ing:['1 světlý rohlík bez posypu','1 plátek sýra Eidam do 30 % t. v s.','pár lístků hlávkového salátu'],
+ steps:['Rohlík podélně rozřízněte.','Vložte plátek sýra.','Hlávkový salát jemně nakrájejte a přidejte.'],
+ tip:'Rohlík vybírejte bez semínek a posypu, hůř by se trávily.'},
+{p:3,name:'Acidofilní mléko s dušeným jablkovým pyré',course:'Svačina',portion:'1 porce',time:'10 min',protein:'acidofilní mléko',
+ art:{t:'glass',c:'#F3EDE0',top:70,layer:110,layerC:'#E8B55B'},
+ ing:['150 ml acidofilního mléka','1 zralé jablko','lžíce vody'],
+ steps:['Jablko oloupejte, nakrájejte a duste s vodou doměkka, asi 8 minut.','Rozmačkejte na pyré a necho vychladnout.','Vmíchejte do acidofilního mléka nebo navrstvěte do skleničky.'],
+ tip:'Acidofilní mléko bývá lépe snášené než běžné plnotučné mléko.'},
+{p:3,name:'Vaječná omeleta z jednoho vejce na sucho se šunkou a bílým toustem',course:'Snídaně',portion:'1 porce',time:'10 min',protein:'vejce, šunka',
+ art:{items:[{k:'scramble',x:134,y:98,r:30},{k:'ham',x:188,y:108,rx:22,ry:14}]},
+ ing:['1 vejce','1 lžička mléka bez laktózy','1 plátek šunky nejvyšší jakosti','sůl','1 plátek bílého toustu'],
+ steps:['Vejce rozšlehejte s mlékem a solí.','Vlijte na rozehřátou nepřilnavou pánev bez tuku a pečte na mírném ohni z obou stran.','Šunku nakrájejte na proužky a vmíchejte nebo přidejte navrch.','Podávejte s bílým toustem.'],
+ tip:'Omeletu pečte nasucho na nepřilnavé pánvi, tuk není potřeba.'},
+{p:3,name:'Sýrová pomazánka z cottage sýra, strouhaného celeru a citronové šťávy',course:'Svačina',portion:'3–4 porce',time:'10 min',protein:'cottage sýr',
+ art:{items:[{k:'grated',x:140,y:100,r:40,bg:C.curd},{k:'herbs',x:140,y:98,r:26,n:10}]},
+ ing:['150 g cottage sýru','kousek celeru nastrouhaný','kapka citronové šťávy','sůl'],
+ steps:['Celer oloupejte a najemno nastrouhejte.','Smíchejte s cottage sýrem a citronovou šťávou.','Osolte podle chuti.','Podávejte s bílým pečivem.'],
+ tip:'Celer dodá pomazánce svěží chuť, použijte ho ale jen v malém množství.'},
 ];
 
 const phaseLabel={1:'Fáze 1',2:'Fáze 2',3:'Fáze 3'};
@@ -890,6 +1167,7 @@ R.forEach((x,i)=>{
     <button type="button" class="like" aria-pressed="false" hidden><span class="heart" aria-hidden="true">♡</span><span class="sr">Líbí se mi</span> <span class="n"></span></button>
   </div>`;
   a.dataset.key=slug(x.name);
+  a.dataset.search=normSearch([x.name,x.course,x.protein,...x.ing].join(' '));
   a.append(art,body);host.append(a);
 });
 
@@ -951,6 +1229,46 @@ document.addEventListener('submit',async e=>{
   g3.before(idx);
 })();
 
+/* ---------- Hledání v receptech ---------- */
+(function(){
+  const form=document.getElementById('recipe-form');
+  const input=document.getElementById('recipe-q');
+  const count=document.getElementById('recipe-count');
+  const results=document.getElementById('recipe-results');
+  const cards=[...document.querySelectorAll('.recipe')];
+  const index=document.querySelector('.index');
+  const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  function apply(){
+    const q=normSearch(input.value.trim());
+    const matched=[];
+    cards.forEach(a=>{
+      const hit=!q||a.dataset.search.includes(q);
+      a.hidden=!hit;
+      if(hit)matched.push(a);
+    });
+    document.querySelectorAll('.recipes .group').forEach(g=>{
+      g.hidden=![...g.querySelectorAll('article.recipe')].some(a=>!a.hidden);
+    });
+    document.querySelectorAll('section.chapter').forEach(sec=>{
+      sec.hidden=![...sec.querySelectorAll('article.recipe')].some(a=>!a.hidden);
+    });
+    if(index)index.hidden=!!q;
+    if(!q){
+      count.textContent='';
+      results.innerHTML='';
+      return;
+    }
+    count.textContent=`Nalezeno ${matched.length} z ${cards.length} receptů.`;
+    results.innerHTML=matched.length?('<ul>'+matched.map(a=>{
+      const name=esc(a.querySelector('h3').textContent);
+      const tag=esc(a.querySelector('.meta .tag').textContent);
+      return `<li><a href="#${a.id}">${name}</a><span class="tag">${tag}</span></li>`;
+    }).join('')+'</ul>'):'<p class="muted">Nic jsme nenašli. Zkuste jiné slovo.</p>';
+  }
+  form.addEventListener('submit',e=>{e.preventDefault();apply()});
+  input.addEventListener('input',apply);
+})();
+
 /* ---------- Hero ---------- */
 (function(){
   const svg=makeArt({items:[{k:'mash',x:118,y:86,r:26,c:'#F2C06B'},{k:'slab',x:176,y:84,w:44,h:26,c:C.fish,rot:-14,lines:2,lc:'#E4D9C5'},{k:'rice',x:132,y:138,r:20},{k:'carrots',x:180,y:128,r:14,n:4},{k:'herbs',x:118,y:86,r:14,n:5}]},99);
@@ -979,7 +1297,7 @@ const FOODS=[
 ['Tuky','Kvalitní olej (řepkový, olivový, slunečnicový), rostlinná másla, čerstvé máslo, vše v omezeném množství a až do hotového jídla.','Přepálené tuky, tuk ve velkém množství, sádlo, slanina, škvarky, lůj, ztužené tuky.'],
 ['Koření','Vývar z kmínu, anýzu, fenyklu, bobkového listu a jedlých hub. Zelené natě: petrželka, pažitka, kopr, libeček, bazalka, majoránka. Citronová a pomerančová kůra a šťáva. Cibule jen na vyvaření.','Pepř, pálivá paprika, kari, chilli, kořenicí směsi, maggi, bujóny, worchester, sójová omáčka, ocet, hořčice, majonéza, tatarská omáčka.'],
 ['Přílohy a pečivo','Bílá mouka, lisované krupky a kroupy, jáhly, ovesné vločky, loupaná rýže, brambory, bramborová kaše, noky, houskové a bramborové knedlíky, těstoviny, kuskus, bílé pečivo bez posypu, toustový chléb.','Sladké pečivo (buchty, loupáky, vánočka), vícezrnné, smažené a fritované přílohy (hranolky, krokety), čerstvé pečivo, luštěniny.'],
-['Zelenina','Mrkev, celer a petržel (vařené, dušené, lisované nebo strouhané), dušený špenát, dušená dýně, hlávkový salát jemně krájený, loupaná rajčata, rajská šťáva a protlak, malé množství hrášku.','Nadýmavá zelenina (hlavně košťálová), tvrdá, dřevnatá a se zrníčky nebo slupkami: česnek, cibule, křen, ředkvičky, paprika, okurka, kapusta, zelí, houby.'],
+['Zelenina','Mrkev, celer a petržel (vařené, dušené, lisované nebo strouhané), dušený špenát, dušená dýně, hlávkový salát jemně krájený, loupaná rajčata, rajská šťáva a protlak, malé množství hrášku.','Nadýmavá zelenina (hlavně košťálová), tvrdá, dřevnatá a se zrníčky nebo slupkami: česnek, cibule, křen, ředkvičky, paprika, okurka, kapusta, zelí, houby, červená řepa.'],
 ['Ovoce','Dobře vyzrálé a nenadýmavé: jablka, broskve, meruňky, mango, banán. Vybírejte podle snášenlivosti.','Ovoce se zrníčky a tvrdými slupkami: hroznové víno, rybíz, angrešt, kiwi, rebarbora, hrušky, jahody, borůvky, maliny, ostružiny, fíky, ořechy, semínka. Džem a kompoty kvůli cukru.'],
 ['Nápoje','Neslazené nebo mírně slazené neperlivé nápoje, černý, zelený, bylinkový a ovocný čaj, neperlivé minerální a stolní vody, kávovinové nápoje.','Slazené nápoje, džusy, perlivé vody a limonády, zrnková káva, alkohol. Kouření.'],
 ['Omáčky','Přírodní šťávy, omáčky zahuštěné lisovanou zeleninou nebo nasucho opraženou moukou, s malým množstvím másla nebo méně tučné zakysané smetany. Tuk až do hotového pokrmu.','Omáčky na cibulovém základě, paprikové, smetanové a houbové.'],
@@ -1141,7 +1459,8 @@ const DB=[
 ['pórek','n','Zelenina','Nadýmá.','Z','mrkev nebo celer'],
 ['houby|žampiony|hříbky|shiitake','n','Zelenina','Houby se špatně tráví.','J'],
 ['kukuřice|kukuřičná zrna','n','Zelenina','Tvrdé slupky zrn mechanicky dráždí.','Z'],
-['zelené fazolky|fazolové lusky|červená řepa|řepa','o','Zelenina','Jen dobře uvařené doměkka a v malém množství.','W','mrkev'],
+['zelené fazolky|fazolové lusky','o','Zelenina','Jen dobře uvařené doměkka a v malém množství.','W','mrkev'],
+['červená řepa|řepa|řepa salátová','n','Zelenina','Má hodně přirozeného cukru, který může spustit dumpingový syndrom, a nadýmá.','Z','mrkev nebo dušená dýně'],
 ['syrová zelenina|zeleninový salát|mrkvový salát','o','Zelenina','Jen jemně nastrouhaná povolená zelenina, v pozdější fázi.','T','dušená zelenina'],
 /* ovoce */
 ['jablko|jablka','y','Ovoce','Zralé, bez slupky. Pomáhá předcházet dumpingovému syndromu.','T'],
