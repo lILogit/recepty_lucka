@@ -133,7 +133,7 @@ footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-si
   <header>
     <div class="eyebrow">Fáze 3 · měkká šetřící strava · pro 1 osobu</div>
     <h1>Jídelníček <em>na týden</em></h1>
-    <p class="lead">Pět jídel denně od pondělí do neděle a nákupní seznam na celý týden. Jídla jsou z <a href="index.html#faze-3">receptů fáze 3</a>, klepnutím na název otevřete recept.</p>
+    <p class="lead">Pět jídel denně od pondělí do neděle a nákupní seznam na celý týden. Jídla jsou z <a href="recepty-faze-3.html#faze-3">receptů fáze 3</a>, klepnutím na název otevřete recept. Chcete si jídelníček poskládat sami? Zkuste <a href="planovac.html">plánovač týdenního jídelníčku</a>.</p>
   </header>
 </div>
 
@@ -143,6 +143,7 @@ footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-si
     <a href="#jidelnicek">Jídelníček</a>
     <a href="#nakup">Nákupní seznam</a>
     <span id="day-links" style="display:contents"></span>
+    <a href="planovac.html">Sestavit vlastní jídelníček</a>
   </div>
 </nav>
 
@@ -302,7 +303,7 @@ document.getElementById('days').innerHTML=WEEK.map(([day,meals],d)=>`
     <ol class="meals">${meals.map(([t,kind,name,r,note,cook])=>`
       <li class="meal${kind==='Oběd'||kind==='Večeře'?' main':''}">
         <span class="when"><b>${t}</b>${kind}</span>
-        <span class="what">${r?`<a href="index.html#recept-${r}">${esc(name)}</a>`:esc(name)}</span>
+        <span class="what">${r?`<a href="recepty-faze-3.html#recept-${r}">${esc(name)}</a>`:esc(name)}</span>
         ${note?`<span class="note${cook?' cook':''}">${esc(note)}</span>`:''}
       </li>`).join('')}
     </ol>

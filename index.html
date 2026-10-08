@@ -271,11 +271,12 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     <a href="#zasady">Zásady</a>
     <a href="#dumping">Dumping</a>
     <a href="#faze">Tři fáze</a>
-    <a href="#hledani-receptu">Hledat recepty</a>
     <a href="#faze-1">Recepty fáze 1</a>
     <a href="#faze-2">Recepty fáze 2</a>
-    <a href="#faze-3">Recepty fáze 3</a>
-    <a href="jidelnicek.html"><b>Jídelníček na týden</b></a>
+    <a href="recepty-faze-3.html#faze-3">Recepty fáze 3</a>
+    <a href="recepty-faze-3.html#hledani-receptu">Hledat recepty</a>
+    <a href="planovac.html"><b>Sestavit jídelníček</b></a>
+    <a href="jidelnicek.html">Vzorový jídelníček</a>
     <a href="#potraviny">Potraviny</a>
     <a href="#komentar">Napište nám</a>
     <a href="#zdroje">Zdroje</a>
@@ -360,26 +361,9 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     <div class="phases">
       <a class="phase-card ph1" href="#faze-1"><span class="num">1</span><span class="when">Asi od 5. dne</span><h3>Tekutá a hladká strava</h3><p>Hustota jogurtového nápoje: jídlo proteče vidličkou. Krémové polévky, hladké kaše, pyré.</p><span class="go">6 receptů →</span></a>
       <a class="phase-card ph2" href="#faze-2"><span class="num">2</span><span class="when">Asi od 3. týdne</span><h3>Kaše a pyré</h3><p>Hustota bramborové kaše nebo přesnídávky. Stále mixujeme, přidáváme rybu, maso a tvaroh.</p><span class="go">10 receptů →</span></a>
-      <a class="phase-card ph3" href="#faze-3"><span class="num">3</span><span class="when">Asi od 5. týdne</span><h3>Měkká šetřící strava</h3><p>Postupně pevná jídla. Nové potraviny zkoušíme po jedné a sledujeme, jak je snášíme.</p><span class="go">90 receptů →</span></a>
+      <a class="phase-card ph3" href="recepty-faze-3.html"><span class="num">3</span><span class="when">Asi od 5. týdne</span><h3>Měkká šetřící strava</h3><p>Postupně pevná jídla. Nové potraviny zkoušíme po jedné a sledujeme, jak je snášíme.</p><span class="go">90 receptů →</span></a>
     </div>
     <p class="note">Přechod mezi fázemi je u každého jiný. Řiďte se tím, jak se cítíte, a pokyny svého lékaře.</p>
-  </section>
-
-  <section id="hledani-receptu">
-    <div class="sec-head">
-      <div class="eyebrow">Všechny recepty na jednom místě</div>
-      <h2>Hledejte recepty podle klíčového slova</h2>
-      <p class="muted">Napište surovinu, druh masa nebo chod, například „hovězí“, „treska“ nebo „tvaroh“, a zobrazí se jen odpovídající recepty ze všech tří fází.</p>
-    </div>
-    <div class="checker">
-      <label for="recipe-q">Co chcete vařit?</label>
-      <form class="search" id="recipe-form" role="search">
-        <input id="recipe-q" type="search" autocomplete="off" placeholder="např. hovězí, treska, tvaroh">
-        <button type="submit">Hledat</button>
-      </form>
-      <p class="muted" id="recipe-count" aria-live="polite"></p>
-      <div class="result-links" id="recipe-results" aria-live="polite"></div>
-    </div>
   </section>
 
   <section class="chapter c1" id="faze-1">
@@ -416,25 +400,6 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
       <div class="day" data-day="2"></div>
     </div>
     <div class="recipes" data-phase="2"></div>
-  </section>
-
-  <section class="chapter c3" id="faze-3">
-    <div class="chapter-head">
-      <div>
-        <div class="eyebrow">Fáze 3 · asi od 5. týdne po operaci</div>
-        <h2>Měkká šetřící strava</h2>
-        <p>Pozvolna přecházíme na pevnou stravu. Jídlo zůstává nenadýmavé a lehce stravitelné.</p>
-        <ul>
-          <li>Jídelníček rozšiřujte po jedné nové potravině.</li>
-          <li>Pijte víc než 1,5 litru denně, vždy mimo jídlo.</li>
-          <li>Maso bez šlach a blan, zelenina a ovoce bez slupek a zrníček.</li>
-          <li>Tři recepty pocházejí přímo z nemocničního letáku.</li>
-          <li>Z těchto receptů je sestavený <a href="jidelnicek.html">jídelníček na týden s nákupním seznamem</a>.</li>
-        </ul>
-      </div>
-      <div class="day" data-day="3"></div>
-    </div>
-    <div class="recipes" data-phase="3"></div>
   </section>
 
   <section id="potraviny">
@@ -1147,12 +1112,9 @@ const R=[
 ];
 
 const phaseLabel={1:'Fáze 1',2:'Fáze 2',3:'Fáze 3'};
-const GROUP={'Polévka':0,'Oběd':1,'Večeře':1,'Snídaně':2,'Svačina':2,'Sladké jídlo':2};
-const GNAME=['Polévky','Hlavní jídla','Snídaně, svačiny a sladká jídla'];
-const g3=document.querySelector('.recipes[data-phase="3"]');
-const g3groups=GNAME.map((n,k)=>{const d=document.createElement('div');d.className='group';d.id='faze-3-'+['polevky','hlavni','svaciny'][k];d.innerHTML=`<h3 class="group-title">${n} <span></span></h3>`;g3.append(d);return d});
 R.forEach((x,i)=>{
-  const host=x.p===3?g3groups[GROUP[x.course]]:document.querySelector(`.recipes[data-phase="${x.p}"]`);
+  if(x.p===3)return;
+  const host=document.querySelector(`.recipes[data-phase="${x.p}"]`);
   const art=document.createElement('div');art.className='art';art.setAttribute('aria-hidden','true');
   art.style.color=`var(--p${x.p}-ink)`;
   art.append(makeArt(x.art.t?x.art:{items:x.art.items},i+1));
@@ -1220,53 +1182,6 @@ document.addEventListener('submit',async e=>{
       finally{b.disabled=false}
     });
   });
-})();
-/* rejstřík fáze 3 */
-(function(){
-  const idx=document.createElement('nav');idx.className='index';idx.setAttribute('aria-label','Rejstřík receptů fáze 3');
-  idx.innerHTML=g3groups.map(g=>{const items=[...g.querySelectorAll('article')];g.querySelector('.group-title span').textContent=items.length;
-    return `<div><h4><a href="#${g.id}">${g.querySelector('.group-title').firstChild.textContent.trim()}</a></h4><ul>${items.map(a=>`<li><a href="#${a.id}">${a.querySelector('h3').textContent}</a></li>`).join('')}</ul></div>`}).join('');
-  g3.before(idx);
-})();
-
-/* ---------- Hledání v receptech ---------- */
-(function(){
-  const form=document.getElementById('recipe-form');
-  const input=document.getElementById('recipe-q');
-  const count=document.getElementById('recipe-count');
-  const results=document.getElementById('recipe-results');
-  const cards=[...document.querySelectorAll('.recipe')];
-  const index=document.querySelector('.index');
-  const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-  function apply(){
-    const q=normSearch(input.value.trim());
-    const matched=[];
-    cards.forEach(a=>{
-      const hit=!q||a.dataset.search.includes(q);
-      a.hidden=!hit;
-      if(hit)matched.push(a);
-    });
-    document.querySelectorAll('.recipes .group').forEach(g=>{
-      g.hidden=![...g.querySelectorAll('article.recipe')].some(a=>!a.hidden);
-    });
-    document.querySelectorAll('section.chapter').forEach(sec=>{
-      sec.hidden=![...sec.querySelectorAll('article.recipe')].some(a=>!a.hidden);
-    });
-    if(index)index.hidden=!!q;
-    if(!q){
-      count.textContent='';
-      results.innerHTML='';
-      return;
-    }
-    count.textContent=`Nalezeno ${matched.length} z ${cards.length} receptů.`;
-    results.innerHTML=matched.length?('<ul>'+matched.map(a=>{
-      const name=esc(a.querySelector('h3').textContent);
-      const tag=esc(a.querySelector('.meta .tag').textContent);
-      return `<li><a href="#${a.id}">${name}</a><span class="tag">${tag}</span></li>`;
-    }).join('')+'</ul>'):'<p class="muted">Nic jsme nenašli. Zkuste jiné slovo.</p>';
-  }
-  form.addEventListener('submit',e=>{e.preventDefault();apply()});
-  input.addEventListener('input',apply);
 })();
 
 /* ---------- Hero ---------- */

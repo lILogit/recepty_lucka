@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="cs">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sestavit jídelníček</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;0,800;1,500&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+<style>
+:root{
+  --bg:#F3F6F3; --surface:#FFFFFF; --ink:#1E2B27; --muted:#56675F; --line:#D6E0DA;
+  --accent:#2E6A57; --accent-soft:#E0EDE6;
+  --p3:#DDEBD9; --p3-ink:#3A6832;
+  --warn:#8A5F0E; --warn-soft:#F7EBCF;
+  --f-display:"Alegreya", Georgia, "Times New Roman", serif;
+  --f-body:"Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#111816; --surface:#19221F; --ink:#E3ECE7; --muted:#9BAFA6; --line:#2B3833;
+    --accent:#80C8AB; --accent-soft:#1E3029;
+    --p3:#1C2C1C; --p3-ink:#A6D49B;
+    --warn:#E8C170; --warn-soft:#33291A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111816; --surface:#19221F; --ink:#E3ECE7; --muted:#9BAFA6; --line:#2B3833;
+  --accent:#80C8AB; --accent-soft:#1E3029;
+  --p3:#1C2C1C; --p3-ink:#A6D49B;
+  --warn:#E8C170; --warn-soft:#33291A;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.55;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.12}
+p{margin:0}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+
+header.page{padding-block:40px 24px;display:grid;gap:12px;max-width:50em}
+header.page h1{font-size:clamp(2.1rem,5vw,3.4rem);font-weight:800}
+header.page h1 em{font-style:italic;font-weight:500;color:var(--accent)}
+.lead{font-size:1.15rem}
+
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding:10px 16px}
+nav.toc .wrap{display:flex;gap:6px 18px;flex-wrap:wrap;font-size:.98rem}
+nav.toc a{text-decoration:none;color:var(--ink);font-weight:500;padding:4px 0;border-bottom:2px solid transparent}
+nav.toc a:hover{border-color:var(--accent)}
+nav.toc a.back{color:var(--accent)}
+
+section{padding-block:48px 8px;scroll-margin-top:60px}
+.sec-head{display:grid;gap:8px;margin-bottom:24px;max-width:46em}
+.sec-head h2{font-size:clamp(1.8rem,3.4vw,2.5rem);font-weight:800}
+
+/* ---------- Planner ---------- */
+.days{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;scroll-margin-top:60px}
+.day h3{font-size:1.4rem;padding:14px 18px;background:var(--p3);color:var(--p3-ink)}
+.meals{list-style:none;margin:0;padding:0}
+.meal{display:grid;grid-template-columns:5em 1fr;gap:4px 12px;padding:10px 18px;border-top:1px solid var(--line);align-items:start}
+.meal:first-child{border-top:0}
+.meal .when{font-size:.85rem;color:var(--muted);line-height:1.3;padding-top:8px}
+.meal .when b{display:block;color:var(--ink);font-size:.95rem;font-variant-numeric:tabular-nums}
+.meal .what{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.meal select.meal-select{font:inherit;font-size:.95rem;padding:8px 10px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);max-width:100%}
+.meal select.meal-select:focus{outline:none;border-color:var(--accent)}
+.meal-link{font-size:.85rem;font-weight:700;text-decoration:none;border-bottom:1px solid var(--line);white-space:nowrap}
+.meal-fixed{display:none;font-family:var(--f-display);font-size:1.05rem;font-weight:700}
+.plan-tools,.shop-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+.btn{font:inherit;font-weight:700;padding:10px 16px;border-radius:12px;border:0;background:var(--accent);color:var(--surface);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--line)}
+.progress{font-size:.95rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.note-box{margin-top:12px;font-size:.95rem;color:var(--muted);max-width:52em}
+
+/* ---------- Shopping cart ---------- */
+.nakup-wrap{display:grid}
+.cart-group{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px 10px;margin-bottom:16px}
+.cart-group h3{font-size:1.2rem;margin-bottom:6px}
+.cart-group ul{list-style:none;margin:0;padding:0;columns:2 320px;column-gap:16px}
+.item{border-top:1px solid var(--line);break-inside:avoid}
+.item:first-child{border-top:0}
+.item label{display:grid;grid-template-columns:auto 1fr;gap:0 12px;align-items:start;padding:9px 0;cursor:pointer}
+.item input{width:22px;height:22px;margin:2px 0 0;accent-color:var(--accent)}
+.item .name{font-weight:500}
+.item .qty{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:700;white-space:nowrap}
+.item .for{grid-column:2;font-size:.85rem;color:var(--muted);line-height:1.35}
+.item input:checked ~ span{text-decoration:line-through;opacity:.55}
+.cart-group.pantry{background:var(--warn-soft);border-color:transparent}
+.cart-group.pantry h3{color:var(--warn)}
+
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:.95rem;color:var(--muted)}
+
+@media (max-width:900px){
+  .days{grid-template-columns:1fr}
+}
+@media (max-width:620px){
+  body{font-size:17px}
+  nav.toc .wrap{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav.toc .wrap::-webkit-scrollbar{display:none}
+  .meal{grid-template-columns:1fr}
+  .meal .when{padding-top:0}
+  .cart-group ul{columns:1}
+}
+section,.day{scroll-margin-top:64px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+@media print{
+  body{background:#fff;color:#000;font-size:11pt;padding:0}
+  nav.toc,.plan-tools,.shop-tools,.no-print,.meal-select,.meal-link{display:none!important}
+  section{padding-block:12px 0}
+  #nakup{break-before:page}
+  .day,.cart-group{break-inside:avoid;border-color:#bbb}
+  .day h3{background:#eee;color:#000}
+  .meal-fixed{display:inline}
+  a{color:#000;text-decoration:none}
+  .item input:checked ~ span{text-decoration:none;opacity:1}
+  .cart-group ul{columns:2}
+}
+</style>
+
+<div class="wrap">
+  <header class="page">
+    <div class="eyebrow">Fáze 3 · vlastní plán</div>
+    <h1>Sestavit <em>jídelníček</em></h1>
+    <p class="lead">U každého jídla vyberte recept z receptů fáze 3. Výběr se ukládá v tomto prohlížeči a nákupní seznam pod jídelníčkem se počítá automaticky z vybraných receptů. Jídelníček pak jde vytisknout nebo uložit jako PDF.</p>
+  </header>
+</div>
+
+<nav class="toc" aria-label="Obsah">
+  <div class="wrap">
+    <a class="back" href="index.html">← Kuchařka</a>
+    <a href="recepty-faze-3.html">Recepty fáze 3</a>
+    <a href="#planovac">Jídelníček</a>
+    <a href="#nakup">Nákupní seznam</a>
+    <a href="jidelnicek.html">Vzorový jídelníček</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section id="planovac">
+    <div class="sec-head">
+      <div class="eyebrow">Pondělí až neděle</div>
+      <h2>Vyberte si recepty na celý týden</h2>
+      <p class="muted">Recepty jsou seskupené podle chodu. Vybraný recept otevřete klepnutím na „Recept ↓“.</p>
+    </div>
+    <div class="plan-tools">
+      <button class="btn" type="button" id="print-btn">Vytisknout / uložit jako PDF</button>
+      <button class="btn ghost no-print" type="button" id="plan-reset">Vymazat jídelníček</button>
+    </div>
+    <div class="days" id="planner"></div>
+    <p class="note-box">Když recept nesedí, vyberte jiný ze stejné skupiny. Porce i suroviny upravte podle toho, kolik snesete. Všechny recepty s postupem najdete na stránce <a href="recepty-faze-3.html">Recepty fáze 3</a>.</p>
+  </section>
+
+  <section id="nakup">
+    <div class="sec-head">
+      <div class="eyebrow">Z vybraných receptů</div>
+      <h2>Nákupní seznam na tento týden</h2>
+      <p class="muted">Suroviny jsou sečtené z receptů, které jste vybrali výše. Stejně napsané suroviny se sečtou automaticky (×2, ×3…), jinak zapsané stejné suroviny zkontrolujte ručně.</p>
+    </div>
+    <div class="shop-tools no-print">
+      <button class="btn ghost" type="button" id="cart-reset">Zrušit zaškrtnutí</button>
+      <span class="progress" id="cart-progress" aria-live="polite"></span>
+    </div>
+    <div class="nakup-wrap" id="nakup-wrap"></div>
+  </section>
+
+  <footer>
+    <p>Plánovač vychází z receptů <a href="recepty-faze-3.html">fáze 3</a> kuchařky <a href="index.html">Malými lžícemi</a>. Nenahrazuje doporučení lékaře ani nutričního terapeuta.</p>
+  </footer>
+</main>
+
+<script>
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ================= Recepty fáze 3 (jen data potřebná pro plánovač) ================= */
+const R3 = [{"num":12,"name":"Sekaný řízek pečený nasucho","course":"Oběd","ing":["250 g mletého masa, napůl libové hovězí a vepřové","1 vejce","½ staršího rohlíku namočeného ve vodě","hladká mouka na obalení","sůl","zelená petrželka"]},{"num":13,"name":"Dušený karbanátek s bramborovou kaší","course":"Večeře","ing":["200 g mletého libového hovězího masa","1 vejce","1 lžíce strouhanky z bílého pečiva","200 ml vývaru k podlití","sůl, zelená petrželka","300 g brambor, trocha mléka bez laktózy nebo vývaru, lžička másla","Salát: 1 malá mrkev a ½ zralého jablka"]},{"num":14,"name":"Kuřecí plátek s těstovinami a mrkví","course":"Oběd","ing":["100 g kuřecích prsou","50 g suchých drobných těstovin","1 mrkev","100 ml vývaru","1 lžička másla","sůl"]},{"num":15,"name":"Losos v alobalu s bramborem a zeleninou","course":"Večeře","ing":["100 g filé z lososa bez kůže","2 menší brambory","½ cukety","1 mrkev","čerstvý kopr","1 lžička olivového oleje","sůl"]},{"num":16,"name":"Hovězí roštěnky s rýží","course":"Oběd","ing":["200 g hovězího masa na roštěnky (2 plátky)","½ cibule","1 mrkev, kousek celeru a petržele","1 lžíce hladké mouky","asi 300 ml vývaru z kostí","sůl","lžička oleje do hotové omáčky","rýže jako příloha"]},{"num":17,"name":"Rýžový nákyp s tvarohem","course":"Sladké jídlo","ing":["100 g kulatozrnné rýže","400 ml mléka bez laktózy","30 g másla a trochu na vymazání","1 lžíce cukru, nebo méně","2 vejce","250 g měkkého tvarohu"]},{"num":18,"name":"Míchaná vejce na páře se šunkou","course":"Snídaně","ing":["2 vejce","1 lžíce mléka nebo vody","30 g kvalitní šunky","pažitka","1 lžička másla","plátek toustového chleba bez kůrky"]},{"num":19,"name":"Tvarohová pomazánka s pažitkou","course":"Svačina","ing":["125 g měkkého tvarohu","1 lžíce bílého jogurtu","1 lžička změklého másla","pažitka nasekaná najemno","sůl","veka nebo toustový chléb, zralé loupané rajče"]},{"num":20,"name":"Vaječná polévka se zeleninou","course":"Polévka","ing":["400 ml netučného hovězího vývaru","1 mrkev","kousek petržele a celeru","1 vejce","zelená petrželka","sůl"]},{"num":21,"name":"Rajská polévka s rýží","course":"Polévka","ing":["400 ml netučného hovězího vývaru","2 loupaná rajčata nebo rajčata z konzervy bez slupky","2 lžíce rajčatového protlaku","1 malá mrkev a kousek celeru","1 lžíce hladké mouky","30 g rýže","1 lžička másla","sůl, bazalka nebo petrželka"]},{"num":22,"name":"Bramborová polévka s majoránkou","course":"Polévka","ing":["200 g brambor","1 mrkev, kousek petržele a celeru","500 ml masového nebo zeleninového vývaru","½ lžičky celého kmínu","1 lžička sušené majoránky","1 lžíce hladké mouky","1 lžička másla","sůl, zelená petrželka"]},{"num":23,"name":"Kuřecí vývar s nudlemi a zeleninou","course":"Polévka","ing":["150 g kuřecího prsa nebo stehna bez kůže","1 mrkev, 1 petržel, kousek celeru","1 l vody","1 bobkový list","40 g drobných nudlí","sůl, zelená petrželka"]},{"num":24,"name":"Hovězí vývar s masovými knedlíčky","course":"Polévka","ing":["500 ml netučného hovězího vývaru","100 g mletého krůtího nebo kuřecího masa","1 žloutek","1 lžíce strouhanky z bílého pečiva","špetka majoránky a trochu citronové kůry","1 malá mrkev","sůl, zelená petrželka"]},{"num":25,"name":"Dušená kuřecí játra s rýží","course":"Oběd","ing":["150 g kuřecích jater","150 ml vývaru","1 lžička hladké mouky","špetka majoránky","1 lžička másla","sůl","100 g rýže"]},{"num":26,"name":"Telecí závitek se špenátem a bramborem","course":"Oběd","ing":["2 tenké telecí nebo krůtí plátky (asi 150 g)","30 g kvalitní šunky","1 vejce natvrdo","150 ml vývaru","1 lžička hladké mouky","100 g mraženého protlakového špenátu","200 g brambor","1 lžička másla","sůl"]},{"num":27,"name":"Vepřová pečeně s bramborovým knedlíkem","course":"Oběd","ing":["500 g vepřové kýty bez tuku","½ lžičky celého kmínu","200 ml vývaru","1 lžíce hladké mouky","sůl","bramborový knedlík"]},{"num":28,"name":"Pečené kuře s rýží a jablečným kompotem","course":"Oběd","ing":["2 kuřecí stehna nebo 1 prso, vždy bez kůže (asi 300 g)","150 ml vývaru","1 lžička másla","sůl, sladká paprika podle snášenlivosti","100 g rýže","Kompot: 1 zralé jablko, 100 ml vody"]},{"num":29,"name":"Dušený králík s mrkví","course":"Oběd","ing":["2 králičí stehna (asi 400 g)","2 mrkve, 1 petržel, kousek celeru","300 ml vývaru","1 bobkový list","1 lžíce hladké mouky","1 lžička másla","sůl","brambory nebo bramborová kaše"]},{"num":30,"name":"Pstruh v alobalu s bramborovou kaší","course":"Večeře","ing":["1 pstruh (asi 250 g) nebo 120 g pstruhového filé","kopr nebo petrželka","kousek citronové kůry","1 lžička másla","sůl","200 g brambor","trocha mléka bez laktózy nebo vývaru"]},{"num":31,"name":"Treska v koprové omáčce s bramborem","course":"Oběd","ing":["120 g filé z tresky","150 ml zeleninového vývaru","1 lžíce hladké mouky","2 lžíce bílého jogurtu nebo méně tučné zakysané smetany","čerstvý kopr","kapka citronové šťávy","sůl","2 brambory"]},{"num":32,"name":"Krůtí kuličky v rajské omáčce","course":"Oběd","ing":["200 g mletého krůtího masa","1 vejce","1 lžíce strouhanky","sůl, bazalka","Omáčka: 300 ml vývaru, 3 lžíce rajčatového protlaku, 1 mrkev, kousek celeru, 1 lžíce hladké mouky, 1 lžička másla","rýže nebo drobné těstoviny"]},{"num":33,"name":"Krůtí ragú s dýní a kuskusem","course":"Večeře","ing":["150 g krůtích prsou","150 g dýně hokkaido","1 mrkev","150 ml vývaru","špetka majoránky nebo libečku","sůl","60 g kuskusu","1 lžička oleje"]},{"num":34,"name":"Kuřecí rizoto s mrkví","course":"Večeře","ing":["100 g kuřecích prsou","60 g rýže","1 mrkev","1 lžíce mraženého hrášku","250 ml vývaru","20 g strouhaného eidamu do 30 % tuku v sušině","1 lžička másla","sůl, zelená petrželka"]},{"num":35,"name":"Zapečené těstoviny se šunkou","course":"Večeře","ing":["100 g drobných těstovin","100 g kvalitní šunky","2 vejce","150 g bílého jogurtu","30 g strouhaného eidamu do 30 % tuku v sušině","sůl","máslo na vymazání"]},{"num":36,"name":"Banánový koktejl s kefírem","course":"Svačina","ing":["150 ml kefíru nebo acidofilního mléka","½ zralého banánu","1 lžíce jemných ovesných vloček","1 odměrka proteinového prášku, pokud ho používáte"]},{"num":37,"name":"Ovesná kaše se skyrem a mangem","course":"Snídaně","ing":["30 g jemných ovesných vloček","150 ml vody nebo mléka bez laktózy","100 g bílého skyru","3 lžíce zralého manga nakrájeného najemno"]},{"num":38,"name":"Tvarohové knedlíčky s broskví","course":"Sladké jídlo","ing":["250 g měkkého tvarohu","1 vejce","80 g dětské krupice","30 g hladké mouky","špetka soli","2 zralé broskve","1 lžička másla"]},{"num":39,"name":"Pečené jablko s tvarohem","course":"Svačina","ing":["2 zralá jablka","100 g měkkého tvarohu","1 lžíce bílého jogurtu","trochu citronové kůry"]},{"num":40,"name":"Šunková pěna","course":"Svačina","ing":["150 g kvalitní šunky","100 g měkkého tvarohu nebo lučiny","1 lžička změklého másla","pažitka","veka nebo toustový chléb"]},{"num":41,"name":"Vaječná pomazánka s jogurtem","course":"Snídaně","ing":["3 vejce natvrdo","2 lžíce bílého jogurtu","1 lžička změklého másla","pažitka","sůl","pečivo bez kůrky, zralé loupané rajče"]},{"num":42,"name":"Řecká citronová polévka s kuřecím masem","course":"Polévka","ing":["500 ml netučného kuřecího vývaru","40 g loupané rýže (basmati nebo arborio)","100 g vařeného kuřecího masa bez kůže","1 žloutek","šťáva z ½ citronu","sůl"]},{"num":43,"name":"Pečený losos se špenátem a batátovým pyré","course":"Večeře","ing":["80–100 g filetu z lososa bez kůže","kapka citronové šťávy","100 g batátů","1 lžička másla","hrst čerstvého listového špenátu","kapka olivového oleje","sůl"]},{"num":44,"name":"Lososové placičky s jogurtovým dipem","course":"Oběd","ing":["1 konzerva lososa ve vlastní šťávě (asi 170 g), scezená","1 vejce","2 lžíce jemně mletých ovesných vloček","sůl, kopr","Dip: ¼ zralého avokáda, 2 lžíce bílého jogurtu do 3 % tuku, kapka citronové šťávy"]},{"num":45,"name":"Vaječné muffiny s cottage a špenátem","course":"Snídaně","ing":["4 vejce","120 g cottage sýru","30 g eidamu do 30 % tuku, jemně nastrouhaného","hrst dušeného špenátu, vymačkaného a nasekaného","sůl, pažitka nebo petrželka"]},{"num":46,"name":"Avokádovo-tuňáková pěna","course":"Svačina","ing":["½ konzervy tuňáka ve vlastní šťávě, scezeného","¼–½ zralého avokáda","1 lžíce bílého jogurtu","pár kapek citronové šťávy","špetka soli","veka nebo toustový chléb bez kůrky"]},{"num":52,"name":"Kuřecí nákyp s mrkvovým pyré","course":"Oběd","ing":["200 g mletého kuřecího masa","1 vejce","2 lžíce strouhanky","2 lžíce mléka bez laktózy nebo vývaru","sůl","máslo na vymazání","Pyré: 2 mrkve, 1 lžička másla, trocha vývaru"]},{"num":53,"name":"Pečené rybí filé s kořenovou zeleninou","course":"Večeře","ing":["120 g filé z tresky, štiky nebo pstruha bez kostí","1 mrkev","kousek celeru a petržele","1 lžička másla","kapka citronové šťávy","sůl","bramborová kaše nebo vařené brambory"]},{"num":54,"name":"Šlehaný tvaroh s banánem a piškoty","course":"Svačina","ing":["150 g měkkého tvarohu","2–3 lžíce mléka bez laktózy nebo bílého jogurtu","½ zralého banánu","pár kapek citronové šťávy","2 dětské piškoty"]},{"num":55,"name":"Krupicová kaše s kakaem","course":"Snídaně","ing":["25 g dětské krupice","250 ml mléka bez laktózy","1 odměrka proteinového prášku","1 lžička másla","½ lžičky neslazeného kakaa"]},{"num":56,"name":"Kuřecí játrová pěna s mrkví","course":"Svačina","ing":["150 g kuřecích jater","1 mrkev","100 ml vývaru","1 lžička másla","sůl, špetka majoránky","starší pečivo bez kůrky nebo vařená zelenina"]},{"num":57,"name":"Jemný vývar z krůtího masa s krupicí a vaječnou mlhovinou","course":"Polévka","ing":["300 g krůtích prsou","1 mrkev","kousek petržele","400 ml vody","1 vejce","2 lžíce krupice","sůl, kmín"]},{"num":58,"name":"Krémová bramborovo-mrkvová polévka","course":"Polévka","ing":["2 brambory","2 mrkve","400 ml zeleninového vývaru","1 lžička másla","1 odměrka proteinového prášku nebo 2 lžíce bílého jogurtu","sůl"]},{"num":59,"name":"Kuřecí vývar s jemnými těstovinami a petrželkou","course":"Polévka","ing":["250 g kuřecích prsou","1 mrkev nastrouhaná","400 ml vody","hrst drobných těstovin (hvězdičky nebo rýže)","sůl","zelená petrželka"]},{"num":60,"name":"Dýňový krém s kuskusem","course":"Polévka","ing":["300 g dýně hokkaido","1 menší brambora","400 ml zeleninového vývaru","2 lžíce kuskusu","1 lžička másla","1 odměrka proteinového prášku","sůl"]},{"num":61,"name":"Rýžová polévka se strouhanou kořenovou zeleninou","course":"Polévka","ing":["1 mrkev","kousek petržele a celeru","2 lžíce loupané rýže","400 ml zeleninového nebo kuřecího vývaru","sůl","zelená petrželka"]},{"num":62,"name":"Krupicová polévka s vaječným svítkem","course":"Polévka","ing":["400 ml zeleninového nebo masového vývaru","2 lžíce krupice","1 vejce","1 lžička mléka","sůl","pažitka"]},{"num":63,"name":"Bramborová lisovaná polévka s kmínem a majoránkou","course":"Polévka","ing":["3 brambory","400 ml zeleninového vývaru","špetka mletého kmínu","majoránka","1 lžička másla","1 odměrka proteinového prášku","sůl"]},{"num":64,"name":"Rybí vývar z tresky s těstovinovou rýží","course":"Polévka","ing":["150 g filé z tresky","1 mrkev","kousek petržele","350 ml vody nebo zeleninového vývaru","2 lžíce drobné těstovinové rýže (risoni)","sůl","zelená petrželka"]},{"num":65,"name":"Dušená kuřecí prsa na kmíně s rýží","course":"Oběd","ing":["300 g kuřecích prsou","200 ml vývaru","špetka mletého kmínu","1 lžička hladké mouky","1 lžička másla","sůl","loupaná rýže na přílohu"]},{"num":66,"name":"Krůtí plátek na bazalce s mrkvovým pyré","course":"Oběd","ing":["300 g krůtích prsou","200 ml vývaru","pár lístků čerstvé bazalky","kapka olivového oleje","2 mrkve na pyré","1 lžička másla","sůl"]},{"num":67,"name":"Králík na libečku s vařenými brambory","course":"Oběd","ing":["400 g králičího hřbetu","300 ml vývaru","čerstvý nebo sušený libeček","sůl","brambory na přílohu","1 lžička másla"]},{"num":68,"name":"Kuřecí rizoto s dušenou mrkví a hráškem","course":"Oběd","ing":["150 g kuřecích prsou","120 g loupané rýže","1 mrkev","2 lžíce hrášku","400 ml kuřecího vývaru","1 lžička másla","sůl"]},{"num":69,"name":"Krůtí nudličky na majoránce s těstovinami","course":"Oběd","ing":["250 g krůtích prsou","200 ml vývaru","majoránka","kapka řepkového oleje","těstoviny na přílohu","sůl"]},{"num":70,"name":"Pečená kuřecí prsa v alobalu s dušeným špenátem a bramborovou kaší","course":"Oběd","ing":["300 g kuřecích prsou","mražený protlakový špenát","3 brambory","1 lžička másla","sůl","citronová šťáva"]},{"num":71,"name":"Králičí hřbet na krupici a mrkvi","course":"Oběd","ing":["300 g králičího hřbetu","300 ml vývaru","2 lžíce krupice","1 mrkev nastrouhaná","sůl","zelená petrželka"]},{"num":72,"name":"Kuřecí plátek na pomerančové šťávě s kuskusem","course":"Oběd","ing":["300 g kuřecích prsou","200 ml vývaru","kůra a šťáva z ½ pomeranče","kuskus na přílohu","1 lžička másla","sůl"]},{"num":73,"name":"Drcené krůtí maso zapékané s těstovinami a vajíčkem","course":"Večeře","ing":["250 g krůtího mletého masa","150 g vařených těstovin","2 vejce","50 ml mléka bez laktózy","sůl, zelená petrželka","máslo na vymazání"]},{"num":74,"name":"Kuřecí rolka plněná šunkou nejvyšší jakosti s bramborovým pyré","course":"Oběd","ing":["2 tenké plátky kuřecích prsou","2 plátky šunky nejvyšší jakosti","200 ml vývaru","brambory na pyré","1 lžička másla","sůl"]},{"num":75,"name":"Králičí stehno dušené na celeru a petrželi s noky","course":"Oběd","ing":["2 králičí stehna","kousek celeru a petržele","300 ml vývaru","1 lžička hladké mouky","sůl","noky na přílohu"]},{"num":76,"name":"Kuřecí plátek se šunkou a tvrdým sýrem do 30 % t. v s.","course":"Večeře","ing":["2 kuřecí plátky","2 plátky šunky nejvyšší jakosti","50 g tvrdého sýra do 30 % t. v s.","trocha vývaru","sůl"]},{"num":77,"name":"Dušená hovězí kýta na celeru s houskovým knedlíkem","course":"Oběd","ing":["400 g hovězí kýty","kousek celeru","300 ml vývaru","1 lžička hladké mouky","sůl","houskový knedlík na přílohu"]},{"num":78,"name":"Vepřová kotleta bez kosti dušená na kmíně s vařeným bramborem","course":"Oběd","ing":["2 vepřové kotlety bez kosti","200 ml vývaru","špetka mletého kmínu","sůl","vařené brambory na přílohu"]},{"num":79,"name":"Hovězí plátek na citronu a fenyklu s rýží","course":"Oběd","ing":["300 g hovězí kýty","200 ml vývaru","kapka citronové šťávy","špetka fenyklových semínek","sůl","loupaná rýže na přílohu"]},{"num":80,"name":"Vepřová kýta na mrkvi s těstovinami","course":"Oběd","ing":["300 g libové vepřové kýty","2 mrkve nastrouhané","250 ml vývaru","sůl","těstoviny na přílohu"]},{"num":81,"name":"Dušená telecí/hovězí játra na kmíně s rýží","course":"Oběd","ing":["200 g telecích nebo hovězích jater","150 ml vývaru","špetka mletého kmínu","1 lžička másla","sůl","loupaná rýže na přílohu"]},{"num":82,"name":"Hovězí nudličky se zahuštěnou dýňovou omáčkou a kuskusem","course":"Večeře","ing":["250 g hovězí kýty","150 g dýně hokkaido","200 ml vývaru","1 lžička zakysané smetany","sůl","kuskus na přílohu"]},{"num":83,"name":"Vepřový plátek na majoránce s bramborovou kaší","course":"Oběd","ing":["300 g libové vepřové kýty","200 ml vývaru","majoránka","sůl","brambory na kaši","1 lžička másla"]},{"num":84,"name":"Pstruh pečený na pečicím papíru s vařeným bramborem a koprem","course":"Večeře","ing":["1 pstruh (filé)","kousek másla","čerstvý kopr","kapka citronové šťávy","sůl","vařené brambory na přílohu"]},{"num":85,"name":"Dušená treska na másle a petrželce s bramborovou kaší","course":"Oběd","ing":["200 g filé z tresky","100 ml vývaru","1 lžička másla","zelená petrželka","sůl","brambory na kaši"]},{"num":86,"name":"Tilapie na fenyklu a anýzu s loupanou rýží","course":"Oběd","ing":["200 g filé z tilapie","200 ml rybího nebo zeleninového vývaru","špetka fenyklových semínek","špetka anýzu","sůl","loupaná rýže na přílohu"]},{"num":87,"name":"Štika na kmíně s vařeným bramborem","course":"Oběd","ing":["200 g filé ze štiky","kousek másla","špetka mletého kmínu","sůl","vařené brambory na přílohu","kapka olivového oleje"]},{"num":88,"name":"Filé z amura dušené na citronové šťávě s kuskusem","course":"Oběd","ing":["200 g filé z amura","150 ml vody nebo vývaru","kapka citronové šťávy","zelená petrželka","sůl","kuskus na přílohu"]},{"num":89,"name":"Zapékaná treska s nízkotučným tvarohem a brambory","course":"Večeře","ing":["250 g filé z tresky","3 brambory","100 g nízkotučného tvarohu","2 lžíce mléka bez laktózy","sůl","zelená pažitka"]},{"num":90,"name":"Rybí karbanátky z tresky a ovesných vloček","course":"Oběd","ing":["250 g filé z tresky","2 lžíce jemných ovesných vloček","1 vejce","sůl","zelená petrželka"]},{"num":91,"name":"Sladká jáhlová kaše s banánem a skořicí","course":"Snídaně","ing":["30 g jáhel","200 ml vody nebo mléka bez laktózy","½ zralého banánu","špetka skořice","1 odměrka proteinového prášku nebo 2 lžíce jogurtu"]},{"num":92,"name":"Ovesná kaše s dušeným jablkem a anýzem","course":"Snídaně","ing":["30 g jemných ovesných vloček","200 ml vody nebo mléka bez laktózy","1 zralé jablko","špetka anýzu","1 odměrka proteinového prášku"]},{"num":93,"name":"Tvarohové noky s ovocným přelivem z meruněk","course":"Sladké jídlo","ing":["200 g měkkého tvarohu","1 vejce","3 lžíce hladké mouky","4 zralé meruňky","voda na vaření"]},{"num":94,"name":"Dušená dýně se žervé a vařenými brambory","course":"Večeře","ing":["300 g dýně hokkaido","50 g žervé","sůl","pár lístků bazalky","brambory na přílohu"]},{"num":95,"name":"Pečené brambory plněné cottage sýrem a pažitkou","course":"Večeře","ing":["2 velké brambory","100 g cottage sýru","sůl","jemně nakrájená pažitka"]},{"num":96,"name":"Dušený špenát s vařeným vejcem a bramborovým knedlíkem","course":"Večeře","ing":["300 g mraženého protlakového špenátu","1 lžička hladké mouky","2 vejce natvrdo","sůl","bramborový knedlík na přílohu"]},{"num":97,"name":"Pohanková/jáhelná kaše s broskvovým pyré","course":"Snídaně","ing":["30 g pohankových nebo jáhlových vloček","200 ml vody nebo mléka bez laktózy","½ zralé broskve","2 lžíce tvarohu nebo 1 odměrka proteinového prášku"]},{"num":98,"name":"Bramborové noky s nízkotučným tvarohem a skořicí","course":"Sladké jídlo","ing":["2 brambory","1 vejce","4 lžíce hladké mouky","100 g nízkotučného tvarohu","špetka skořice","½ zralého banánu nebo zralá meruňka"]},{"num":99,"name":"Bílý jogurt do 3 % tuku s nakrájeným banánem a jáhlovými pukanci","course":"Svačina","ing":["150 g bílého jogurtu do 3 % tuku","½ zralého banánu","lžička jáhlových pukanců bez cukru"]},{"num":100,"name":"Toustový chléb s žervé a šunkou nejvyšší jakosti","course":"Svačina","ing":["1 plátek toustového chleba bez kůrky","žervé","1 plátek šunky nejvyšší jakosti"]},{"num":101,"name":"Domácí pultová pomazánka z nízkotučného tvarohu, Lučiny a mrkve","course":"Svačina","ing":["150 g nízkotučného tvarohu","50 g Lučiny","1 mrkev nastrouhaná","sůl","pažitka"]},{"num":102,"name":"Kefírové smoothie s banánem a mangem","course":"Svačina","ing":["150 ml kefíru do 3 % tuku","½ zralého banánu","kousek zralého manga"]},{"num":103,"name":"Světlý rohlík s tvrdým sýrem Eidam do 30 % t. v s. a hlávkovým salátem","course":"Svačina","ing":["1 světlý rohlík bez posypu","1 plátek sýra Eidam do 30 % t. v s.","pár lístků hlávkového salátu"]},{"num":104,"name":"Acidofilní mléko s dušeným jablkovým pyré","course":"Svačina","ing":["150 ml acidofilního mléka","1 zralé jablko","lžíce vody"]},{"num":105,"name":"Vaječná omeleta z jednoho vejce na sucho se šunkou a bílým toustem","course":"Snídaně","ing":["1 vejce","1 lžička mléka bez laktózy","1 plátek šunky nejvyšší jakosti","sůl","1 plátek bílého toustu"]},{"num":106,"name":"Sýrová pomazánka z cottage sýra, strouhaného celeru a citronové šťávy","course":"Svačina","ing":["150 g cottage sýru","kousek celeru nastrouhaný","kapka citronové šťávy","sůl"]}];
+
+/* ================= Plánovač týdne ================= */
+const DAYS=['Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota','Neděle'];
+const SLOTS=[['7:00','Snídaně'],['10:00','Svačina'],['12:30','Oběd'],['15:30','Svačina'],['18:30','Večeře']];
+const PANTRY=['hladká mouka','strouhanka z bílého pečiva','sůl','olivový nebo řepkový olej','bobkový list','sušená bazalka','proteinový prášek bez příchuti, pokud ho používáte','alobal a pečicí papír','forma na muffiny'];
+const findRecipe=num=>R3.find(r=>String(r.num)===String(num));
+const byCourse={};
+R3.forEach(r=>{(byCourse[r.course]=byCourse[r.course]||[]).push(r)});
+Object.values(byCourse).forEach(list=>list.sort((a,b)=>a.name.localeCompare(b.name,'cs')));
+const courseOrder=['Polévka','Oběd','Večeře','Snídaně','Svačina','Sladké jídlo'];
+
+const PLAN_KEY='planovac-plan-v1';
+const CART_KEY='planovac-nakup-v1';
+let PLAN={};try{PLAN=JSON.parse(localStorage.getItem(PLAN_KEY))||{}}catch(e){PLAN={}}
+const savePlan=()=>{try{localStorage.setItem(PLAN_KEY,JSON.stringify(PLAN))}catch(e){}};
+const loadChecked=()=>{let c={};try{c=JSON.parse(localStorage.getItem(CART_KEY))||{}}catch(e){}return c};
+const saveChecked=c=>{try{localStorage.setItem(CART_KEY,JSON.stringify(c))}catch(e){}};
+
+function optionsHTML(selected){
+  let html='<option value="">— vybrat recept —</option>';
+  courseOrder.forEach(c=>{
+    if(!byCourse[c])return;
+    html+=`<optgroup label="${c}">`+byCourse[c].map(r=>`<option value="${r.num}"${String(r.num)===String(selected)?' selected':''}>${esc(r.name)}</option>`).join('')+'</optgroup>';
+  });
+  return html;
+}
+const plannerEl=document.getElementById('planner');
+function renderPlanner(){
+  plannerEl.innerHTML=DAYS.map((day,d)=>`
+    <article class="day">
+      <h3>${day}</h3>
+      <ol class="meals">${SLOTS.map((sl,s)=>{
+        const key=d+'-'+s,val=PLAN[key]||'',rec=val?findRecipe(val):null;
+        return `<li class="meal">
+          <span class="when"><b>${sl[0]}</b>${sl[1]}</span>
+          <span class="what">
+            <select class="meal-select" data-key="${key}">${optionsHTML(val)}</select>
+            <span class="meal-link-wrap">${rec?`<a class="meal-link" href="recepty-faze-3.html#recept-${rec.num}">Recept ↓</a>`:''}</span>
+            <span class="meal-fixed">${rec?esc(rec.name):'—'}</span>
+          </span>
+        </li>`;
+      }).join('')}</ol>
+    </article>`).join('');
+}
+plannerEl.addEventListener('change',e=>{
+  const sel=e.target;if(!sel.classList.contains('meal-select'))return;
+  const key=sel.dataset.key,li=sel.closest('li');
+  if(sel.value)PLAN[key]=sel.value;else delete PLAN[key];
+  savePlan();
+  const rec=sel.value?findRecipe(sel.value):null;
+  li.querySelector('.meal-fixed').textContent=rec?rec.name:'—';
+  li.querySelector('.meal-link-wrap').innerHTML=rec?`<a class="meal-link" href="recepty-faze-3.html#recept-${rec.num}">Recept ↓</a>`:'';
+  recalcCart();
+});
+document.getElementById('plan-reset').addEventListener('click',()=>{
+  if(!confirm('Opravdu vymazat celý jídelníček?'))return;
+  PLAN={};savePlan();renderPlanner();recalcCart();
+});
+
+const cartWrap=document.getElementById('nakup-wrap');
+function recalcCart(){
+  const chosen={};
+  Object.entries(PLAN).forEach(([key,num])=>{
+    const parts=key.split('-').map(Number),d=parts[0],s=parts[1];
+    const label=`${DAYS[d].slice(0,2)} ${SLOTS[s][1].toLowerCase()}`;
+    (chosen[num]=chosen[num]||[]).push(label);
+  });
+  const nums=Object.keys(chosen);
+  if(!nums.length){
+    cartWrap.innerHTML='<p class="muted">Nejdřív vyberte recepty do jídelníčku výše – nákupní seznam se sestaví automaticky.</p>';
+    document.getElementById('cart-progress').textContent='';
+    return;
+  }
+  const items={};
+  nums.forEach(numStr=>{
+    const rec=findRecipe(numStr),uses=chosen[numStr];
+    rec.ing.forEach(ing=>{
+      items[ing]=items[ing]||{n:0,uses:[]};
+      items[ing].n+=uses.length;
+      uses.forEach(u=>items[ing].uses.push(rec.name+' – '+u));
+    });
+  });
+  const keys=Object.keys(items).sort((a,b)=>a.localeCompare(b,'cs'));
+  const checked=loadChecked();
+  cartWrap.innerHTML=`<div class="cart-group"><ul>${keys.map(k=>{
+    const it=items[k];
+    return `<li class="item"><label><input type="checkbox" data-id="${esc(k)}"${checked[k]?' checked':''}>
+      <span><span class="name">${esc(k)}</span>${it.n>1?` <span class="qty">×${it.n}</span>`:''}</span>
+      <span class="for">${esc(it.uses.join(', '))}</span></label></li>`;
+  }).join('')}</ul></div>
+  <div class="cart-group pantry"><h3>Pravděpodobně máte doma</h3><ul>${PANTRY.map(n=>{
+    const id='pantry-'+n;
+    return `<li class="item"><label><input type="checkbox" data-id="${esc(id)}"${checked[id]?' checked':''}><span class="name">${esc(n)}</span></label></li>`;
+  }).join('')}</ul></div>`;
+  cartWrap.querySelectorAll('input[type=checkbox]').forEach(b=>b.addEventListener('change',()=>{
+    const c=loadChecked();
+    if(b.checked)c[b.dataset.id]=1;else delete c[b.dataset.id];
+    saveChecked(c);updateCartProgress();
+  }));
+  updateCartProgress();
+}
+function updateCartProgress(){
+  const boxes=[...cartWrap.querySelectorAll('input[type=checkbox]')];
+  const n=boxes.filter(b=>b.checked).length;
+  document.getElementById('cart-progress').textContent=boxes.length?`Máte ${n} z ${boxes.length} položek`:'';
+}
+document.getElementById('cart-reset').addEventListener('click',()=>{
+  saveChecked({});
+  cartWrap.querySelectorAll('input[type=checkbox]').forEach(b=>b.checked=false);
+  updateCartProgress();
+});
+document.getElementById('print-btn').addEventListener('click',()=>window.print());
+
+renderPlanner();
+recalcCart();
+</script>
